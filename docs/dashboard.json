@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-06-18T17:58:40.254513+00:00",
+  "scan_date": "2026-06-18T18:59:00.562874+00:00",
   "total_chains": 7,
-  "total_contracts": 3184,
+  "total_contracts": 5414,
   "total_vulns": 216,
   "critical_count": 216,
   "high_count": 0,
@@ -11,7 +11,7 @@
     "arbitrum": {
       "chain_name": "Arbitrum One",
       "chain_emoji": "🌀",
-      "contracts": 500,
+      "contracts": 866,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -21,7 +21,7 @@
     "polygon": {
       "chain_name": "Polygon",
       "chain_emoji": "🟣",
-      "contracts": 500,
+      "contracts": 864,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -41,7 +41,7 @@
     "ethereum": {
       "chain_name": "Ethereum",
       "chain_emoji": "🔵",
-      "contracts": 500,
+      "contracts": 1000,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -61,7 +61,7 @@
     "base": {
       "chain_name": "Base",
       "chain_emoji": "🔷",
-      "contracts": 500,
+      "contracts": 1000,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -71,7 +71,7 @@
     "bnb": {
       "chain_name": "BNB Chain",
       "chain_emoji": "🟡",
-      "contracts": 500,
+      "contracts": 1000,
       "vulns": 0,
       "critical": 0,
       "high": 0,
