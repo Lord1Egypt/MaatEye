@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-06-18T21:20:44.313923+00:00",
+  "scan_date": "2026-06-18T21:48:30.985038+00:00",
   "total_chains": 15,
-  "total_contracts": 6359,
+  "total_contracts": 6526,
   "total_vulns": 10216,
   "critical_count": 216,
   "high_count": 0,
@@ -406,7 +406,7 @@
     "blast": {
       "chain_name": "Blast",
       "chain_emoji": "💥",
-      "contracts": 50,
+      "contracts": 100,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -426,7 +426,7 @@
     "celo": {
       "chain_name": "Celo",
       "chain_emoji": "🌿",
-      "contracts": 50,
+      "contracts": 55,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -446,7 +446,7 @@
     "gnosis": {
       "chain_name": "Gnosis",
       "chain_emoji": "🦉",
-      "contracts": 50,
+      "contracts": 100,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -456,7 +456,7 @@
     "linea": {
       "chain_name": "Linea",
       "chain_emoji": "⬛",
-      "contracts": 50,
+      "contracts": 87,
       "vulns": 0,
       "critical": 0,
       "high": 0,
@@ -466,7 +466,7 @@
     "mantle": {
       "chain_name": "Mantle",
       "chain_emoji": "⚙️",
-      "contracts": 50,
+      "contracts": 75,
       "vulns": 0,
       "critical": 0,
       "high": 0,
