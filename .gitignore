@@ -206,6 +206,9 @@ tempCodeRunnerFile.py
 # Ruff stuff:
 .ruff_cache/
 
+# MaatEye: Token registry data (auto-generated, changes every scan)
+data/
+
 # PyPI configuration file
 .pypirc
 

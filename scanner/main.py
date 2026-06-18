@@ -88,6 +88,40 @@ def main():
     # ── Reindex Command ─────────────────────────────────────────────────────
     reindex_parser = subparsers.add_parser("reindex", help="Re-index pattern registry")
 
+    # ── Tokens Command ──────────────────────────────────────────────────────
+    tokens_parser = subparsers.add_parser("tokens", help="Manage discovered token registry")
+    tokens_sub = tokens_parser.add_subparsers(dest="tokens_action", help="Token action")
+
+    # tokens import
+    tokens_import = tokens_sub.add_parser("import", help="Import tokens from discovery sources")
+    tokens_import.add_argument("--sources", default="coingecko,explorer,known",
+                               help="Comma-separated sources (coingecko,explorer,known,rpc)")
+    tokens_import.add_argument("--rpc-blocks", type=int, default=20000,
+                               help="Lookback blocks for RPC discovery")
+    tokens_import.add_argument("--explorer-count", type=int, default=50,
+                               help="Tokens per chain from explorer API")
+    tokens_import.add_argument("--save", action="store_true", default=True,
+                               help="Save to token registry (default: True)")
+
+    # tokens stats
+    tokens_sub.add_parser("stats", help="Show token registry statistics")
+
+    # tokens new
+    tokens_new = tokens_sub.add_parser("new", help="Show newly discovered tokens")
+    tokens_new.add_argument("--since", type=float, default=0,
+                            help="Unix timestamp (0 = last session)")
+
+    # tokens export
+    tokens_export = tokens_sub.add_parser("export", help="Export token addresses")
+    tokens_export.add_argument("--chain", help="Filter by chain key")
+    tokens_export.add_argument("--format", choices=["txt", "json", "csv"], default="txt")
+    tokens_export.add_argument("--output", help="Output file path")
+
+    # tokens list
+    tokens_list = tokens_sub.add_parser("list", help="List tokens for a chain")
+    tokens_list.add_argument("chain", help="Chain key (ethereum, bnb, polygon, etc.)")
+    tokens_list.add_argument("--limit", type=int, default=50, help="Max tokens to show")
+
     args = parser.parse_args()
 
     if not args.command:
@@ -108,6 +142,136 @@ def main():
         run_validate(args)
     elif args.command == "reindex":
         run_reindex(args)
+    elif args.command == "tokens":
+        run_tokens(args)
+
+
+def run_tokens(args):
+    """Handle token management commands."""
+    from scanner.fetchers.token_store import get_store
+
+    if not args.tokens_action:
+        print("Usage: python -m scanner.main tokens [import|stats|new|export|list]")
+        print("Run: python -m scanner.main tokens --help")
+        return
+
+    action = args.tokens_action
+
+    # ── tokens stats ────────────────────────────────────────────────────
+    if action == "stats":
+        store = get_store()
+        print(store.get_summary())
+        return
+
+    # ── tokens import ───────────────────────────────────────────────────
+    if action == "import":
+        from scanner.fetchers.token_discovery import discover_all_tokens
+        from scanner.fetchers.token_store import bulk_add_from_discovery
+
+        sources = [s.strip() for s in args.sources.split(",")]
+
+        print("🔍 Token Discovery Import")
+        print("=" * 50)
+
+        # Run discovery
+        result = discover_all_tokens(
+            use_coingecko="coingecko" in sources,
+            use_rpc="rpc" in sources,
+            use_explorer="explorer" in sources,
+            use_known="known" in sources,
+            tokens_per_chain_explorer=args.explorer_count,
+        )
+
+        total = sum(len(v) for v in result.values())
+        print(f"\n📦 Discovered {total} unique token addresses across {len(result)} chains")
+
+        # Import into store
+        if args.save:
+            store = get_store()
+            import time
+            grand_added = 0
+            grand_skipped = 0
+            for chain, addresses in sorted(result.items()):
+                stats = bulk_add_from_discovery(
+                    chain=chain,
+                    addresses=addresses,
+                    source="discovery_import",
+                    block=0,
+                )
+                grand_added += stats["added"]
+                grand_skipped += stats["skipped_duplicates"]
+
+            print(f"\n💾 Registry updated:")
+            print(f"   ✅ {grand_added} new tokens added")
+            print(f"   ⏭️  {grand_skipped} duplicates skipped")
+            print(f"   📊 Total in registry: {stats['total']}")
+        return
+
+    # ── tokens new ──────────────────────────────────────────────────────
+    if action == "new":
+        store = get_store()
+        new_tokens = store.get_new_tokens_since(args.since)
+        if not new_tokens:
+            print("✨ No new tokens found")
+            return
+
+        print(f"🆕 {len(new_tokens)} new tokens since timestamp {args.since}")
+        print("-" * 60)
+        for t in new_tokens:
+            src = t.source[:12]
+            print(f"  {t.chain:<12} {t.address:<42} [{src}]")
+        return
+
+    # ── tokens export ───────────────────────────────────────────────────
+    if action == "export":
+        store = get_store()
+        if args.chain:
+            tokens = store.get_tokens_by_chain(args.chain)
+            label = args.chain
+        else:
+            tokens = store.get_all_tokens()
+            label = "all_chains"
+
+        if args.format == "json":
+            data = {t.chain: t.address for t in tokens}
+            content = json.dumps(data, indent=2)
+            ext = "json"
+        elif args.format == "csv":
+            lines = ["chain,address,symbol,name,source"]
+            for t in tokens:
+                lines.append(f"{t.chain},{t.address},{t.symbol},{t.name},{t.source}")
+            content = "\n".join(lines)
+            ext = "csv"
+        else:
+            content = "\n".join(sorted(set(t.address for t in tokens)))
+            ext = "txt"
+
+        output_path = args.output or f"data/token_export_{label}.{ext}"
+        Path(output_path).write_text(content)
+        print(f"📤 Exported {len(tokens)} tokens → {output_path}")
+        return
+
+    # ── tokens list ─────────────────────────────────────────────────────
+    if action == "list":
+        store = get_store()
+        tokens = store.get_tokens_by_chain(args.chain)
+        if not tokens:
+            print(f"❌ No tokens found for chain '{args.chain}'")
+            print(f"   Available chains: {', '.join(sorted(store.tokens.keys()))}")
+            return
+
+        print(f"\n📋 Tokens on {args.chain} ({len(tokens)} total)")
+        print("=" * 60)
+        limit = min(args.limit, len(tokens))
+        for t in sorted(tokens, key=lambda x: x.discovered_at, reverse=True)[:limit]:
+            src = t.source[:10]
+            scanned = "✅" if t.scan_count > 0 else "⬜"
+            sev = f" [{t.max_severity}]" if t.max_severity else ""
+            print(f"  {scanned} {t.address}  {t.symbol:<8} [{src}]{sev}")
+
+        if limit < len(tokens):
+            print(f"\n   ... and {len(tokens) - limit} more (use --limit to show more)")
+        return
 
 
 def collect_addresses(args) -> list[str]:
@@ -329,7 +493,7 @@ def run_validate(args):
         print(result.to_text())
 
 
-def run_reindex():
+def run_reindex(args=None):
     """Re-index all patterns from the patterns directory."""
     from scanner.utils.config import build_pattern_index
     count = build_pattern_index()
