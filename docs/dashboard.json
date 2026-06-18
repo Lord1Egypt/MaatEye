@@ -1,0 +1,72 @@
+{
+  "scan_date": "2026-06-18T02:38:06.522124",
+  "total_chains": 24,
+  "total_contracts": 1250,
+  "total_vulns": 347,
+  "critical_count": 23,
+  "high_count": 89,
+  "medium_count": 125,
+  "low_count": 110,
+  "chain_summary": {
+    "ethereum": {
+      "chain_name": "Ethereum",
+      "chain_emoji": "\ud83d\udc8e",
+      "contracts": 150,
+      "vulns": 52,
+      "critical": 5,
+      "high": 14,
+      "medium": 18,
+      "low": 15
+    },
+    "bnb": {
+      "chain_name": "BNB Smart Chain",
+      "chain_emoji": "\ud83d\udfe1",
+      "contracts": 180,
+      "vulns": 78,
+      "critical": 8,
+      "high": 22,
+      "medium": 28,
+      "low": 20
+    },
+    "polygon": {
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contracts": 120,
+      "vulns": 31,
+      "critical": 2,
+      "high": 8,
+      "medium": 12,
+      "low": 9
+    },
+    "arbitrum": {
+      "chain_name": "Arbitrum",
+      "chain_emoji": "\ud83d\udd35",
+      "contracts": 90,
+      "vulns": 22,
+      "critical": 1,
+      "high": 5,
+      "medium": 8,
+      "low": 8
+    },
+    "optimism": {
+      "chain_name": "Optimism",
+      "chain_emoji": "\ud83d\udd34",
+      "contracts": 70,
+      "vulns": 18,
+      "critical": 1,
+      "high": 4,
+      "medium": 7,
+      "low": 6
+    },
+    "base": {
+      "chain_name": "Base",
+      "chain_emoji": "\ud83d\udd37",
+      "contracts": 60,
+      "vulns": 15,
+      "critical": 1,
+      "high": 3,
+      "medium": 6,
+      "low": 5
+    }
+  }
+}

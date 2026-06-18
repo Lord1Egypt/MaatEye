@@ -13,6 +13,7 @@
   <img src="https://img.shields.io/badge/RPC%20Event%20Logs-Real%20Time-brightgreen?style=flat-square" alt="RPC"/>
   <img src="https://img.shields.io/badge/Etherscan%20API-Compatible-lightgrey?style=flat-square" alt="Etherscan"/>
   <img src="https://img.shields.io/badge/DEX%20Subgraphs-TheGraph-ff69b4?style=flat-square" alt="TheGraph"/>
+  <img src="https://img.shields.io/badge/GitHub%20Pages-Active-brightgreen?style=flat-square&logo=github" alt="GitHub Pages"/>
 </p>
 
 <p align="center">
@@ -289,14 +290,15 @@ MaatEye scans **24 EVM-compatible blockchains** using free public RPC endpoints 
 | 🌐 24 EVM Chains Support | ✅ Done | v0.3 |
 | 📅 Daily Cross-Chain Scan | ✅ Done | v0.3 |
 | 🚩 Auto Red Flag Issues | ✅ Done | v0.3 |
-| 🪙 CoinGecko Token Discovery | 🔄 In Progress | v0.4 |
-| 🧾 RPC Event Log Discovery | 🔄 In Progress | v0.4 |
-| 🗄️ Persistent Token Store | 🔄 In Progress | v0.4 |
-| 📊 Token Registry CLI | 🔄 In Progress | v0.4 |
-| 🔬 Slither Integration | 📅 Planned | v0.5 |
-| 🔥 Exploitability Scoring | 📅 Planned | v0.6 |
-| 📬 Telegram/Discord Alerts | 📅 Planned | v0.7 |
-| 🌉 Non-EVM Support | 📅 Planned | v0.8 |
+| 🪙 CoinGecko Token Discovery | ✅ Done | v0.4 |
+| 🧾 RPC Event Log Discovery | ✅ Done | v0.4 |
+| 🗄️ Persistent Token Store | ✅ Done | v0.4 |
+| 📊 Token Registry CLI | ✅ Done | v0.4 |
+| 🌐 GitHub Pages Dashboard | 🚀 In Progress | v0.6 |
+| 🔬 Slither Integration | 📅 Planned | v0.7 |
+| 🔥 Exploitability Scoring | 📅 Planned | v0.8 |
+| 📬 Telegram/Discord Alerts | 📅 Planned | v0.9 |
+| 🌉 Non-EVM Support | 📅 Planned | v1.0 |
 | 🌐 Web Dashboard | 📅 Planned | v1.0 |
 
 ---

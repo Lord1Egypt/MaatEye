@@ -1,0 +1,67 @@
+name: 🚀 Build & Deploy Dashboard to GitHub Pages
+
+on:
+  # Deploy on every push to main
+  push:
+    branches: [main]
+  # Also deploy after daily scan completes
+  workflow_run:
+    workflows: ["🌐 Daily Cross-Chain Vulnerability Scan"]
+    types: [completed]
+  # Manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 2>/dev/null || true
+
+      - name: 🏗️ Generate Dashboard from Latest Results
+        run: |
+          # Use latest scan results if available, or generate placeholder
+          if [ -f "results/cross_chain_report.json" ]; then
+            python tools/generate_dashboard.py \
+              --input results/cross_chain_report.json \
+              --output docs/
+          else
+            python tools/generate_dashboard.py \
+              --demo \
+              --output docs/
+          fi
+
+      - name: 📤 Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

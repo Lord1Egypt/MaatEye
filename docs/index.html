@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👁️⚖️ MaatEye — Vulnerability Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0d1225 100%);
+            border-bottom: 2px solid #2a3f6a;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 2.5em; color: #ffd700; margin-bottom: 10px; }
+        .header h1 span { color: #e0e0e0; }
+        .header p { color: #888; font-size: 1.1em; }
+        .header .subtitle { color: #4a7fc7; font-size: 0.9em; margin-top: 5px; }
+        
+        /* Stats Overview */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #131a30;
+            border: 1px solid #1e2d50;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card .number { font-size: 2.2em; font-weight: bold; }
+        .stat-card .label { color: #888; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        .stat-card.total .number { color: #ffd700; }
+        .stat-card.critical .number { color: #ff4444; }
+        .stat-card.high .number { color: #ff8800; }
+        .stat-card.medium .number { color: #4488ff; }
+        .stat-card.low .number { color: #88cc88; }
+        .stat-card.chains .number { color: #aa88ff; }
+        .stat-card.contracts .number { color: #44ddff; }
+
+        /* Meter */
+        .meter-container { margin-bottom: 30px; }
+        .meter-bar { display: flex; height: 36px; border-radius: 18px; overflow: hidden; }
+        .meter-critical { background: #ff4444; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
+        .meter-high { background: #ff8800; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
+        .meter-medium { background: #4488ff; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
+        .meter-low { background: #44aa44; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
+
+        /* Chain Cards */
+        .chain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .chain-card {
+            background: #131a30;
+            border: 1px solid #1e2d50;
+            border-radius: 12px;
+            padding: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .chain-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .chain-card.chain-critical { border-left: 3px solid #ff4444; }
+        .chain-card.chain-high { border-left: 3px solid #ff8800; }
+        .chain-card.chain-ok { border-left: 3px solid #44aa44; }
+        .chain-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .chain-header .chain-emoji { font-size: 1.8em; }
+        .chain-header h3 { font-size: 1em; flex: 1; }
+        .chain-header .chain-key { font-size: 0.7em; color: #555; background: #0a0e1a; padding: 2px 8px; border-radius: 10px; }
+        .chain-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .stat { text-align: center; padding: 4px; }
+        .stat .stat-label { display: block; font-size: 0.65em; color: #666; }
+        .stat .stat-value { font-size: 1.1em; font-weight: bold; }
+        .stat.critical .stat-value { color: #ff4444; }
+        .stat.high .stat-value { color: #ff8800; }
+        .stat.medium .stat-value { color: #4488ff; }
+        .vuln-bar { margin-top: 10px; height: 4px; display: flex; border-radius: 2px; overflow: hidden; background: #1a1f3a; }
+        .vuln-bar .bar-critical { background: #ff4444; }
+        .vuln-bar .bar-high { background: #ff8800; }
+        .vuln-bar .bar-medium { background: #4488ff; }
+
+        /* Table */
+        .table-container { overflow-x: auto; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; background: #131a30; border-radius: 12px; overflow: hidden; }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #1e2d50; }
+        th { background: #0d1225; color: #ffd700; font-weight: 600; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; }
+        td.critical, td.high, td.medium { font-weight: bold; }
+        td.critical { color: #ff4444; }
+        td.high { color: #ff8800; }
+        td.medium { color: #4488ff; }
+        tr:hover { background: #1a2340; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #555;
+            font-size: 0.85em;
+            border-top: 1px solid #1e2d50;
+            margin-top: 40px;
+        }
+        .footer a { color: #4a7fc7; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .chain-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👁️⚖️ Maat<span>Eye</span></h1>
+        <p>Multi-Chain Vulnerability Scanner — Live Dashboard</p>
+        <div class="subtitle">📡 Last scan: 2026-06-18 02:38:06 UTC</div>
+    </div>
+
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="number">347</div>
+                <div class="label">Total Vulnerabilities</div>
+            </div>
+            <div class="stat-card critical">
+                <div class="number">23</div>
+                <div class="label">🔴 Critical</div>
+            </div>
+            <div class="stat-card high">
+                <div class="number">89</div>
+                <div class="label">🟡 High</div>
+            </div>
+            <div class="stat-card medium">
+                <div class="number">125</div>
+                <div class="label">🔵 Medium</div>
+            </div>
+            <div class="stat-card low">
+                <div class="number">110</div>
+                <div class="label">🟢 Low</div>
+            </div>
+            <div class="stat-card chains">
+                <div class="number">24</div>
+                <div class="label">EVM Chains</div>
+            </div>
+            <div class="stat-card contracts">
+                <div class="number">1250</div>
+                <div class="label">Contracts Scanned</div>
+            </div>
+        </div>
+
+        <!-- Severity Meter -->
+        <h2 style="color: #ffd700; margin-bottom: 10px;">📊 Severity Distribution</h2>
+        
+    <div class="meter-container">
+        <div class="meter-bar">
+            <div class="meter-critical" style="width:6.6%">23</div>
+            <div class="meter-high" style="width:25.6%">89</div>
+            <div class="meter-medium" style="width:36.0%">125</div>
+            <div class="meter-low" style="width:31.7%">110</div>
+        </div>
+    </div>
+
+        <!-- Chain Cards -->
+        <h2 style="color: #ffd700; margin: 30px 0 15px;">🌐 Per-Chain Breakdown</h2>
+        <div class="chain-grid">
+            
+        <div class="chain-card chain-ok">
+            <div class="chain-header">
+                <span class="chain-emoji">🔵</span>
+                <h3>Arbitrum</h3>
+                <span class="chain-key">arbitrum</span>
+            </div>
+            <div class="chain-stats">
+                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">90</span></div>
+                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">22</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">1</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">5</span></div>
+                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">8</span></div>
+            </div>
+            <div class="vuln-bar">
+                <div class="bar-critical" style="width:4.5%"></div>
+                <div class="bar-high" style="width:22.7%"></div>
+                <div class="bar-medium" style="width:36.4%"></div>
+            </div>
+        </div>
+        <div class="chain-card chain-ok">
+            <div class="chain-header">
+                <span class="chain-emoji">🔷</span>
+                <h3>Base</h3>
+                <span class="chain-key">base</span>
+            </div>
+            <div class="chain-stats">
+                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">60</span></div>
+                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">15</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">1</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">3</span></div>
+                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">6</span></div>
+            </div>
+            <div class="vuln-bar">
+                <div class="bar-critical" style="width:6.7%"></div>
+                <div class="bar-high" style="width:20.0%"></div>
+                <div class="bar-medium" style="width:40.0%"></div>
+            </div>
+        </div>
+        <div class="chain-card chain-critical">
+            <div class="chain-header">
+                <span class="chain-emoji">🟡</span>
+                <h3>BNB Smart Chain</h3>
+                <span class="chain-key">bnb</span>
+            </div>
+            <div class="chain-stats">
+                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">180</span></div>
+                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">78</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">8</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">22</span></div>
+                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">28</span></div>
+            </div>
+            <div class="vuln-bar">
+                <div class="bar-critical" style="width:10.3%"></div>
+                <div class="bar-high" style="width:28.2%"></div>
+                <div class="bar-medium" style="width:35.9%"></div>
+            </div>
+        </div>
+        <div class="chain-card chain-critical">
+            <div class="chain-header">
+                <span class="chain-emoji">💎</span>
+                <h3>Ethereum</h3>
+                <span class="chain-key">ethereum</span>
+            </div>
+            <div class="chain-stats">
+                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">150</span></div>
+                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">52</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">5</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">14</span></div>
+                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">18</span></div>
+            </div>
+            <div class="vuln-bar">
+                <div class="bar-critical" style="width:9.6%"></div>
+                <div class="bar-high" style="width:26.9%"></div>
+                <div class="bar-medium" style="width:34.6%"></div>
+            </div>
+        </div>
+        <div class="chain-card chain-ok">
+            <div class="chain-header">
+                <span class="chain-emoji">🔴</span>
+                <h3>Optimism</h3>
+                <span class="chain-key">optimism</span>
+            </div>
+            <div class="chain-stats">
+                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">70</span></div>
+                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">18</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">1</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">4</span></div>
+                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">7</span></div>
+            </div>
+            <div class="vuln-bar">
+                <div class="bar-critical" style="width:5.6%"></div>
+                <div class="bar-high" style="width:22.2%"></div>
+                <div class="bar-medium" style="width:38.9%"></div>
+            </div>
+        </div>
+        <div class="chain-card chain-ok">
+            <div class="chain-header">
+                <span class="chain-emoji">🟣</span>
+                <h3>Polygon</h3>
+                <span class="chain-key">polygon</span>
+            </div>
+            <div class="chain-stats">
+                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">120</span></div>
+                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">31</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">2</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">8</span></div>
+                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">12</span></div>
+            </div>
+            <div class="vuln-bar">
+                <div class="bar-critical" style="width:6.5%"></div>
+                <div class="bar-high" style="width:25.8%"></div>
+                <div class="bar-medium" style="width:38.7%"></div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Full Table -->
+        <h2 style="color: #ffd700; margin: 30px 0 15px;">📋 Chain Comparison</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Chain</th>
+                        <th>Contracts</th>
+                        <th>Total Vulns</th>
+                        <th>🔴 Critical</th>
+                        <th>🟡 High</th>
+                        <th>🔵 Medium</th>
+                        <th>🟢 Low</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr>
+            <td>🟡 BNB Smart Chain</td>
+            <td>180</td>
+            <td>78</td>
+            <td class="critical">8</td>
+            <td class="high">22</td>
+            <td class="medium">28</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>💎 Ethereum</td>
+            <td>150</td>
+            <td>52</td>
+            <td class="critical">5</td>
+            <td class="high">14</td>
+            <td class="medium">18</td>
+            <td>15</td>
+        </tr>
+        <tr>
+            <td>🟣 Polygon</td>
+            <td>120</td>
+            <td>31</td>
+            <td class="critical">2</td>
+            <td class="high">8</td>
+            <td class="medium">12</td>
+            <td>9</td>
+        </tr>
+        <tr>
+            <td>🔵 Arbitrum</td>
+            <td>90</td>
+            <td>22</td>
+            <td class="critical">1</td>
+            <td class="high">5</td>
+            <td class="medium">8</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>🔴 Optimism</td>
+            <td>70</td>
+            <td>18</td>
+            <td class="critical">1</td>
+            <td class="high">4</td>
+            <td class="medium">7</td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>🔷 Base</td>
+            <td>60</td>
+            <td>15</td>
+            <td class="critical">1</td>
+            <td class="high">3</td>
+            <td class="medium">6</td>
+            <td>5</td>
+        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — Automated with 💙 by Lord1Egypt</p>
+        <p>Data refreshes daily at 08:00 UTC • Static analysis only — read-only, no exploits</p>
+        <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a></p>
+    </div>
+</body>
+</html>

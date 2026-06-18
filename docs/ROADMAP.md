@@ -143,7 +143,57 @@ Scan Scheduler (daily)
 
 ---
 
-## 📅 v0.6 — Deeper Analysis
+## 📅 v0.6 — GitHub Pages Dashboard 🚀
+
+### 🎯 Goal: Display scan results on GitHub Pages
+*Like Kesra's web-deploy.yml — auto-deploy static dashboard on every push*
+
+#### 🖥️ Dashboard Features
+- **Live Vulnerability Stats:** Total vulns, critical count, per-chain breakdown
+- **Chain Explorer:** Interactive cards for each of the 24 EVM chains
+- **Token Search:** Search any contract address → show vuln history
+- **Trend Chart:** Vulns discovered over time (daily/weekly)
+- **Top 10 Riskiest Tokens:** Leaderboard of most vulnerable contracts
+- **Badge Generator:** Live SVG badges for README (vulns count, severity)
+
+#### 🏗️ Architecture
+```
+Daily Scan Workflow (scan-scheduled.yml)
+       │
+       ▼
+Generate Dashboard HTML (Python)
+       │
+       ▼
+Upload → deploy-pages Workflow
+       │
+       ▼
+🌍 https://lord1egypt.github.io/MaatEye/
+```
+
+#### 📁 Files
+```
+docs/
+├── index.html          ← Main dashboard (auto-generated)
+├── dashboard.json      ← Live data for JS to consume
+├── assets/
+│   ├── style.css
+│   └── script.js
+└── chains/
+    └── *.md            ← Per-chain reports (existing)
+```
+
+#### 🗓️ Tasks
+- [ ] Create `tools/generate_dashboard.py` — converts scan JSON → static HTML
+- [ ] Create interactive HTML dashboard with Charts.js or pure CSS charts
+- [ ] Add real-time search/filter by chain, severity, token name
+- [ ] Create `.github/workflows/web-deploy.yml` (GitHub Pages deploy, like Kesra's)
+- [ ] Add dashboard generation step to `scan-scheduled.yml`
+- [ ] Add dashboard badge to README.md linking to Pages URL
+- [ ] Set up GitHub Pages in repo settings (Source: GitHub Actions)
+
+---
+
+## 📅 v0.7 — Deeper Analysis
 
 - [ ] Slither integration for deeper static analysis
 - [ ] Mythril integration for symbolic execution
@@ -151,21 +201,21 @@ Scan Scheduler (daily)
 - [ ] Constructor argument analysis
 - [ ] Upgradeable proxy detection with implementation verification
 
-## 📅 v0.7 — Exploitability Scoring
+## 📅 v0.8 — Exploitability Scoring
 
 - [ ] Exploitability matrix (can_drain_funds, requires_owner, is_public)
 - [ ] Risk classification (CRITICAL_ACTIVE, CRITICAL_DORMANT, etc.)
 - [ ] Public exploit path detection
 - [ ] Live vs dead contract detection (is there actual value?)
 
-## 📅 v0.8 — Alerting & Intelligence
+## 📅 v0.9 — Alerting & Intelligence
 
 - [ ] Telegram/Discord alerts for critical vulns
 - [ ] Weekly GitHub issue report (consolidated)
 - [ ] Vulnerability timeline tracking
 - [ ] Public API for programmatic access
 
-## 📅 v0.9 — Non-EVM Support
+## 📅 v1.0 — Non-EVM Support
 
 - [ ] Solana program scanning
 - [ ] Bitcoin script analysis
@@ -173,7 +223,7 @@ Scan Scheduler (daily)
 - [ ] Starknet/Cairo contract scanning
 - [ ] Cross-chain vulnerability correlation engine
 
-## 📅 v1.0 — Community Platform
+## 📅 v2.0 — Community Platform
 
 - [ ] Community pattern marketplace
 - [ ] Web dashboard with live charts
@@ -181,7 +231,7 @@ Scan Scheduler (daily)
 - [ ] Audit readiness report generator
 - [ ] Integration with bug bounty platforms (Immunefi, Hats Finance)
 
-## 📅 v2.0 — Guardian Network
+## 📅 v3.0 — Guardian Network
 
 - [ ] Decentralized guardian node network
 - [ ] Real-time exploit detection (mempool monitoring)
