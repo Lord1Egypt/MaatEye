@@ -58,6 +58,17 @@ def fetch_contract_source(
         logger.debug(f"  📦 Cache hit: {address} on {chain_obj.name}")
         return _source_cache[cache_key]
 
+    import os
+    from scanner.utils.config import load_config
+    
+    if not api_key:
+        # Check environment variable
+        api_key = os.environ.get("ETHERSCAN_API_KEY", "")
+        # Fallback to config file
+        if not api_key:
+            config = load_config()
+            api_key = config.get("etherscan", {}).get("api_key", "")
+
     # Thread-safe rate limiting per chain
     min_interval = 1.0 / chain_obj.scan_limit_rps
     with _rate_limit_locks[chain_obj.key]:
