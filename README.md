@@ -177,7 +177,7 @@ flowchart TB
     end
 
     subgraph "⏰ Schedule"
-        M1[🌅 Daily 08:00 UTC<br/>New Token Scan] --> E
+        M1[🌅 Daily 08:00 UTC<br/>Cross-Chain Vuln Scan] --> E
         M2[⚡ Hourly RPC Scan<br/>New token discovery] --> D
         M3[📅 Weekly Full Scan<br/>All 15K+ tokens] --> E
     end
