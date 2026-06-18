@@ -25,39 +25,118 @@ SELECTOR_DECIMALS = "0x313ce567"  # decimals()
 SELECTOR_TOTAL_SUPPLY = "0x18160ddd"  # totalSupply()
 
 # RPCs known to support eth_getLogs (permissive)
+# All 24 EVM chains — using publicnode.com as primary (free, no API key)
+# with secondary fallbacks via Ankr/LlamaRPC for high-volume chains
 PERMISSIVE_RPCS = {
+    # ── Core 7 (high-volume, multiple endpoints) ────────────────────────
     "ethereum": [
         "https://ethereum-rpc.publicnode.com",
         "https://rpc.ankr.com/eth",
         "https://eth.merkle.io",
+        "https://cloudflare-eth.com",
     ],
     "bnb": [
+        "https://bsc-rpc.publicnode.com",
         "https://bsc-dataseed1.binance.org",
         "https://bsc-dataseed2.binance.org",
         "https://bsc-dataseed3.binance.org",
     ],
     "polygon": [
+        "https://polygon-bor-rpc.publicnode.com",
         "https://polygon-rpc.com",
         "https://rpc.ankr.com/polygon",
         "https://polygon.llamarpc.com",
     ],
     "arbitrum": [
+        "https://arbitrum-one-rpc.publicnode.com",
         "https://arbitrum.llamarpc.com",
         "https://rpc.ankr.com/arbitrum",
     ],
     "optimism": [
+        "https://optimism-rpc.publicnode.com",
         "https://optimism.llamarpc.com",
         "https://rpc.ankr.com/optimism",
     ],
-    "base": ["https://base.llamarpc.com", "https://rpc.ankr.com/base"],
-    "avalanche": ["https://avalanche.llamarpc.com", "https://rpc.ankr.com/avalanche"],
+    "base": [
+        "https://base-rpc.publicnode.com",
+        "https://base.llamarpc.com",
+        "https://rpc.ankr.com/base",
+    ],
+    "avalanche": [
+        "https://avalanche-c-chain-rpc.publicnode.com",
+        "https://avalanche.llamarpc.com",
+        "https://rpc.ankr.com/avalanche",
+    ],
+
+    # ── L2 / Newer Chains (publicnode + fallback) ───────────────────────
+    "linea": [
+        "https://linea-rpc.publicnode.com",
+        "https://rpc.ankr.com/linea",
+    ],
+    "scroll": [
+        "https://scroll-rpc.publicnode.com",
+    ],
+    "blast": [
+        "https://blast-rpc.publicnode.com",
+    ],
+    "gnosis": [
+        "https://gnosis-rpc.publicnode.com",
+        "https://rpc.ankr.com/gnosis",
+    ],
+    "celo": [
+        "https://celo-rpc.publicnode.com",
+        "https://forno.celo.org",
+    ],
+    "moonbeam": [
+        "https://moonbeam-rpc.publicnode.com",
+    ],
+    "metis": [
+        "https://metis-rpc.publicnode.com",
+    ],
+    "opbnb": [
+        "https://opbnb-rpc.publicnode.com",
+    ],
+    "pulsechain": [
+        "https://pulsechain-rpc.publicnode.com",
+    ],
+    "mantle": [
+        "https://mantle-rpc.publicnode.com",
+    ],
+    "taiko": [
+        "https://taiko-rpc.publicnode.com",
+    ],
+    "berachain": [
+        "https://berachain-rpc.publicnode.com",
+    ],
+    "soneium": [
+        "https://soneium-rpc.publicnode.com",
+    ],
+    "unichain": [
+        "https://unichain-rpc.publicnode.com",
+    ],
+    "fraxtal": [
+        "https://fraxtal-rpc.publicnode.com",
+    ],
+    "chiliz": [
+        "https://chiliz-rpc.publicnode.com",
+    ],
+    "sonic": [
+        "https://sonic-rpc.publicnode.com",
+    ],
 }
 
 # RPCs that are archive nodes (can query historical logs)
+# Used for initial bulk discovery with larger lookback windows
 ARCHIVE_RPCS = {
-    "ethereum": ["https://eth.merkle.io"],
+    "ethereum": ["https://eth.merkle.io", "https://rpc.ankr.com/eth"],
     "bnb": [],
-    "polygon": [],
+    "polygon": ["https://polygon-rpc.com"],
+    "arbitrum": [],
+    "optimism": [],
+    "base": [],
+    "avalanche": [],
+    "gnosis": ["https://gnosis-rpc.publicnode.com"],
+    "celo": ["https://forno.celo.org"],
 }
 
 
@@ -180,9 +259,13 @@ def discover_tokens_via_rpc(
         
         if "error" in result:
             error_msg = result["error"].get("message", "")
-            if "limit" in error_msg.lower():
+            if "limit" in error_msg.lower() or "too many" in error_msg.lower():
+                if batch_size <= 10:
+                    logger.warning(f"  ⚠️ RPC rate limit persists at minimum batch size. Skipping to next chunk.")
+                    current_from = current_to
+                    continue
                 # Reduce batch size and retry
-                batch_size = max(batch_size // 2, 50)
+                batch_size = max(batch_size // 2, 10)
                 logger.debug(f"  📉 Reducing batch to {batch_size} due to rate limit")
                 continue
             else:
@@ -225,8 +308,19 @@ def discover_tokens_rpc_catchup(
     permissive = PERMISSIVE_RPCS.get(chain_key, [])
     urls = rpc_urls or permissive
     
+    # Auto-fallback: try chain's own RPC from config if not in permissive list
     if not urls:
-        logger.warning(f"  ⚠️ No permissive RPCs for {chain_key}")
+        try:
+            from scanner.chains import get_chain
+            chain = get_chain(chain_key)
+            if chain and chain.rpc_url:
+                urls = [chain.rpc_url]
+                logger.info(f"  🔌 Using chain RPC fallback: {chain.rpc_url}")
+        except Exception:
+            pass
+    
+    if not urls:
+        logger.warning(f"  ⚠️ No RPC endpoints available for {chain_key}")
         return {}
     
     rpc_url = urls[0]
@@ -279,7 +373,12 @@ def discover_tokens_rpc_all_chains(
         Dict of {chain_key: {address: TokenInfo}}
     """
     if chains is None:
-        chains = list(PERMISSIVE_RPCS.keys())
+        # Use ALL 24 EVM chains from the chain registry, not just PERMISSIVE_RPCS
+        try:
+            from scanner.chains import list_chains
+            chains = [c.key for c in list_chains()]
+        except Exception:
+            chains = list(PERMISSIVE_RPCS.keys())
     
     results = {}
     for chain_key in chains:

@@ -5,7 +5,9 @@ Discovers token contract addresses from multiple sources:
   2. 🧾 RPC Event Logs (eth_getLogs Transfer events)
   3. 🔭 Explorer API top token lists (Etherscan/Blockscout)
   4. 📚 Known token lists (curated defaults)
-  5. 🏪 DEX Subgraphs (Uniswap/PancakeSwap pairs)
+  5. 🦎 DexScreener (newly boosted/trending tokens, real-time)
+  6. 🦙 DeFiLlama (comprehensive multi-chain coin list)
+  7. 🏪 DEX Subgraphs (Uniswap/PancakeSwap pairs — planned)
 
 All methods are READ-ONLY — no transactions, no exploits, no write operations.
 """
@@ -257,16 +259,22 @@ def discover_all_tokens(
     use_rpc: bool = True,
     use_explorer: bool = True,
     use_known: bool = True,
+    use_dexscreener: bool = True,
+    use_defillama: bool = True,
     tokens_per_chain_explorer: int = 50,
+    max_dexscreener_per_chain: int = 100,
+    max_defillama_per_chain: int = 2000,
 ) -> dict[str, set[str]]:
     """
-    Master token discovery — aggregates from ALL sources.
+    Master token discovery — aggregates from ALL 6 sources.
     
     Strategy:
-    1. CoinGecko API (massive list, 10k+ tokens)
+    1. CoinGecko API (massive list, 15k+ tokens)
     2. RPC event log scanning (real on-chain activity)
-    3. Explorer API top lists
-    4. Known/curated token lists
+    3. Explorer API top lists (verified contracts)
+    4. Known/curated token lists (seed)
+    5. DexScreener boosts (newly trending tokens, real-time)
+    6. DeFiLlama coin list (comprehensive multi-chain)
     
     All results are deduplicated automatically.
     
@@ -277,7 +285,7 @@ def discover_all_tokens(
     
     # ── Source 1: CoinGecko ──────────────────────────────────────────────
     if use_coingecko:
-        logger.info("🪙  Source 1/4: CoinGecko API (10k+ tokens)...")
+        logger.info("🪙  Source 1/6: CoinGecko API (15k+ tokens)...")
         try:
             cg_tokens = discover_from_coingecko()
             for chain, tokens in cg_tokens.items():
@@ -290,7 +298,7 @@ def discover_all_tokens(
     
     # ── Source 2: RPC Event Logs ─────────────────────────────────────────
     if use_rpc:
-        logger.info("🧾  Source 2/4: RPC Event Logs (on-chain Transfer events)...")
+        logger.info("🧾  Source 2/6: RPC Event Logs (on-chain Transfer events)...")
         from scanner.fetchers.rpc_discovery import discover_tokens_rpc_all_chains
         try:
             rpc_tokens = discover_tokens_rpc_all_chains(lookback_blocks=20000)
@@ -304,7 +312,7 @@ def discover_all_tokens(
     
     # ── Source 3: Explorer API ───────────────────────────────────────────
     if use_explorer:
-        logger.info("🔭  Source 3/4: Explorer API top token lists...")
+        logger.info("🔭  Source 3/6: Explorer API top token lists...")
         chains = list_chains()
         for chain in chains:
             try:
@@ -318,13 +326,44 @@ def discover_all_tokens(
     
     # ── Source 4: Known Tokens ───────────────────────────────────────────
     if use_known:
-        logger.info("📚  Source 4/4: Known/curated token lists...")
+        logger.info("📚  Source 4/6: Known/curated token lists...")
         for chain_key in list_chains():
             tokens = get_known_tokens(chain_key.key)
             if tokens:
                 if chain_key.key not in master:
                     master[chain_key.key] = set()
                 master[chain_key.key].update(t.lower() for t in tokens)
+    
+    # ── Source 5: DexScreener ────────────────────────────────────────────
+    if use_dexscreener:
+        logger.info("🦎  Source 5/6: DexScreener (newly boosted tokens)...")
+        try:
+            from scanner.fetchers.dexscreener import discover_from_dexscreener
+            ds_tokens = discover_from_dexscreener(
+                max_per_chain=max_dexscreener_per_chain,
+                include_top_boosts=True,
+            )
+            for chain, tokens in ds_tokens.items():
+                if chain not in master:
+                    master[chain] = set()
+                master[chain].update(tokens)
+            logger.info(f"  ✅ DexScreener: {sum(len(v) for v in ds_tokens.values())} tokens")
+        except Exception as e:
+            logger.warning(f"  ⚠️ DexScreener failed: {e}")
+    
+    # ── Source 6: DeFiLlama ──────────────────────────────────────────────
+    if use_defillama:
+        logger.info("🦙  Source 6/6: DeFiLlama (comprehensive coin list)...")
+        try:
+            from scanner.fetchers.defillama import discover_from_defillama
+            dl_tokens = discover_from_defillama(max_per_chain=max_defillama_per_chain)
+            for chain, tokens in dl_tokens.items():
+                if chain not in master:
+                    master[chain] = set()
+                master[chain].update(tokens)
+            logger.info(f"  ✅ DeFiLlama: {sum(len(v) for v in dl_tokens.values())} tokens")
+        except Exception as e:
+            logger.warning(f"  ⚠️ DeFiLlama failed: {e}")
     
     # Final summary
     total = sum(len(v) for v in master.values())

@@ -206,8 +206,8 @@ tempCodeRunnerFile.py
 # Ruff stuff:
 .ruff_cache/
 
-# MaatEye: Token registry data (auto-generated, changes every scan)
-data/
+# MaatEye: Token registry data is tracked so it persists across GitHub Actions
+# data/
 
 # PyPI configuration file
 .pypirc

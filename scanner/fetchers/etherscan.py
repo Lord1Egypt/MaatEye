@@ -13,9 +13,12 @@ from scanner.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+import threading
+
 # Simple in-memory cache
 _source_cache: dict[str, dict] = {}
 _last_request_time: float = 0
+_rate_limit_lock = threading.Lock()
 
 
 def fetch_contract_source(address: str, network: str = "mainnet") -> Optional[dict]:
@@ -32,10 +35,12 @@ def fetch_contract_source(address: str, network: str = "mainnet") -> Optional[di
     api_key = config.get("etherscan", {}).get("api_key", "YourApiKeyToken")
     rate_limit = config.get("etherscan", {}).get("rate_limit", 5)
 
-    # Rate limiting
-    elapsed = time.time() - _last_request_time
-    if elapsed < 1.0 / rate_limit:
-        time.sleep(1.0 / rate_limit - elapsed)
+    # Thread-safe rate limiting
+    with _rate_limit_lock:
+        elapsed = time.time() - _last_request_time
+        if elapsed < 1.0 / rate_limit:
+            time.sleep(1.0 / rate_limit - elapsed)
+        _last_request_time = time.time()
 
     network_config = config.get("networks", {}).get(network, {})
     base_url = network_config.get("etherscan_api",
