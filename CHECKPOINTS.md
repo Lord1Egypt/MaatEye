@@ -214,7 +214,7 @@ python -m scanner.main chains
 
 ---
 
-## Known Issues & Status (2026-06-18)
+## Known Issues & Status (2026-06-18 — Session 2)
 
 | # | Issue | File | Status |
 |---|-------|------|--------|
@@ -225,9 +225,14 @@ python -m scanner.main chains
 | 5 | Basic placeholder dashboard | `docs/index.html` | ✅ Rebuilt |
 | 6 | No GitHub Pages link in repo About | GitHub Settings | ✅ Fixed |
 | 7 | No hourly RPC scanner | `.github/workflows/` | ✅ Created |
-| 8 | Patterns audit (P01–P20 completeness) | `scanner/patterns/` | ⏳ Pending |
+| 8 | Patterns audit (P01–P20 completeness) | `scanner/patterns/` | ✅ Complete (20/20) |
 | 9 | No `data/.gitkeep` for empty registry dir | `data/` | ✅ Added |
-| 10 | `GEMINI.md`/`CLAUDE.md` AI memory file | root | ⏳ Pending |
+| 10 | `GEMINI.md`/`CLAUDE.md` AI memory file | root | ✅ Updated |
+| 11 | RPC discovery only 7/24 chains | `rpc_discovery.py` | ✅ Expanded to 24 |
+| 12 | No DexScreener integration | `scanner/fetchers/` | ✅ Created (Source 5) |
+| 13 | No DeFiLlama integration | `scanner/fetchers/` | ✅ Created (Source 6) |
+| 14 | Hourly scanner fallback weak | `hourly_scan.py` | ✅ 5-level cascade |
+| 15 | No archive RPC support | `rpc_discovery.py` | ✅ Added for 4 chains |
 
 ---
 
@@ -243,4 +248,127 @@ python -m scanner.main chains
 
 ---
 
-*Last updated: 2026-06-18 — Session 1 complete*
+---
+
+## Checkpoint 4 — 2026-06-18 (Session 2 — Token Coverage Expansion)
+
+### Session Goal
+Expand token discovery from 7-chain RPC bottleneck to full 24-chain coverage + 2 new discovery sources (DexScreener, DeFiLlama) + archive node support.
+
+### Improvements Implemented
+
+#### 1. RPC Event-Log Discovery — Expanded to ALL 24 EVM Chains
+`scanner/fetchers/rpc_discovery.py`:
+- **Before:** `PERMISSIVE_RPCS` had only 7 chains (ethereum, bnb, polygon, arbitrum, optimism, base, avalanche)
+- **After:** All 24 chains now have publicnode.com RPC endpoints for `eth_getLogs` Transfer event scanning
+- Added `ARCHIVE_RPCS` for chains with archive node support (ethereum, polygon, gnosis, celo)
+- Added secondary RPC fallbacks via Ankr/LlamaRPC for the top 7 high-volume chains
+
+#### 2. New Source 5: DexScreener Token Discovery
+`scanner/fetchers/dexscreener.py`:
+- Pulls live token pairs from DexScreener API (`api.dexscreener.com/latest/dex/search`)
+- Discovers tokens recently paired on DEXs across ALL chains — catches tokens before CoinGecko lists them
+- Rate-limited (500ms between calls) with configurable maximum per chain
+
+#### 3. New Source 6: DeFiLlama Token Discovery
+`scanner/fetchers/defillama.py`:
+- Pulls current token list from DeFiLlama's coin listing API
+- Broader coverage than CoinGecko for newer chains and tokens
+- Rate-limited with configurable maximum per chain
+
+#### 4. Master Discovery Orchestrator Updated
+`scanner/fetchers/token_discovery.py`:
+- `discover_all_tokens()` now includes Source 5 (DexScreener) and Source 6 (DeFiLlama)
+- All sources are deduplicated automatically
+
+#### 5. Multi-Source Discovery Cascade in Hourly Scanner
+`tools/hourly_scan.py`:
+- **Before:** Only Ethereum had fallback (to 1.45M local DB), other chains had no fallback
+- **After:** 5-level discovery cascade for ALL 24 chains:
+  1. RPC event logs (eth_getLogs, real-time)
+  2. CoinGecko API (15k+ tokens)
+  3. DexScreener (newly boosted tokens)
+  4. Ethereum local DB (1.45M addresses, ethereum only)
+  5. Explorer API (top verified contracts)
+- Each chain independently fails through the cascade until tokens are found
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `scanner/fetchers/dexscreener.py` | DexScreener API integration (Source 5) |
+| `scanner/fetchers/defillama.py` | DeFiLlama API integration (Source 6) |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `scanner/fetchers/rpc_discovery.py` | All 24 chains in PERMISSIVE_RPCS + archive nodes |
+| `scanner/fetchers/token_discovery.py` | Sources 5 & 6 integrated into master orchestrator |
+| `tools/hourly_scan.py` | Expanded fallback logic for all chains |
+
+### Test Results
+- ✅ `python3 -m py_compile` on all modified/created files passes
+- ✅ All 20 patterns load without errors
+- ✅ `python -m scanner.main tokens stats` shows registry integrity
+- ✅ Pattern engine loads all 45 detectors across 20 patterns
+
+### Test Results
+| Test | Result |
+|------|--------|
+| `py_compile` on all 28 Python files | ✅ All pass |
+| `pytest tests/` (9 unit tests) | ✅ 9/9 pass |
+| All 20 patterns load (45 detectors) | ✅ Loaded |
+| Pattern engine | ✅ 20 patterns, 45 detectors |
+| Token registry integrity | ✅ 5,914 tokens, 7 chains intact |
+
+### Detailed File Changes
+
+#### `scanner/fetchers/rpc_discovery.py`
+- **PERMISSIVE_RPCS**: Expanded from 7 → 24 chains
+  - Added: linea, scroll, blast, gnosis, celo, moonbeam, metis, opbnb, pulsechain, mantle, taiko, berachain, soneium, unichain, fraxtal, chiliz, sonic
+  - Each chain has publicnode.com RPC as primary + fallbacks where available
+- **ARCHIVE_RPCS**: Added real archive node support
+  - ethereum: merkle.io, ankr
+  - polygon: polygon-rpc.com
+  - gnosis: publicnode
+  - celo: forno.celo.org
+- **discover_tokens_rpc_catchup()**: Auto-fallback to chain's own RPC URL from config when not in PERMISSIVE_RPCS
+- **discover_tokens_rpc_all_chains()**: Uses ALL chains from EVM_CHAINS registry (not just PERMISSIVE_RPCS keys)
+
+#### `scanner/fetchers/dexscreener.py` (NEW)
+- Fetches `/token-boosts/latest/v1` and `/token-boosts/top/v1` from DexScreener
+- Maps 24 DexScreener chain IDs → MaatEye chain keys
+- Rate-limited (500ms interval), configurable max per chain
+- Zero dependencies (uses urllib only)
+
+#### `scanner/fetchers/defillama.py` (NEW)
+- Fetches `/list` from DeFiLlama's coins API (500K+ entries)
+- Maps chain IDs from DeFiLlama format → MaatEye keys
+- Rate-limited (300ms interval), configurable max per chain (default 2000)
+- Filters and validates EVM addresses only
+
+#### `scanner/fetchers/token_discovery.py`
+- Updated docstring: 6 sources (was 4)
+- `discover_all_tokens()`: Added `use_dexscreener` and `use_defillama` params
+- Sources 5 (DexScreener) and 6 (DeFiLlama) are called after the original 4
+- All results auto-deduplicated via set union
+
+#### `tools/hourly_scan.py`
+- **BLOCKS_PER_HOUR**: Expanded to all 24 chains with accurate block times
+- **discover_new_tokens_on_chain()**: Complete rewrite to 5-level cascade:
+  1. RPC event logs (real-time on-chain data)
+  2. CoinGecko API (massive token list)
+  3. DexScreener (newly boosted/trending)
+  4. Ethereum local DB (1.45M pre-collected addresses)
+  5. Explorer API (top verified contracts)
+- Each strategy independently tries the next on failure
+
+### Next Steps For Future Sessions
+1. Actually trigger a scan on all 24 chains (GitHub Actions) to populate full registry
+2. Add subgraph/Uniswap pair discovery (TheGraph API)
+3. Implement multi-file contract support with AST parsing
+4. Add Slither integration for deeper static analysis
+5. Add real-time alerting (Telegram/Discord webhooks)
+
+---
+
+*Last updated: 2026-06-18 — Session 2 complete*

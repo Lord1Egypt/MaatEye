@@ -46,13 +46,30 @@ logger = get_logger("hourly_scan")
 
 # Approximate blocks produced per hour on each chain
 BLOCKS_PER_HOUR: dict[str, int] = {
-    "ethereum": 300,    # ~12s/block
-    "bnb":      1200,   # ~3s/block
-    "polygon":  1800,   # ~2s/block
-    "arbitrum": 3600,   # ~1s/block (Nitro)
-    "optimism": 1800,   # ~2s/block
-    "base":     1800,   # ~2s/block
-    "avalanche": 1800,  # ~2s/block
+    "ethereum":   300,   # ~12s/block
+    "bnb":       1200,   # ~3s/block
+    "polygon":   1800,   # ~2s/block
+    "arbitrum":  3600,   # ~1s/block (Nitro)
+    "optimism":  1800,   # ~2s/block
+    "base":      1800,   # ~2s/block
+    "avalanche": 1800,   # ~2s/block
+    "linea":     1800,   # ~2s/block
+    "scroll":    1800,   # ~2s/block
+    "blast":     1800,   # ~2s/block
+    "gnosis":    300,    # ~12s/block
+    "celo":      300,    # ~12s/block
+    "moonbeam":  600,    # ~6s/block
+    "metis":     600,    # ~6s/block
+    "opbnb":    1200,    # ~3s/block
+    "pulsechain": 300,   # ~12s/block
+    "mantle":   1800,    # ~2s/block
+    "taiko":    1800,    # ~2s/block
+    "berachain": 300,    # ~12s/block
+    "soneium":  1800,    # ~2s/block
+    "unichain":  600,    # ~6s/block
+    "fraxtal":  1800,    # ~2s/block
+    "chiliz":   600,     # ~6s/block
+    "sonic":    600,     # ~6s/block
 }
 
 # Add any PERMISSIVE_RPCS chain not in the above with a default
@@ -66,33 +83,89 @@ def discover_new_tokens_on_chain(
     registry: dict[str, dict],
 ) -> list[str]:
     """
-    Discover NEW token addresses on a chain via RPC event logs.
+    Discover NEW token addresses on a chain via multi-source strategy.
+
+    Discovery cascade (tries each until tokens found):
+      1. RPC event logs (eth_getLogs Transfer events) — real-time on-chain
+      2. CoinGecko API — massive token list (15k+ tokens)
+      3. DexScreener — newly boosted/trending tokens
+      4. Ethereum-specific: local 1.45M token database
+      5. Explorer API — top verified contracts
 
     Returns addresses not currently in the registry, up to max_new.
     """
     lookback = BLOCKS_PER_HOUR.get(chain_key, 300)
     logger.info(f"🔍 {chain_key}: scanning last {lookback} blocks for new tokens...")
 
-    tokens = discover_tokens_rpc_catchup(chain_key, lookback_blocks=lookback)
+    tokens = {}
+
+    # ── Strategy 1: RPC event logs (real-time) ──────────────────────────
+    rpc_tokens = discover_tokens_rpc_catchup(chain_key, lookback_blocks=lookback)
+    if rpc_tokens:
+        tokens = rpc_tokens
+        logger.info(f"  {chain_key}: {len(tokens)} tokens from RPC event logs")
+    else:
+        logger.info(f"  {chain_key}: RPC returned no tokens, trying next source...")
+
+    # ── Strategy 2: CoinGecko fallback ──────────────────────────────────
     if not tokens:
-        if chain_key == "ethereum":
-            logger.warning(f"  ⚠️ {chain_key}: no tokens found via RPC, dipping into 1.45M local database...")
+        logger.info(f"  {chain_key}: trying CoinGecko...")
+        from scanner.fetchers.coingecko import get_coingecko_tokens_for_chain
+        try:
+            cg_addrs = get_coingecko_tokens_for_chain(chain_key, max_count=max_new * 2)
+            if cg_addrs:
+                tokens = {addr.lower(): {} for addr in cg_addrs}
+                logger.info(f"  {chain_key}: {len(tokens)} tokens from CoinGecko")
+        except Exception as e:
+            logger.debug(f"  CoinGecko failed: {e}")
+
+    # ── Strategy 3: DexScreener (newly trending tokens) ─────────────────
+    if not tokens:
+        logger.info(f"  {chain_key}: trying DexScreener...")
+        try:
+            from scanner.fetchers.dexscreener import discover_from_dexscreener
+            ds_result = discover_from_dexscreener(max_per_chain=max_new, include_top_boosts=True)
+            ds_addrs = ds_result.get(chain_key, set())
+            if ds_addrs:
+                tokens = {addr.lower(): {} for addr in ds_addrs}
+                logger.info(f"  {chain_key}: {len(tokens)} tokens from DexScreener")
+        except Exception as e:
+            logger.debug(f"  DexScreener failed: {e}")
+
+    # ── Strategy 4: Ethereum local database (1.45M pre-collected) ───────
+    if not tokens and chain_key == "ethereum":
+        logger.info(f"  {chain_key}: dipping into 1.45M local token database...")
+        try:
             from scanner.fetchers.local_db import get_ethereum_tokens_from_local_db
             chain_registry = registry.get(chain_key, {})
-            db_tokens = get_ethereum_tokens_from_local_db(max_count=max_new * 2, exclude_set=set(chain_registry.keys()))
+            db_tokens = get_ethereum_tokens_from_local_db(
+                max_count=max_new * 2,
+                exclude_set=set(chain_registry.keys()),
+            )
             if db_tokens:
                 tokens = {addr.lower(): {} for addr in db_tokens}
-                
-        if not tokens:
-            logger.warning(f"  ⚠️ {chain_key}: using CoinGecko fallback list")
-            from scanner.fetchers.coingecko import get_coingecko_tokens_for_chain
-            # Fetch up to max_new * 2 tokens from CoinGecko to ensure we have enough new ones
-            cg_tokens = get_coingecko_tokens_for_chain(chain_key, max_count=max_new * 2)
-            if cg_tokens:
-                tokens = {addr.lower(): {} for addr in cg_tokens}
-            else:
-                logger.warning(f"  ⚠️ {chain_key}: CoinGecko fallback also empty")
-                tokens = {}
+                logger.info(f"  {chain_key}: {len(tokens)} tokens from local DB")
+        except Exception as e:
+            logger.debug(f"  Local DB failed: {e}")
+
+    # ── Strategy 5: Explorer API (verified contracts) ───────────────────
+    if not tokens:
+        logger.info(f"  {chain_key}: trying Explorer API...")
+        try:
+            from scanner.fetchers.token_discovery import discover_from_explorer
+            from scanner.chains import get_chain
+            chain_cfg = get_chain(chain_key)
+            if chain_cfg:
+                explorer_addrs = discover_from_explorer(chain_cfg, count=max_new)
+                if explorer_addrs:
+                    tokens = {addr.lower(): {} for addr in explorer_addrs}
+                    logger.info(f"  {chain_key}: {len(tokens)} tokens from Explorer API")
+        except Exception as e:
+            logger.debug(f"  Explorer API failed: {e}")
+
+    if not tokens:
+        logger.warning(f"  ⚠️ {chain_key}: all discovery sources returned empty")
+        return []
 
     chain_registry = registry.get(chain_key, {})
     new_addrs = [addr for addr in tokens.keys() if addr not in chain_registry]

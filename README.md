@@ -45,14 +45,14 @@
 | 🔄 **Self-updating** (new patterns auto-deploy) | ✅ | ❌ Manual updates |
 | 🚩 **Live Red Flag registry** (public Issues) | ✅ | ❌ Private DB |
 | 🧩 **Community patterns** (anyone can PR) | ✅ | ❌ Closed source |
-| 🔍 **Multiple discovery sources** | ✅ 4 sources combined | ❌ 1-2 sources |
+| 🔍 **Multiple discovery sources** | ✅ 6 sources combined | ❌ 1-2 sources |
 | 🗄️ **Persistent token store** (dedup, incremental) | ✅ | ❌ Stateless |
 
 ---
 
-## 🪙 Token Discovery — 4 Sources Combined
+## 🪙 Token Discovery — 6 Sources Combined
 
-MaatEye doesn't just scan "top 30" tokens — it discovers **everything**.
+MaatEye doesn't just scan "top 30" tokens — it discovers **everything** across **6 combined sources**.
 
 ### Source 1: 🪙 CoinGecko API (PRIMARY)
 | Detail | Value |
@@ -78,11 +78,30 @@ MaatEye doesn't just scan "top 30" tokens — it discovers **everything**.
 | Source | Verified source code directly |
 
 ### Source 4: 📚 Known Token Lists (CURATED)
+
 | Detail | Value |
 |--------|-------|
 | Coverage | 10-18 major tokens per chain |
 | Purpose | Seed registry for low-activity chains |
 | Maintenance | Updated via PRs |
+
+### Source 5: 🦎 DexScreener Boosts (REAL-TIME)
+
+| Detail | Value |
+|--------|-------|
+| Endpoint | `api.dexscreener.com/token-boosts/latest/v1` |
+| Coverage | Newly boosted/trending tokens across **all chains** |
+| Cost | Free (no API key required) |
+| Advantage | Catches tokens before CoinGecko — new launches, memecoins, low-cap |
+
+### Source 6: 🦙 DeFiLlama Coin List (COMPREHENSIVE)
+
+| Detail | Value |
+|--------|-------|
+| Endpoint | `coins.llama.fi/list` |
+| Coverage | **500K+ entries** across 100+ chains |
+| Cost | Free (no API key required) |
+| Advantage | Broader than CoinGecko for newer/L2 chains |
 
 ### 🗄️ Persistent Token Store
 

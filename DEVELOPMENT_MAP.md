@@ -167,8 +167,11 @@ Run these manually and verify output:
 - [ ] Proxy detection + implementation analysis
 - [ ] Bytecode analysis fallback (unverified contracts)
 - [ ] ERC standards validation (ERC20, ERC721, ERC1155)
-- [ ] TheGraph subgraph as Source 5
-- [ ] DeFiLlama TVL integration
+- [ ] TheGraph subgraph as Source 7
+- [x] **DeFiLlama integration** — `scanner/fetchers/defillama.py` (Source 6)
+- [x] **DexScreener integration** — `scanner/fetchers/dexscreener.py` (Source 5)
+- [x] **Full 24-chain RPC event-log support** — All chains in `PERMISSIVE_RPCS`
+- [x] **Archive node support** — For ethereum, polygon, gnosis, celo
 - [ ] PDF report generation
 - [ ] Badge generation for README embedding
 
@@ -185,7 +188,7 @@ Run these manually and verify output:
 
 ---
 
-## 🚨 Known Issues (as of 2026-06-18)
+## 🚨 Known Issues (as of 2026-06-18 — Session 2)
 
 | # | Issue | Severity | File | Status |
 |---|---|---|---|---|

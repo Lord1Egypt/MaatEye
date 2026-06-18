@@ -9,13 +9,18 @@
 - **Core Principle:** Harmless execution. READ-ONLY operations only (RPC `eth_getLogs`, `eth_call`, Explorer APIs). No exploits, no transactions.
 
 ## 🏗️ Architecture
-1. **`scanner/fetchers/`** — Gets code and token lists. 
-   - Uses `token_discovery.py` to find tokens via CoinGecko, RPC event logs, etc.
+1. **`scanner/fetchers/`** — Gets code and token lists via 6 sources:
+   - `token_discovery.py` — Master orchestrator (combines all sources)
+   - `coingecko.py` — CoinGecko API (15k+ tokens, Source 1)
+   - `rpc_discovery.py` — RPC eth_getLogs Transfer events (Source 2, all 24 chains)
+   - `etherscan.py` / `multichain.py` — Explorer API source fetchers (Source 3)
+   - `dexscreener.py` — DexScreener token boosts (Source 5, real-time new tokens)
+   - `defillama.py` — DeFiLlama coin list (Source 6, comprehensive)
    - Saves persistent state to `data/token_registry.json`.
 2. **`scanner/patterns/`** — 20 Plague detection patterns in YAML format.
 3. **`scanner/engine.py`** — The `ScanEngine` orchestrates fetching code and applying patterns.
 4. **`docs/`** — Contains the live GitHub Pages dashboard. `index.html` fetches `dashboard.json` purely client-side.
-5. **`tools/hourly_scan.py`** — The main CLI orchestrator run by GitHub Actions (`.github/workflows/rpc-hourly-scan.yml`).
+5. **`tools/hourly_scan.py`** — The main CLI orchestrator run by GitHub Actions (`.github/workflows/rpc-hourly-scan.yml`). Uses 5-level discovery cascade: RPC → CoinGecko → DexScreener → Local DB → Explorer.
 
 ## ⚠️ Critical Constraints (Zero Tolerance)
 - **Do NOT overwrite `docs/index.html`**: It is a carefully crafted Egyptian-themed UI. All data updates MUST go through `docs/dashboard.json` using `tools/update_dashboard.py`.
