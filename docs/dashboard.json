@@ -1,13 +1,12 @@
 {
-  "scan_date": "2026-06-18T20:45:00Z",
+  "scan_date": "2026-06-18T21:00:33.312854+00:00",
   "total_chains": 24,
-  "total_contracts": 15000,
+  "total_contracts": 1250,
   "total_vulns": 350,
   "critical_count": 147,
   "high_count": 161,
   "medium_count": 42,
   "low_count": 0,
-  "pattern_count": 50,
   "pattern_categories": {
     "ACCESS_CONTROL": 9,
     "ARITHMETIC": 5,
@@ -21,11 +20,15 @@
     "TOKEN_ECONOMICS": 5
   },
   "chain_summary": {
-    "ethereum": {"chain_name": "Ethereum", "chain_emoji": "💎", "contracts": 150, "vulns": 50, "critical": 21, "high": 23, "medium": 6, "low": 0},
-    "bnb": {"chain_name": "BNB Chain", "chain_emoji": "🟡", "contracts": 180, "vulns": 50, "critical": 21, "high": 23, "medium": 6, "low": 0},
-    "polygon": {"chain_name": "Polygon", "chain_emoji": "🟣", "contracts": 120, "vulns": 45, "critical": 20, "high": 20, "medium": 5, "low": 0},
-    "arbitrum": {"chain_name": "Arbitrum", "chain_emoji": "🔵", "contracts": 90, "vulns": 40, "critical": 18, "high": 18, "medium": 4, "low": 0},
-    "optimism": {"chain_name": "Optimism", "chain_emoji": "🔴", "contracts": 70, "vulns": 35, "critical": 15, "high": 16, "medium": 4, "low": 0},
-    "base": {"chain_name": "Base", "chain_emoji": "🔷", "contracts": 60, "vulns": 30, "critical": 12, "high": 15, "medium": 3, "low": 0}
+    "ethereum": {
+      "chain_name": "Ethereum",
+      "chain_emoji": "\ud83d\udc8e",
+      "contracts": 150,
+      "vulns": 100,
+      "critical": 21,
+      "high": 23,
+      "medium": 6,
+      "low": 0
+    }
   }
 }
