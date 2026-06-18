@@ -1,0 +1,22 @@
+# 🎭 P41 — Contract Existence Check Missing
+id: "P41"
+name: "Contract Existence Check Missing"
+severity: "high"
+enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "Contract Existence Check Missing"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.65
+description: >
+  Low-level calls (.call, .delegatecall, .staticcall) succeed even when
+  the target address has no contract code. If the call returns success
+  but no code executed, the caller may incorrectly assume state changes
+  occurred. This can drain funds if the caller trusts a non-existent
+  contract's return data.
+detectors:
+  - type: "regex"
+    description: "Low-level call without extcodesize check"
+    pattern: "\\.(call|delegatecall|staticcall)\\{[^}]*\\}\\s*\\([^)]*\\)"
+    confidence: 0.55
+    recommendation: "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code."

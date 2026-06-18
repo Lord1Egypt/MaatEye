@@ -1,0 +1,33 @@
+# 🎭 P31 — Flash Loan Reentrancy Bridge
+id: "P31"
+name: "Flash Loan Reentrancy Bridge"
+severity: "critical"
+enabled: true
+category: "REENTRANCY"
+subcategory: "Flash Loan Reentrancy Bridge"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.90
+description: >
+  Bridge contracts that integrate with flash loans are highly susceptible
+  to reentrancy attacks. Flash loans provide large amounts of capital
+  with no upfront cost, which can be used to manipulate prices, drain
+  liquidity pools, or bridge funds before the loan is repaid. The
+  combination of flash loan callbacks and bridge mint/burn logic creates
+  a dangerous attack surface.
+detectors:
+  - type: "regex"
+    description: "Flash loan callback function with bridge logic"
+    pattern: "function\\s+(onFlashLoan|executeOperation|flashLoan|flashMint)\\s*\\([^)]*\\)"
+    confidence: 0.60
+    recommendation: "Ensure flash loan callback functions are protected with reentrancy guards. All state changes should complete before the callback is invoked."
+  - type: "ast_pattern"
+    description: "Bridge contract with flash loan integration (requires AST)"
+    required_elements:
+      - "flashLoan"
+      - "mint"
+      - "bridge"
+    forbidden_elements:
+      - "nonReentrant"
+    confidence: 0.75
+    recommendation: "Use reentrancy guards on ALL bridge functions. Flash loan + bridge = critical reentrancy risk."

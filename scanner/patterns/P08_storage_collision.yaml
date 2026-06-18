@@ -4,6 +4,11 @@ id: "P08"
 name: "Storage Collision"
 severity: "high"
 enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "Storage Collision"
+difficulty: "expert"
+requires_ast: true
+exploitability_estimate: 0.60
 description: >
   In proxy/upgradeable patterns, storage layout must be preserved
   across implementations. Storage collision occurs when a new

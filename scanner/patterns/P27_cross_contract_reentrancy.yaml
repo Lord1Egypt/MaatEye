@@ -1,0 +1,26 @@
+# 🎭 P27 — Cross-Contract Reentrancy
+id: "P27"
+name: "Cross-Contract Reentrancy"
+severity: "critical"
+enabled: true
+category: "REENTRANCY"
+subcategory: "Cross-Contract Reentrancy"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.80
+description: >
+  Cross-contract reentrancy involves Contract A calling Contract B which
+  then calls back into Contract A (or another contract sharing state via
+  a proxy/storage). This multi-contract attack vector is harder to detect
+  because each individual contract may appear safe, but the combined
+  execution flow creates a reentrancy path.
+detectors:
+  - type: "ast_pattern"
+    description: "Cross-contract call chain with shared state"
+    required_elements:
+      - "delegatecall"
+      - "function"
+    forbidden_elements:
+      - "nonReentrant"
+    confidence: 0.60
+    recommendation: "Use reentrancy guards across all public/external functions in interconnected contracts. Consider using OpenZeppelin's ReentrancyGuard in all contracts in the system."

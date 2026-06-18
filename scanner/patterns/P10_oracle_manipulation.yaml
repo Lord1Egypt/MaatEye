@@ -4,6 +4,11 @@ id: "P10"
 name: "Oracle Manipulation"
 severity: "critical"
 enabled: true
+category: "TOKEN_ECONOMICS"
+subcategory: "Oracle Manipulation"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.80
 description: >
   The contract uses a price oracle that can be manipulated,
   typically via flash loans. Common patterns include using

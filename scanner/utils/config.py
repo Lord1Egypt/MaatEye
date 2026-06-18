@@ -80,8 +80,17 @@ def _deep_merge(base: dict, override: dict) -> None:
             base[key] = value
 
 
-def get_all_patterns(config: Optional[dict] = None) -> dict:
-    """Load all patterns from the patterns directory."""
+def get_all_patterns(config: Optional[dict] = None, category: Optional[str] = None) -> dict:
+    """Load all patterns from the patterns directory.
+    
+    Args:
+        config: Optional config dict
+        category: Optional category filter (e.g., "ACCESS_CONTROL", "REENTRANCY")
+                 Only returns patterns matching this category.
+    
+    Returns:
+        Dict of pattern_id -> pattern_data
+    """
     if config is None:
         config = load_config()
 
@@ -101,16 +110,18 @@ def get_all_patterns(config: Optional[dict] = None) -> dict:
                             patterns[pid] = pattern
             if patterns:
                 logger.debug(f"Loaded {len(patterns)} patterns from index")
-                return patterns
+                # Don't return yet — apply filter below
         except (json.JSONDecodeError, IOError):
             logger.debug("Index load failed, scanning directory")
 
-    # Fallback: scan the patterns directory
-    for yaml_file in sorted(PATTERNS_DIR.glob("P*.yaml")):
-        pattern = _load_pattern_file(yaml_file)
-        if pattern:
-            pid = pattern.get("id", "")
-            patterns[pid] = pattern
+    # Only scan directory if index didn't give us patterns
+    if not patterns:
+        # Fallback: scan the patterns directory
+        for yaml_file in sorted(PATTERNS_DIR.glob("P*.yaml")):
+            pattern = _load_pattern_file(yaml_file)
+            if pattern:
+                pid = pattern.get("id", "")
+                patterns[pid] = pattern
 
     # Also check new/ directory
     if NEW_PATTERNS_DIR.exists():
@@ -120,6 +131,15 @@ def get_all_patterns(config: Optional[dict] = None) -> dict:
                 pid = pattern.get("id", "")
                 if pid not in patterns:
                     patterns[pid] = pattern
+
+    # Apply category filter if specified
+    if category is not None:
+        filtered = {}
+        for pid, pattern in patterns.items():
+            if pattern.get("category", "").upper() == category.upper():
+                filtered[pid] = pattern
+        logger.debug(f"Filtered by category '{category}': {len(filtered)} patterns")
+        return filtered
 
     logger.debug(f"Loaded {len(patterns)} patterns (scan fallback)")
     return patterns
@@ -150,7 +170,7 @@ def _load_pattern_file(path: Path) -> Optional[dict]:
 
 
 def build_pattern_index() -> int:
-    """Build the pattern index JSON file."""
+    """Build the pattern index JSON file with full metadata."""
     patterns = []
 
     for yaml_file in sorted(PATTERNS_DIR.glob("P*.yaml")):
@@ -159,8 +179,13 @@ def build_pattern_index() -> int:
             patterns.append({
                 "id": pattern.get("id", ""),
                 "name": pattern.get("name", ""),
+                "category": pattern.get("category", ""),
+                "subcategory": pattern.get("subcategory", ""),
                 "severity": pattern.get("severity", "medium"),
+                "difficulty": pattern.get("difficulty", "medium"),
                 "enabled": pattern.get("enabled", True),
+                "requires_ast": pattern.get("requires_ast", False),
+                "exploitability_estimate": pattern.get("exploitability_estimate", 0.5),
                 "file": yaml_file.name,
             })
 

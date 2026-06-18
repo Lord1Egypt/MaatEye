@@ -1,0 +1,29 @@
+# 🎭 P37 — Implementation Selfdestruct
+id: "P37"
+name: "Implementation Selfdestruct"
+severity: "critical"
+enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "Implementation Selfdestruct"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.85
+description: >
+  A proxy implementation contract contains a selfdestruct operation.
+  If triggered, selfdestructing the implementation destroys the code
+  that all proxies point to, effectively bricking every proxy using
+  this implementation. All funds and state become inaccessible.
+detectors:
+  - type: "regex"
+    description: "selfdestruct found in implementation contract"
+    pattern: "selfdestruct\\s*\\([^)]*\\)"
+    confidence: 0.90
+    recommendation: "Remove selfdestruct from any contract used as a proxy implementation. Implementation contracts should never be destructible."
+  - type: "function_signature"
+    description: "Selfdestruct function without access control"
+    func_pattern: "function\\s+\\w+\\s*\\([^)]*\\)[^}]*(selfdestruct|suicide)"
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyRole"
+    confidence: 0.85
+    recommendation: "Remove selfdestruct from implementation contracts entirely. If absolutely necessary, add onlyOwner and ensure it's not a proxy implementation."

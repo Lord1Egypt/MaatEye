@@ -4,6 +4,11 @@ id: "P20"
 name: "Timestamp Dependence"
 severity: "medium"
 enabled: true
+category: "BUSINESS_LOGIC"
+subcategory: "Timestamp Dependence"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.35
 description: >
   The contract uses block.timestamp for critical logic like
   randomness, expiration checks, or financial calculations.

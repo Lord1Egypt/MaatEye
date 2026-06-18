@@ -4,6 +4,11 @@ id: "P16"
 name: "Uninitialized Proxy"
 severity: "critical"
 enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "Uninitialized Proxy"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.85
 description: >
   Upgradeable proxy contracts must use an initializer function
   instead of a constructor. Without proper initialization guards,

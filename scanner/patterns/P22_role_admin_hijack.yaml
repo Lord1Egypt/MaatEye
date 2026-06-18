@@ -1,0 +1,30 @@
+# 🎭 P22 — Role Admin Hijack
+id: "P22"
+name: "Role Admin Hijack"
+severity: "critical"
+enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Role Admin Hijack"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.75
+description: >
+  The contract uses OpenZeppelin's AccessControl but the DEFAULT_ADMIN_ROLE
+  can be granted/revoked by unauthorized accounts or the grantRole/revokeRole
+  functions are not properly protected. This would allow an attacker to
+  grant themselves admin privileges.
+detectors:
+  - type: "function_signature"
+    description: "grantRole or revokeRole without proper access control"
+    func_pattern: "function\\s+(grantRole|revokeRole)\\s*\\("
+    modifier_forbids:
+      - "onlyRole"
+      - "onlyOwner"
+      - "onlyAdmin"
+    confidence: 0.80
+    recommendation: "Ensure grantRole and revokeRole are protected by the DEFAULT_ADMIN_ROLE role or equivalent access control. Use OpenZeppelin's AccessControlDefaultAdminRules for production."
+  - type: "regex"
+    description: "Custom grant/revoke role implementation without proper auth"
+    pattern: "function\\s+(grant|revoke|assign)[Rr]ole\\s*\\([^)]*\\)[^}]{0,500}(?!onlyOwner|onlyRole|require\\s*\\([^)]*admin[^)]*\\))[^}]*\\{"
+    confidence: 0.65
+    recommendation: "Use OpenZeppelin's AccessControl or ensure custom role management has adequate access control."

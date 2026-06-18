@@ -1,0 +1,30 @@
+# 🎭 P24 — Pausable Without Unpause Guard
+id: "P24"
+name: "Pausable Without Unpause Guard"
+severity: "high"
+enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Pausable Without Unpause Guard"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.55
+description: >
+  The contract has pause functionality (whenPaused modifier) but no 
+  corresponding unpause guard (whenNotPaused modifier). This means once
+  paused, the contract (or specific functions) can never be unpaused,
+  creating a permanent denial of service. Conversely, functions with 
+  whenNotPaused but no whenPaused can never be paused.
+detectors:
+  - type: "regex"
+    description: "Contract uses only whenPaused without whenNotPaused or vice versa"
+    pattern: "modifier\\s+when(Paused|NotPaused)[^}]*\\}[^}]*modifier\\s+when(?!Paused|NotPaused)"
+    confidence: 0.55
+    recommendation: "Ensure both whenPaused and whenNotPaused modifiers exist in the contract. Functions should use the appropriate modifier for their access needs."
+  - type: "function_signature"
+    description: "Functions with whenPaused but no unpause function"
+    func_pattern: "function\\s+(pause|unpause)\\s*\\("
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyRole"
+    confidence: 0.60
+    recommendation: "Add an unpause function protected by onlyOwner. Both pause and unpause should exist as a pair."

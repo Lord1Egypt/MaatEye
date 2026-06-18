@@ -1,0 +1,21 @@
+# 🎭 P23 — Ownership Transfer Without Two-Step
+id: "P23"
+name: "Ownership Transfer Without Two-Step"
+severity: "high"
+enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Ownership Transfer Without Two-Step"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.65
+description: >
+  The contract uses single-step ownership transfer (transferOwnership) 
+  instead of two-step (transferOwnership + acceptOwnership). Single-step
+  transfers can be exploited if the new owner address is wrong — ownership
+  is permanently lost or transferred to a contract that can't accept it.
+detectors:
+  - type: "regex"
+    description: "Single-step ownership transfer used instead of two-step pattern"
+    pattern: "function\\s+transferOwnership\\s*\\([^)]*\\s*(address\\s+newOwner|address\\s+_owner)[^)]*\\)\\s*(public|external)[^}]*(?<!acceptOwnership)(?<!twoStep)(?<!pendingOwner)"
+    confidence: 0.70
+    recommendation: "Use OpenZeppelin's Ownable2Step contract instead of plain Ownable. This requires the new owner to accept ownership via acceptOwnership(), preventing accidental loss."

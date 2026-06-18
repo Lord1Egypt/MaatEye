@@ -4,6 +4,11 @@ id: "P07"
 name: "Delegatecall Injection"
 severity: "critical"
 enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "Arbitrary Delegatecall"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.95
 description: >
   The contract uses delegatecall with a user-controlled target address.
   This allows attackers to execute arbitrary code in the contract's context,

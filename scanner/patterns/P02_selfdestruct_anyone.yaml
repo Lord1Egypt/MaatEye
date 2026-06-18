@@ -4,6 +4,11 @@ id: "P02"
 name: "Selfdestruct Anyone"
 severity: "critical"
 enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Missing Access Control"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.90
 description: >
   The contract contains a selfdestruct call that can be triggered
   by anyone. This allows any user to destroy the contract and

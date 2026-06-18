@@ -1,0 +1,22 @@
+# 🎭 P45 — CREATE2 Address Collision
+id: "P45"
+name: "CREATE2 Address Collision"
+severity: "high"
+enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "CREATE2 Address Collision"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.60
+description: >
+  CREATE2 allows deploying contracts at deterministic addresses based on
+  (sender, salt, init_code). If a contract uses CREATE2 with a salt
+  controlled by users or external callers, an attacker can predict and
+  manipulate the deployment address. This can be used to deploy contracts
+  at addresses assumed to be safe, or to front-run deployments.
+detectors:
+  - type: "regex"
+    description: "CREATE2 with user-controlled salt parameter"
+    pattern: "(new\\s+\\w+\\s*\\{\\s*salt|CREATE2)"
+    confidence: 0.45
+    recommendation: "Ensure CREATE2 salt is not controlled by untrusted users. Hash the salt with a trusted value or use a commitment scheme."

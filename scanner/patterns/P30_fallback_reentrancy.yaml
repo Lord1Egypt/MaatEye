@@ -1,0 +1,28 @@
+# 🎭 P30 — Reentrancy Via Fallback
+id: "P30"
+name: "Reentrancy Via Fallback"
+severity: "high"
+enabled: true
+category: "REENTRANCY"
+subcategory: "Reentrancy Via Fallback"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.70
+description: >
+  Contracts with complex fallback or receive functions that make external
+  calls can be used as reentrancy vectors. When a contract sends ETH to
+  an attacker contract, the attacker's fallback function executes and can
+  re-enter the original contract.
+detectors:
+  - type: "regex"
+    description: "Fallback function making external calls"
+    pattern: "(fallback|receive)\\s*(external|public)\\s*(payable)?[^{]*\\{[^}]*(call|delegatecall)\\s*\\("
+    confidence: 0.70
+    recommendation: "Keep fallback and receive functions simple. Avoid making external calls in them. Use pull-over-push pattern for ETH withdrawals."
+  - type: "function_signature"
+    description: "Function sending ETH to callers (potential reentrancy via fallback)"
+    func_pattern: "function\\s+\\w+\\s*\\([^)]*\\)\\s*(public|external)[^}]*(address\\.send|address\\.transfer|address\\.call\\s*\\{\\s*value)"
+    modifier_forbids:
+      - "nonReentrant"
+    confidence: 0.65
+    recommendation: "Add reentrancy guard to any function that sends ETH. Use pull-over-push pattern for ETH withdrawals."

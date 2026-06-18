@@ -1,0 +1,29 @@
+# 🎭 P26 — Read-Only Reentrancy
+id: "P26"
+name: "Read-Only Reentrancy"
+severity: "high"
+enabled: true
+category: "REENTRANCY"
+subcategory: "Read-Only Reentrancy"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.70
+description: >
+  Read-only reentrancy occurs when a view function makes an external call
+  to an untrusted contract. Although view functions cannot modify state,
+  they can return different values when called reentrantly. This can be
+  exploited to manipulate oracles, balances, or other contracts that rely
+  on the view function's return value for critical logic.
+detectors:
+  - type: "regex"
+    description: "View function making external calls"
+    pattern: "function\\s+\\w+\\s*\\([^)]*\\)\\s*(public|external)\\s+view[^}]*(call|delegatecall|staticcall)\\s*\\("
+    confidence: 0.75
+    recommendation: "Avoid making external calls in view functions. If necessary, document the reentrancy risk and ensure calling contracts are aware."
+  - type: "ast_pattern"
+    description: "View function with external call (AST analysis needed)"
+    required_elements:
+      - "view"
+      - ".call"
+    confidence: 0.80
+    recommendation: "Mark view functions that make external calls clearly, and ensure they are not used in price oracle or balance-checking contexts."

@@ -1,0 +1,26 @@
+# 🎭 P50 — Honeypot Detection
+id: "P50"
+name: "Honeypot Detection"
+severity: "high"
+enabled: true
+category: "TOKEN_ECONOMICS"
+subcategory: "Honeypot Detection"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.75
+description: >
+  Honeypot tokens let users buy but prevent selling through hidden
+  mechanisms like blacklists, transfer restrictions, high fees, or
+  specific address checks. This is a common scam pattern where the
+  deployer traps buyer funds.
+detectors:
+  - type: "regex"
+    description: "Potential honeypot: transfer restriction functions"
+    pattern: "(blacklist|_blacklist|blockAccount|_blockAccount|addToBlacklist|excludeFromTransfer|onlyWhitelisted)"
+    confidence: 0.55
+    recommendation: "Check if the token has transfer restriction functions that could trap sellers. A honeypot typically allows buys but not sells."
+  - type: "regex"
+    description: "Honeypot: max tx amount or max wallet with hidden bypass"
+    pattern: "(maxTxAmount|maxWalletAmount|_maxTxAmount|_maxWallet)[^}]*\\{[^}]*(owner|deployer|_owner)"
+    confidence: 0.50
+    recommendation: "Review if max transaction/wallet limits have owner-only bypasses that enable honeypot behavior."

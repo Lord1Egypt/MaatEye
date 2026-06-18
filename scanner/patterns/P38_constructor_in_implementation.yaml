@@ -1,0 +1,27 @@
+# 🎭 P38 — Constructor in Implementation
+id: "P38"
+name: "Constructor in Implementation"
+severity: "high"
+enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "Constructor in Implementation"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.75
+description: >
+  A proxy implementation contract uses a constructor instead of an
+  initializer function. Constructors run during implementation deployment,
+  not during proxy initialization. State variables set in the constructor
+  will not be set for the proxy, leading to uninitialized storage.
+detectors:
+  - type: "regex"
+    description: "Constructor used without initializer function"
+    pattern: "constructor\\s*\\([^)]*\\)[^}]*\\{[^}]*(?!function\\s+initialize)"
+    confidence: 0.60
+    recommendation: "Replace the constructor with an initialize function using the 'initializer' modifier from OpenZeppelin. Keep constructor empty or for immutables only."
+  - type: "function_signature"
+    description: "Contract has constructor but no initialize function"
+    func_pattern: "constructor\\s*\\("
+    modifier_requires: []
+    confidence: 0.55
+    recommendation: "Ensure the contract has an initialize function with the initializer modifier to set initial state for proxy instances."

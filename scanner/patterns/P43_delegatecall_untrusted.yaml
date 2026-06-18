@@ -1,0 +1,28 @@
+# 🎭 P43 — Delegatecall to Untrusted Library
+id: "P43"
+name: "Delegatecall to Untrusted Library"
+severity: "critical"
+enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "Delegatecall to Untrusted Library"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.95
+description: >
+  A contract performs delegatecall to an address that is user-controlled
+  or can be manipulated. Since delegatecall executes the target's code
+  in the caller's context (using the caller's storage, balance, and msg
+  values), an attacker can take full control of the contract.
+detectors:
+  - type: "regex"
+    description: "Delegatecall to user-controlled address"
+    pattern: "delegatecall\\([^)]*\\)"
+    confidence: 0.50
+    recommendation: "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead."
+  - type: "function_signature"
+    description: "Function with delegatecall and user-controlled target"
+    func_pattern: "function\\s+\\w+\\s*\\([^)]*address[^)]*\\)[^}]*(delegatecall)"
+    modifier_forbids:
+      - "onlyOwner"
+    confidence: 0.70
+    recommendation: "If delegatecall is necessary, restrict target to a whitelist of approved contracts."

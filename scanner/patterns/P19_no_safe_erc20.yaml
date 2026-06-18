@@ -4,6 +4,11 @@ id: "P19"
 name: "No SafeERC20"
 severity: "medium"
 enabled: true
+category: "ERC_STANDARDS"
+subcategory: "Missing SafeERC20"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.50
 description: >
   The contract uses direct transfer/transferFrom calls on ERC20
   tokens without checking the return value. Some tokens (USDT,

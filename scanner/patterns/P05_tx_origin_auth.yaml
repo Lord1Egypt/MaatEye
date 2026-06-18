@@ -4,6 +4,11 @@ id: "P05"
 name: "tx.origin Authentication"
 severity: "high"
 enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "tx.origin Auth"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.85
 description: >
   The contract uses tx.origin for authorization checks. This is
   dangerous because it can be exploited in phishing-style attacks

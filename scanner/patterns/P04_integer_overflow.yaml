@@ -4,6 +4,11 @@ id: "P04"
 name: "Integer Overflow/Underflow"
 severity: "critical"
 enabled: true
+category: "ARITHMETIC"
+subcategory: "Integer Overflow"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.75
 description: >
   The contract uses raw arithmetic operations (+, -, *, /) without
   overflow checks. In Solidity <0.8.0, this can cause silent

@@ -1,0 +1,22 @@
+# 🎭 P51 — Fee-On-Transfer Accounting Mismatch
+id: "P51"
+name: "Fee-On-Transfer Accounting Mismatch"
+severity: "high"
+enabled: true
+category: "TOKEN_ECONOMICS"
+subcategory: "Fee-On-Transfer Accounting Mismatch"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.70
+description: >
+  When a protocol integrates fee-on-transfer tokens (tokens that deduct
+  fees on every transfer), the internal accounting of received amounts
+  may not match the actual token balance. This allows attackers to
+  drain value by exploiting the discrepancy between recorded and actual
+  balances.
+detectors:
+  - type: "regex"
+    description: "BalanceOf used after transfer without accounting for fees"
+    pattern: "balanceOf\\([^)]*\\)[^}]{0,100}(?:<|>|=)\\s*[^}]{0,100}amount"
+    confidence: 0.50
+    recommendation: "After transferring fee-on-transfer tokens, always check the actual balance change rather than assuming the full amount was received."

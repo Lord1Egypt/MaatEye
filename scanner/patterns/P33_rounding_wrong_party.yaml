@@ -1,0 +1,28 @@
+# 🎭 P33 — Rounding in Favor of Wrong Party
+id: "P33"
+name: "Rounding in Favor of Wrong Party"
+severity: "high"
+enabled: true
+category: "ARITHMETIC"
+subcategory: "Rounding in Favor of Wrong Party"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.60
+description: >
+  Integer division in Solidity always rounds down. In financial contracts
+  (lending, exchanges, fee distribution), rounding direction determines
+  who gets the remaining wei. If rounding favors the wrong party, an
+  attacker can exploit this over many transactions to accumulate value.
+  For example, rounding down user withdrawals (paying less) or rounding
+  down protocol fees (losing revenue).
+detectors:
+  - type: "regex"
+    description: "Division in fee calculation where rounding direction matters"
+    pattern: "\\w+\\s*\\*\\s*\\w+\\s*/\\s*(\\w+|\\d+)"
+    confidence: 0.55
+    recommendation: "Ensure rounding direction favors the protocol for withdrawals (round down user amount) and favors the user for deposits (round up shares). Check all division operations."
+  - type: "regex"
+    description: "Fee split or reward distribution with division"
+    pattern: "(fee|reward|share|split|portion|commission)\\s*[\\w\\s=]*\\d+\\s*/\\s*\\d+"
+    confidence: 0.50
+    recommendation: "Review all division operations in fee/reward calculations. Ensure rounding direction is correct for each party."

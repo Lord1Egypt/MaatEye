@@ -1,0 +1,26 @@
+# 🎭 P32 — Precision Loss (Division Before Multiplication)
+id: "P32"
+name: "Precision Loss (Division Before Multiplication)"
+severity: "high"
+enabled: true
+category: "ARITHMETIC"
+subcategory: "Precision Loss (Division Before Multiplication)"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.55
+description: >
+  Performing division before multiplication leads to precision loss in
+  Solidity because integer division truncates. For example, (a / b) * c
+  loses precision compared to (a * c) / b. This is a common bug in fee
+  calculations, reward distributions, and token swaps.
+detectors:
+  - type: "regex"
+    description: "Division before multiplication pattern causing precision loss"
+    pattern: "\\w+\\s*/\\s*\\w+\\s*\\*\\s*\\w+"
+    confidence: 0.70
+    recommendation: "Always multiply before dividing: (a * c) / b instead of (a / b) * c. This preserves precision in integer arithmetic."
+  - type: "regex"
+    description: "Complex expression with division before multiplication"
+    pattern: "\\(?\\w+\\s*/\\s*\\w+\\)?\\s*\\*\\s*\\w+"
+    confidence: 0.65
+    recommendation: "Review arithmetic order. Use a safe math library or FullMath (Uniswap) for complex calculations."

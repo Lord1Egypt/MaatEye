@@ -1,0 +1,21 @@
+# 🎭 P52 — Deflationary Token Balance Change
+id: "P52"
+name: "Deflationary Token Balance Change"
+severity: "high"
+enabled: true
+category: "TOKEN_ECONOMICS"
+subcategory: "Deflationary Token Balance Change"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.60
+description: >
+  Deflationary (or rebasing) tokens change their balance dynamically.
+  If a protocol caches or tracks token balances internally without
+  accounting for potential balance changes, accounting discrepancies
+  can accumulate over time and be exploited.
+detectors:
+  - type: "regex"
+    description: "Internal accounting without sync for deflationary tokens"
+    pattern: "function\\s+(transfer|transferFrom)\\s*\\([^)]*\\)[^}]*\\w+\\s*[+\\-]=[^}]*amount"
+    confidence: 0.45
+    recommendation: "For deflationary/rebasing tokens, use balanceOf() to check actual balance rather than tracking internally. Document deflationary token risks."

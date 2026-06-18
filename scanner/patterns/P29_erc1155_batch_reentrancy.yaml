@@ -1,0 +1,26 @@
+# 🎭 P29 — ERC1155 Batch Reentrancy
+id: "P29"
+name: "ERC1155 Batch Reentrancy"
+severity: "critical"
+enabled: true
+category: "REENTRANCY"
+subcategory: "ERC1155 Batch Reentrancy"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.80
+description: >
+  ERC1155's _safeBatchMint and safeBatchTransferFrom call the recipient's
+  onERC1155BatchReceived callback. The batch nature of these operations
+  means multiple token types are transferred in one call, amplifying the
+  potential impact of a reentrancy attack.
+detectors:
+  - type: "regex"
+    description: "_safeBatchMint or safeBatchTransferFrom without reentrancy guard"
+    pattern: "(_safeBatchMint|_safeBatchTransfer|safeBatchTransferFrom)\\s*\\([^)]*\\)"
+    confidence: 0.65
+    recommendation: "Add nonReentrant modifier and follow checks-effects-interactions. Batch operations have amplified reentrancy risk."
+  - type: "function_signature"
+    description: "Batch ERC1155 functions without reentrancy protection"
+    func_pattern: "function\\s+\\w+\\s*\\([^)]*\\)\\s*(public|external)[^}]*(_safeBatchMint|_safeBatchTransfer)[^}]*(?!nonReentrant)"
+    confidence: 0.70
+    recommendation: "Apply ReentrancyGuard to all batch mint/transfer functions."

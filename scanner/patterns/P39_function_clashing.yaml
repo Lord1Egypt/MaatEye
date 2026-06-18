@@ -1,0 +1,24 @@
+# 🎭 P39 — Function Clashing
+id: "P39"
+name: "Function Clashing (malicious implementation)"
+severity: "high"
+enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "Function Clashing"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.70
+description: >
+  Function clashing occurs when a malicious implementation contract has
+  functions with the same 4-byte selector as legitimate functions in
+  another contract sharing the same proxy. Due to the ABI encoding,
+  different function names can produce identical selectors, allowing
+  a malicious implementation to hijack function calls.
+detectors:
+  - type: "ast_pattern"
+    description: "Potential function selector collision (requires AST analysis)"
+    required_elements:
+      - "function"
+      - "delegatecall"
+    confidence: 0.50
+    recommendation: "Use a proxy with an explicit function registry or use transparent proxy pattern that prevents function selector clashes."

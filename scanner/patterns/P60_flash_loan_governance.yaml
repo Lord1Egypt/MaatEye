@@ -1,0 +1,22 @@
+# 🎭 P60 — Flash Loan Governance Takeover
+id: "P60"
+name: "Flash Loan Governance Takeover"
+severity: "critical"
+enabled: true
+category: "GOVERNANCE"
+subcategory: "Flash Loan Governance Takeover"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.90
+description: >
+  Flash loans can be used to borrow large amounts of governance tokens
+  temporarily to pass malicious proposals. Since votes are based on
+  token balance at a specific snapshot, borrowing enough tokens via
+  flash loan can give an attacker majority voting power without any
+  upfront capital.
+detectors:
+  - type: "regex"
+    description: "Governance using balanceOf at a single block for voting power"
+    pattern: "balanceOf\\([^)]*\\)\\s*[><=]\\s*(totalSupply|quorum|threshold|minimum)"
+    confidence: 0.50
+    recommendation: "Implement a time-weighted voting power mechanism (e.g., ERC20Votes with delegation) instead of checking balance at a single block. Add flash loan resistance."

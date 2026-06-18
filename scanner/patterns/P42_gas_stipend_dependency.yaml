@@ -1,0 +1,21 @@
+# 🎭 P42 — Gas Stipend Dependency
+id: "P42"
+name: "Gas Stipend Dependency"
+severity: "medium"
+enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "Gas Stipend Dependency"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.35
+description: >
+  Using .send() or .transfer() for ETH transfers gives only 2300 gas to
+  the recipient. This is often insufficient for modern smart contracts
+  and can cause DoS. Recipients that need more gas (e.g., for logging,
+  forwarding, or interacting with other contracts) will fail.
+detectors:
+  - type: "regex"
+    description: "Using .send or .transfer for ETH transfers"
+    pattern: "\\.send\\s*\\(|\\.transfer\\s*\\("
+    confidence: 0.80
+    recommendation: "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer pattern is considered obsolete and can cause DoS."

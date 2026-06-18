@@ -1,0 +1,29 @@
+# 🎭 P36 — Metamorphic Contract
+id: "P36"
+name: "Metamorphic Contract (selfdestruct + CREATE2)"
+severity: "critical"
+enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "Metamorphic Contract"
+difficulty: "expert"
+requires_ast: true
+exploitability_estimate: 0.95
+description: >
+  A contract that contains both selfdestruct and CREATE2 can redeploy
+  itself at the same address with different bytecode. This creates a
+  metamorphic contract that can change its behavior at will. This is
+  extremely dangerous in proxy systems where the implementation address
+  is assumed to be immutable.
+detectors:
+  - type: "ast_pattern"
+    description: "Contract has both selfdestruct and CREATE2"
+    required_elements:
+      - "selfdestruct"
+      - "CREATE2"
+    confidence: 0.85
+    recommendation: "Avoid using selfdestruct and CREATE2 in the same contract. Consider using immutable proxies instead."
+  - type: "regex"
+    description: "Both selfdestruct and CREATE2 patterns in same contract"
+    pattern: "selfdestruct[\\s\\S]{0,2000}(?:CREATE2|new\\s+\\w+\\s*\\{\\s*salt)"
+    confidence: 0.70
+    recommendation: "Selfdestruct + CREATE2 in same contract enables metamorphic behavior. This is extremely dangerous."

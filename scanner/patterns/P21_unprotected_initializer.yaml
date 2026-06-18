@@ -1,0 +1,33 @@
+# 🎭 P21 — Unprotected Initializer
+id: "P21"
+name: "Unprotected Initializer"
+severity: "critical"
+enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Unprotected Initializer"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.90
+description: >
+  The contract has an initialize/init function that can be called by anyone.
+  Initializer functions set critical contract state and must be protected
+  so only authorized accounts can call them. Without protection, anyone
+  can re-initialize the contract and take over ownership or change key parameters.
+detectors:
+  - type: "function_signature"
+    description: "Initialize function without access control modifiers"
+    func_pattern: "function\\s+(initialize|init|__initialize)\\s*\\("
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyAdmin"
+      - "onlyRole"
+      - "initializer"
+      - "isInitialized"
+      - "whenNotPaused"
+    confidence: 0.85
+    recommendation: "Add the 'initializer' modifier (from OpenZeppelin) or 'onlyOwner' to the initialize function. Also add a check that initialization can only happen once."
+  - type: "regex"
+    description: "Initialize function lacking the initializer modifier in function body"
+    pattern: "function\\s+(initialize|init)\\s*\\([^)]*\\)\\s*(public|external)[^}]*(?!initializer)[^}]*\\{"
+    confidence: 0.60
+    recommendation: "Verify this initialize function uses the 'initializer' modifier or has a manual 'onlyInitialized' check."

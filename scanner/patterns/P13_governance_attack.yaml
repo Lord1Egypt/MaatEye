@@ -4,6 +4,11 @@ id: "P13"
 name: "Governance Attack"
 severity: "critical"
 enabled: true
+category: "GOVERNANCE"
+subcategory: "Governance Attack"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.75
 description: >
   The contract has governance features that can be exploited:
   low quorum requirements, short voting periods, or vote

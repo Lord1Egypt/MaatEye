@@ -4,6 +4,11 @@ id: "P06"
 name: "Unchecked Call"
 severity: "high"
 enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "Unchecked Call Return"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.70
 description: >
   The contract makes external calls without checking the return value.
   Failed calls (especially to send/transfer) can silently fail,

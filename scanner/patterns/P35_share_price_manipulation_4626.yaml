@@ -1,0 +1,27 @@
+# 🎭 P35 — Share Price Manipulation (EIP-4626)
+id: "P35"
+name: "Share Price Manipulation (EIP-4626)"
+severity: "critical"
+enabled: true
+category: "ARITHMETIC"
+subcategory: "Share Price Manipulation (EIP-4626)"
+difficulty: "hard"
+requires_ast: false
+exploitability_estimate: 0.85
+description: >
+  EIP-4626 vaults are vulnerable to an inflation attack where an attacker
+  can manipulate the share price by donating assets to the vault before
+  the first deposit. This inflates the share price, causing subsequent
+  depositors to receive fewer shares (or zero shares due to rounding).
+  The attacker can then redeem their shares at a profit.
+detectors:
+  - type: "regex"
+    description: "EIP-4626 vault vulnerable to inflation attack"
+    pattern: "convertToShares|convertToAssets|previewDeposit|previewMint|previewWithdraw|previewRedeem"
+    confidence: 0.55
+    recommendation: "Implement virtual shares and assets (like OpenZeppelin's ERC4626 with offset). Always ensure initial deposits are protected or use a 'dead share' pattern."
+  - type: "regex"
+    description: "Missing inflation protection in vault"
+    pattern: "(totalSupply|totalAssets)\\s*[=<>!]\\s*0[^}]{0,200}(?:mint|deposit)"
+    confidence: 0.60
+    recommendation: "Add inflation protection: mint a small number of 'dead shares' to zero address on first deposit, or use OpenZeppelin's ERC4626 with the virtual offset."

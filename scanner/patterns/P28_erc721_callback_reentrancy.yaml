@@ -1,0 +1,26 @@
+# 🎭 P28 — ERC721 Callback Reentrancy
+id: "P28"
+name: "ERC721 Callback Reentrancy"
+severity: "critical"
+enabled: true
+category: "REENTRANCY"
+subcategory: "ERC721 Callback Reentrancy"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.85
+description: >
+  ERC721's _safeMint and safeTransferFrom call the recipient's 
+  onERC721Received callback. If this callback is used to re-enter the
+  contract before the mint/transfer state is finalized, an attacker can
+  manipulate balances, mint additional tokens, or drain funds.
+detectors:
+  - type: "regex"
+    description: "_safeMint or safeTransferFrom without reentrancy guard"
+    pattern: "(_safeMint|_safeTransfer|safeTransferFrom)\\s*\\([^)]*\\)"
+    confidence: 0.65
+    recommendation: "Add nonReentrant modifier to functions using _safeMint, _safeTransfer, or safeTransferFrom. Ensure all state changes happen BEFORE the callback."
+  - type: "function_signature"
+    description: "Functions using ERC721 safe transfer methods without protection"
+    func_pattern: "function\\s+\\w+\\s*\\([^)]*\\)\\s*(public|external)[^}]*(_safeMint|_safeTransfer)[^}]*(?!nonReentrant)"
+    confidence: 0.70
+    recommendation: "Apply OpenZeppelin's ReentrancyGuard or ensure checks-effects-interactions pattern is strictly followed."

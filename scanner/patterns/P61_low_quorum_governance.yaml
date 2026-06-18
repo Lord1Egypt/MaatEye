@@ -1,0 +1,21 @@
+# 🎭 P61 — Low Quorum / Low Proposal Threshold
+id: "P61"
+name: "Low Quorum / Low Proposal Threshold"
+severity: "high"
+enabled: true
+category: "GOVERNANCE"
+subcategory: "Low Quorum / Low Proposal Threshold"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.75
+description: >
+  A governance system with a low quorum (minimum votes to pass) or low
+  proposal threshold (minimum tokens to create a proposal) allows an
+  attacker with modest token holdings to pass malicious proposals.
+  This is especially dangerous in DAOs with low community participation.
+detectors:
+  - type: "regex"
+    description: "Low quorum relative to total supply"
+    pattern: "quorum\\s*=\\s*\\d+[^}]*quorum|quorumNumerator"
+    confidence: 0.40
+    recommendation: "Set quorum to at least 4-5% of total supply. Consider dynamic quorum that adjusts based on participation."

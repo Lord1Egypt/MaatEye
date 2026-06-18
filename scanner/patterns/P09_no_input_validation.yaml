@@ -4,6 +4,11 @@ id: "P09"
 name: "No Input Validation"
 severity: "high"
 enabled: true
+category: "BUSINESS_LOGIC"
+subcategory: "Missing Input Validation"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.30
 description: >
   Functions accept user-supplied parameters without validation.
   Unchecked inputs can lead to unbounded loops, array index errors,

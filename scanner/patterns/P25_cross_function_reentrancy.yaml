@@ -1,0 +1,33 @@
+# 🎭 P25 — Cross-Function Reentrancy
+id: "P25"
+name: "Cross-Function Reentrancy"
+severity: "critical"
+enabled: true
+category: "REENTRANCY"
+subcategory: "Cross-Function Reentrancy"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.85
+description: >
+  Cross-function reentrancy occurs when multiple functions in a contract
+  modify the same state variable but make external calls between state
+  changes. An attacker can call function A which makes an external call,
+  and during that call, invoke function B which also modifies the same
+  state before function A completes. This bypasses classic reentrancy
+  guards that protect individual functions.
+detectors:
+  - type: "ast_pattern"
+    description: "Multiple functions modifying shared state with external calls"
+    required_elements:
+      - ".call{"
+      - "function"
+    forbidden_elements:
+      - "nonReentrant"
+      - "ReentrancyGuard"
+    confidence: 0.70
+    recommendation: "Use OpenZeppelin's ReentrancyGuard on ALL functions that modify state and make external calls. Alternatively, follow the checks-effects-interactions pattern strictly."
+  - type: "regex"
+    description: "Functions that write to state and have external calls"
+    pattern: "function\\s+\\w+\\s*\\([^)]*\\)\\s*(public|external)[^}]*(?:\\w+\\s*[=+\\-]|[a-z]+\\[[^]]+\\]\\s*=)[^}]{0,500}\\.(call|delegatecall)\\s*\\("
+    confidence: 0.55
+    recommendation: "Check if multiple functions share state access with external call patterns. A comprehensive reentrancy analysis requires AST inspection."

@@ -4,6 +4,11 @@ id: "P18"
 name: "Missing Access Control"
 severity: "high"
 enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Missing Access Control"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.80
 description: >
   Critical state-modifying functions lack access control modifiers.
   Functions like pause, withdraw, setFee, or updateImplementation

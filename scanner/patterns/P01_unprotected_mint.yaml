@@ -4,6 +4,11 @@ id: "P01"
 name: "Unprotected Mint"
 severity: "critical"
 enabled: true
+category: "ACCESS_CONTROL"
+subcategory: "Unprotected Mint"
+difficulty: "easy"
+requires_ast: false
+exploitability_estimate: 0.95
 description: >
   The contract has a mint function that can be called by anyone.
   This allows arbitrary token creation, leading to infinite supply

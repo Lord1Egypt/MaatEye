@@ -1,0 +1,24 @@
+# 🎭 P44 — Staticcall With Side Effects
+id: "P44"
+name: "Staticcall With Side Effects"
+severity: "medium"
+enabled: true
+category: "EXTERNAL_CALLS"
+subcategory: "Staticcall With Side Effects"
+difficulty: "hard"
+requires_ast: true
+exploitability_estimate: 0.30
+description: >
+  A staticcall is supposed to be read-only, but if the called contract
+  uses a delegatecall internally (or uses inline assembly to modify
+  storage), the staticcall may have side effects on the caller's state.
+  While the EVM enforces no state changes during staticcall, malicious
+  contracts can still affect the caller via reentrancy or gas usage.
+detectors:
+  - type: "ast_pattern"
+    description: "Staticcall used where state may be affected (requires AST)"
+    required_elements:
+      - "staticcall"
+      - "delegatecall"
+    confidence: 0.45
+    recommendation: "Avoid using staticcall on untrusted contracts. If the target uses delegatecall internally, staticcall may not be truly read-only."

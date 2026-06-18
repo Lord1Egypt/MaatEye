@@ -1,0 +1,29 @@
+# 🎭 P40 — UUPS Without Upgrade Guard
+id: "P40"
+name: "UUPS Without Upgrade Guard"
+severity: "high"
+enabled: true
+category: "PROXY_UPGRADEABLE"
+subcategory: "UUPS Without Upgrade Guard"
+difficulty: "medium"
+requires_ast: false
+exploitability_estimate: 0.70
+description: >
+  A UUPS (Universal Upgradeable Proxy Standard) contract implements
+  _authorizeUpgrade but without access control. This allows anyone to
+  upgrade the implementation, effectively taking over the contract.
+detectors:
+  - type: "function_signature"
+    description: "_authorizeUpgrade missing access control"
+    func_pattern: "function\\s+_authorizeUpgrade\\s*\\("
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyRole"
+      - "onlyAdmin"
+    confidence: 0.80
+    recommendation: "Add onlyOwner or onlyRole modifier to _authorizeUpgrade. Only authorized accounts should be able to upgrade the implementation."
+  - type: "regex"
+    description: "UUPS upgrade function without auth check"
+    pattern: "function\\s+_authorizeUpgrade\\s*\\([^)]*\\)\\s*(internal|public)[^}]*(?!require|onlyOwner|onlyRole)"
+    confidence: 0.65
+    recommendation: "Ensure _authorizeUpgrade has proper access control. This is a critical upgrade function."
