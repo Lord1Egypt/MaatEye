@@ -1,5 +1,5 @@
 {
-  "scan_date": "2026-06-18T16:56:14.322344+00:00",
+  "scan_date": "2026-06-18T17:16:05.158352+00:00",
   "total_chains": 7,
   "total_contracts": 25,
   "total_vulns": 2,
@@ -18,9 +18,9 @@
       "medium": 0,
       "low": 0
     },
-    "optimism": {
-      "chain_name": "Optimism",
-      "chain_emoji": "🔴",
+    "arbitrum": {
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "🌀",
       "contracts": 3,
       "vulns": 0,
       "critical": 0,
@@ -28,9 +28,9 @@
       "medium": 0,
       "low": 0
     },
-    "arbitrum": {
-      "chain_name": "Arbitrum One",
-      "chain_emoji": "🌀",
+    "optimism": {
+      "chain_name": "Optimism",
+      "chain_emoji": "🔴",
       "contracts": 3,
       "vulns": 0,
       "critical": 0,
