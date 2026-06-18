@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-06-18T19:06:35.449759+00:00",
+  "scan_date": "2026-06-18T19:51:26.639789+00:00",
   "total_chains": 7,
-  "total_contracts": 5964,
+  "total_contracts": 6014,
   "total_vulns": 216,
   "critical_count": 216,
   "high_count": 0,
@@ -41,7 +41,7 @@
     "ethereum": {
       "chain_name": "Ethereum",
       "chain_emoji": "🔵",
-      "contracts": 1550,
+      "contracts": 1600,
       "vulns": 0,
       "critical": 0,
       "high": 0,
