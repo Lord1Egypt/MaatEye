@@ -75,15 +75,24 @@ def discover_new_tokens_on_chain(
 
     tokens = discover_tokens_rpc_catchup(chain_key, lookback_blocks=lookback)
     if not tokens:
-        logger.warning(f"  ⚠️ {chain_key}: no tokens found via RPC, using CoinGecko fallback list")
-        from scanner.fetchers.coingecko import get_coingecko_tokens_for_chain
-        # Fetch up to max_new * 2 tokens from CoinGecko to ensure we have enough new ones
-        cg_tokens = get_coingecko_tokens_for_chain(chain_key, max_count=max_new * 2)
-        if cg_tokens:
-            tokens = {addr.lower(): {} for addr in cg_tokens}
-        else:
-            logger.warning(f"  ⚠️ {chain_key}: CoinGecko fallback also empty")
-            tokens = {}
+        if chain_key == "ethereum":
+            logger.warning(f"  ⚠️ {chain_key}: no tokens found via RPC, dipping into 1.45M local database...")
+            from scanner.fetchers.local_db import get_ethereum_tokens_from_local_db
+            chain_registry = registry.get(chain_key, {})
+            db_tokens = get_ethereum_tokens_from_local_db(max_count=max_new * 2, exclude_set=set(chain_registry.keys()))
+            if db_tokens:
+                tokens = {addr.lower(): {} for addr in db_tokens}
+                
+        if not tokens:
+            logger.warning(f"  ⚠️ {chain_key}: using CoinGecko fallback list")
+            from scanner.fetchers.coingecko import get_coingecko_tokens_for_chain
+            # Fetch up to max_new * 2 tokens from CoinGecko to ensure we have enough new ones
+            cg_tokens = get_coingecko_tokens_for_chain(chain_key, max_count=max_new * 2)
+            if cg_tokens:
+                tokens = {addr.lower(): {} for addr in cg_tokens}
+            else:
+                logger.warning(f"  ⚠️ {chain_key}: CoinGecko fallback also empty")
+                tokens = {}
 
     chain_registry = registry.get(chain_key, {})
     new_addrs = [addr for addr in tokens.keys() if addr not in chain_registry]
