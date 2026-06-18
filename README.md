@@ -21,6 +21,12 @@
   <i>"She who weighs the heart against the feather."</i>
 </p>
 
+<p align="center">
+  <a href="https://lord1egypt.github.io/MaatEye/">
+    <img src="https://img.shields.io/badge/🌐%20Live%20Dashboard-lord1egypt.github.io%2FMaatEye-FFD700?style=for-the-badge&labelColor=05060F" alt="Live Dashboard"/>
+  </a>
+</p>
+
 ---
 
 ## 🚀 Vision

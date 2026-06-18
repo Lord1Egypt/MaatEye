@@ -85,11 +85,6 @@ class ScanResults:
     scan_time_seconds: float = 0.0
     timestamp: str = ""
     chains_scanned: list[str] = field(default_factory=list)
-    low_count: int = 0
-    contracts: dict[str, ContractResult] = field(default_factory=dict)
-    scan_time_seconds: float = 0.0
-    timestamp: str = ""
-    chains_scanned: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         # Build per-chain summary
@@ -523,6 +518,8 @@ class ScanEngine:
         return master_results
 
     def _apply_pattern(
+        self,
+        result: ContractResult,
         pattern: dict,
         source_code: str,
         address: str,

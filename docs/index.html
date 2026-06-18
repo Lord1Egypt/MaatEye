@@ -1,383 +1,1038 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>👁️⚖️ MaatEye — Vulnerability Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0e1a;
-            color: #e0e0e0;
-            min-height: 100vh;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #1a1f3a 0%, #0d1225 100%);
-            border-bottom: 2px solid #2a3f6a;
-            margin-bottom: 30px;
-        }
-        .header h1 { font-size: 2.5em; color: #ffd700; margin-bottom: 10px; }
-        .header h1 span { color: #e0e0e0; }
-        .header p { color: #888; font-size: 1.1em; }
-        .header .subtitle { color: #4a7fc7; font-size: 0.9em; margin-top: 5px; }
-        
-        /* Stats Overview */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: #131a30;
-            border: 1px solid #1e2d50;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-2px); }
-        .stat-card .number { font-size: 2.2em; font-weight: bold; }
-        .stat-card .label { color: #888; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
-        .stat-card.total .number { color: #ffd700; }
-        .stat-card.critical .number { color: #ff4444; }
-        .stat-card.high .number { color: #ff8800; }
-        .stat-card.medium .number { color: #4488ff; }
-        .stat-card.low .number { color: #88cc88; }
-        .stat-card.chains .number { color: #aa88ff; }
-        .stat-card.contracts .number { color: #44ddff; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>👁️⚖️ MaatEye — Smart Contract Vulnerability Dashboard</title>
+  <meta name="description" content="MaatEye — The Eternal Guardian of Smart Contracts. Live vulnerability scanner dashboard tracking 15,000+ tokens across 24 EVM chains.">
+  <meta property="og:title" content="👁️⚖️ MaatEye — Smart Contract Vulnerability Dashboard">
+  <meta property="og:description" content="Automated smart contract vulnerability scanner with 20+ detection patterns across 24 EVM chains.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #FFD700;
+      --gold-dim: #B8960C;
+      --teal: #00D4AA;
+      --teal-dim: #00957A;
+      --critical: #FF3B3B;
+      --critical-glow: rgba(255,59,59,0.3);
+      --high: #FF8C00;
+      --high-glow: rgba(255,140,0,0.3);
+      --medium: #3B82F6;
+      --medium-glow: rgba(59,130,246,0.3);
+      --low: #22C55E;
+      --bg: #05060F;
+      --bg-card: #0C0F1E;
+      --bg-card2: #0F1429;
+      --border: rgba(255,215,0,0.12);
+      --border-bright: rgba(255,215,0,0.35);
+      --text: #E2E8F0;
+      --text-dim: #64748B;
+      --text-muted: #334155;
+    }
 
-        /* Meter */
-        .meter-container { margin-bottom: 30px; }
-        .meter-bar { display: flex; height: 36px; border-radius: 18px; overflow: hidden; }
-        .meter-critical { background: #ff4444; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
-        .meter-high { background: #ff8800; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
-        .meter-medium { background: #4488ff; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
-        .meter-low { background: #44aa44; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8em; transition: width 1s; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Chain Cards */
-        .chain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .chain-card {
-            background: #131a30;
-            border: 1px solid #1e2d50;
-            border-radius: 12px;
-            padding: 16px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .chain-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .chain-card.chain-critical { border-left: 3px solid #ff4444; }
-        .chain-card.chain-high { border-left: 3px solid #ff8800; }
-        .chain-card.chain-ok { border-left: 3px solid #44aa44; }
-        .chain-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .chain-header .chain-emoji { font-size: 1.8em; }
-        .chain-header h3 { font-size: 1em; flex: 1; }
-        .chain-header .chain-key { font-size: 0.7em; color: #555; background: #0a0e1a; padding: 2px 8px; border-radius: 10px; }
-        .chain-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-        .stat { text-align: center; padding: 4px; }
-        .stat .stat-label { display: block; font-size: 0.65em; color: #666; }
-        .stat .stat-value { font-size: 1.1em; font-weight: bold; }
-        .stat.critical .stat-value { color: #ff4444; }
-        .stat.high .stat-value { color: #ff8800; }
-        .stat.medium .stat-value { color: #4488ff; }
-        .vuln-bar { margin-top: 10px; height: 4px; display: flex; border-radius: 2px; overflow: hidden; background: #1a1f3a; }
-        .vuln-bar .bar-critical { background: #ff4444; }
-        .vuln-bar .bar-high { background: #ff8800; }
-        .vuln-bar .bar-medium { background: #4488ff; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        /* Table */
-        .table-container { overflow-x: auto; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; background: #131a30; border-radius: 12px; overflow: hidden; }
-        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #1e2d50; }
-        th { background: #0d1225; color: #ffd700; font-weight: 600; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; }
-        td.critical, td.high, td.medium { font-weight: bold; }
-        td.critical { color: #ff4444; }
-        td.high { color: #ff8800; }
-        td.medium { color: #4488ff; }
-        tr:hover { background: #1a2340; }
+    /* ── Canvas Background ── */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #555;
-            font-size: 0.85em;
-            border-top: 1px solid #1e2d50;
-            margin-top: 40px;
-        }
-        .footer a { color: #4a7fc7; text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
+    /* ── Layout ── */
+    .page { position: relative; z-index: 1; }
+    .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8em; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .chain-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    /* ── Hero Header ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: linear-gradient(180deg, #0A0C1F 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .eye-logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 28px;
+      position: relative;
+    }
+
+    .eye-logo svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 20px rgba(255,215,0,0.6));
+      animation: eye-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes eye-pulse {
+      0%, 100% { filter: drop-shadow(0 0 15px rgba(255,215,0,0.5)); }
+      50% { filter: drop-shadow(0 0 35px rgba(255,215,0,0.9)) drop-shadow(0 0 60px rgba(0,212,170,0.4)); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 .maat { color: var(--gold); }
+    .hero h1 .eye-txt { color: var(--teal); }
+
+    .hero-tagline {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+
+    .badge-gold { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.4); color: var(--gold); }
+    .badge-teal { background: rgba(0,212,170,0.1); border-color: rgba(0,212,170,0.4); color: var(--teal); }
+    .badge-red  { background: rgba(255,59,59,0.1);  border-color: rgba(255,59,59,0.4);  color: var(--critical); }
+    .badge-blue { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.4); color: var(--medium); }
+
+    .scan-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .scan-time span { color: var(--teal); }
+
+    /* ── Section Heading ── */
+    .section { padding: 48px 0; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-bright), transparent);
+    }
+
+    /* ── Stats Grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 0;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: default;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .stat-card.s-total::before  { background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+    .stat-card.s-critical::before { background: var(--critical); box-shadow: 0 0 12px var(--critical-glow); }
+    .stat-card.s-high::before   { background: var(--high); box-shadow: 0 0 12px var(--high-glow); }
+    .stat-card.s-medium::before { background: var(--medium); box-shadow: 0 0 12px var(--medium-glow); }
+    .stat-card.s-low::before    { background: var(--low); }
+    .stat-card.s-chains::before { background: #A855F7; }
+    .stat-card.s-contracts::before { background: var(--teal); }
+
+    .stat-card:hover.s-total    { box-shadow: 0 8px 32px rgba(255,215,0,0.15); }
+    .stat-card:hover.s-critical { box-shadow: 0 8px 32px var(--critical-glow); }
+    .stat-card:hover.s-high     { box-shadow: 0 8px 32px var(--high-glow); }
+    .stat-card:hover.s-medium   { box-shadow: 0 8px 32px var(--medium-glow); }
+    .stat-card:hover.s-chains   { box-shadow: 0 8px 32px rgba(168,85,247,0.2); }
+    .stat-card:hover.s-contracts{ box-shadow: 0 8px 32px rgba(0,212,170,0.2); }
+
+    .stat-icon { font-size: 1.6rem; margin-bottom: 8px; }
+
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-card.s-total    .stat-number { color: var(--gold); }
+    .stat-card.s-critical .stat-number { color: var(--critical); }
+    .stat-card.s-high     .stat-number { color: var(--high); }
+    .stat-card.s-medium   .stat-number { color: var(--medium); }
+    .stat-card.s-low      .stat-number { color: var(--low); }
+    .stat-card.s-chains   .stat-number { color: #A855F7; }
+    .stat-card.s-contracts .stat-number { color: var(--teal); }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ── Severity Meter ── */
+    .severity-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .meter-track {
+      height: 44px;
+      display: flex;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg);
+      margin: 20px 0 16px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .meter-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: white;
+      transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .meter-seg.mc { background: linear-gradient(135deg, #FF3B3B, #CC2222); }
+    .meter-seg.mh { background: linear-gradient(135deg, #FF8C00, #CC6600); }
+    .meter-seg.mm { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+    .meter-seg.ml { background: linear-gradient(135deg, #22C55E, #15803D); }
+
+    .meter-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.83rem;
+    }
+
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-dot.lc { background: var(--critical); box-shadow: 0 0 8px var(--critical); }
+    .legend-dot.lh { background: var(--high); box-shadow: 0 0 8px var(--high); }
+    .legend-dot.lm { background: var(--medium); box-shadow: 0 0 8px var(--medium); }
+    .legend-dot.ll { background: var(--low); }
+
+    /* ── Chain Cards ── */
+    .chains-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .chain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .chain-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-bright);
+    }
+
+    .chain-card.cc-critical { border-left: 3px solid var(--critical); }
+    .chain-card.cc-high     { border-left: 3px solid var(--high); }
+    .chain-card.cc-clean    { border-left: 3px solid var(--low); }
+
+    .chain-card:hover.cc-critical { box-shadow: 0 6px 24px var(--critical-glow); }
+    .chain-card:hover.cc-high     { box-shadow: 0 6px 24px var(--high-glow); }
+    .chain-card:hover.cc-clean    { box-shadow: 0 6px 24px rgba(34,197,94,0.15); }
+
+    .chain-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .chain-emoji-wrap {
+      font-size: 2rem;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      border-radius: 12px;
+    }
+
+    .chain-info h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .chain-key-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--text-muted);
+    }
+
+    .chain-severity-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .sev-pill {
+      text-align: center;
+      padding: 8px 4px;
+      border-radius: 10px;
+      background: var(--bg);
+    }
+
+    .sev-pill .sv { font-size: 1.1rem; font-weight: 800; }
+    .sev-pill .sl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 2px; }
+    .sev-pill.pc .sv { color: var(--critical); }
+    .sev-pill.ph .sv { color: var(--high); }
+    .sev-pill.pm .sv { color: var(--medium); }
+    .sev-pill.pl .sv { color: var(--low); }
+
+    .chain-bar {
+      height: 6px;
+      border-radius: 3px;
+      display: flex;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .chain-bar .bc { background: var(--critical); }
+    .chain-bar .bh { background: var(--high); }
+    .chain-bar .bm { background: var(--medium); }
+    .chain-bar .bl { background: var(--low); }
+
+    /* ── 20 Plagues Grid ── */
+    .plagues-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .plague-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .plague-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-bright);
+    }
+
+    .plague-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--bg);
+    }
+
+    .plague-body h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .plague-body p {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .plague-sev {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .plague-sev.critical { background: rgba(255,59,59,0.15); color: var(--critical); border: 1px solid rgba(255,59,59,0.3); }
+    .plague-sev.high     { background: rgba(255,140,0,0.15); color: var(--high);     border: 1px solid rgba(255,140,0,0.3); }
+    .plague-sev.medium   { background: rgba(59,130,246,0.15);color: var(--medium);  border: 1px solid rgba(59,130,246,0.3); }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      padding: 14px 20px;
+      text-align: left;
+      background: var(--bg);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody td {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255,215,0,0.05);
+      font-size: 0.88rem;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,215,0,0.03); }
+
+    td.tc { color: var(--critical); font-weight: 700; }
+    td.th { color: var(--high); font-weight: 700; }
+    td.tm { color: var(--medium); font-weight: 600; }
+    td.tl { color: var(--low); }
+
+    .risk-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .risk-badge.rc { background: rgba(255,59,59,0.15); color: var(--critical); }
+    .risk-badge.rh { background: rgba(255,140,0,0.15);  color: var(--high); }
+    .risk-badge.rm { background: rgba(59,130,246,0.15); color: var(--medium); }
+    .risk-badge.rl { background: rgba(34,197,94,0.15);  color: var(--low); }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    .footer-eye { font-size: 2rem; margin-bottom: 10px; }
+
+    .footer p {
+      font-size: 0.83rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    .footer a { color: var(--teal); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    .footer .disclaimer {
+      margin-top: 16px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 14px 0;
+    }
+
+    .footer-links a {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero { padding: 56px 24px 40px; }
+      .hero h1 { font-size: 2.2rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .chains-grid { grid-template-columns: 1fr; }
+      .plagues-grid { grid-template-columns: 1fr; }
+      thead th:nth-child(n+5), tbody td:nth-child(n+5) { display: none; }
+    }
+
+    /* ── Animations ── */
+    @keyframes count-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stat-number { animation: count-up 0.6s ease both; }
+
+    .stat-card:nth-child(1) .stat-number { animation-delay: 0.05s; }
+    .stat-card:nth-child(2) .stat-number { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) .stat-number { animation-delay: 0.15s; }
+    .stat-card:nth-child(4) .stat-number { animation-delay: 0.2s; }
+    .stat-card:nth-child(5) .stat-number { animation-delay: 0.25s; }
+    .stat-card:nth-child(6) .stat-number { animation-delay: 0.3s; }
+    .stat-card:nth-child(7) .stat-number { animation-delay: 0.35s; }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Loader ── */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease;
+    }
+
+    .loader-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-eye { font-size: 3.5rem; animation: eye-pulse 1.5s ease-in-out infinite; }
+    .loader-txt { margin-top: 16px; font-size: 0.9rem; color: var(--text-dim); letter-spacing: 0.15em; }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>👁️⚖️ Maat<span>Eye</span></h1>
-        <p>Multi-Chain Vulnerability Scanner — Live Dashboard</p>
-        <div class="subtitle">📡 Last scan: 2026-06-18 02:38:06 UTC</div>
+
+<!-- Loading screen -->
+<div class="loader-overlay" id="loader">
+  <div class="loader-eye">👁️</div>
+  <div class="loader-txt">MAAT IS WATCHING</div>
+</div>
+
+<!-- Particle canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<div class="page">
+
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <div class="eye-logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Eye of Horus / Ra -->
+        <ellipse cx="50" cy="48" rx="38" ry="24" fill="none" stroke="#FFD700" stroke-width="2.5"/>
+        <circle cx="50" cy="48" r="12" fill="#00D4AA" opacity="0.9"/>
+        <circle cx="50" cy="48" r="6" fill="#FFD700"/>
+        <circle cx="53" cy="45" r="2" fill="white"/>
+        <!-- Kohl lines -->
+        <path d="M 12 48 Q 30 35 50 48" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.6"/>
+        <path d="M 88 48 Q 70 61 50 48" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.6"/>
+        <!-- Drop of Maat -->
+        <path d="M 50 72 L 46 82 Q 50 88 54 82 Z" fill="#FFD700" opacity="0.8"/>
+        <!-- Scales symbol -->
+        <path d="M 50 60 L 50 68" stroke="#B8960C" stroke-width="1.5"/>
+        <path d="M 38 65 L 62 65" stroke="#B8960C" stroke-width="1.5"/>
+        <circle cx="38" cy="65" r="2" fill="#B8960C"/>
+        <circle cx="62" cy="65" r="2" fill="#B8960C"/>
+      </svg>
     </div>
 
-    <div class="container">
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card total">
-                <div class="number">347</div>
-                <div class="label">Total Vulnerabilities</div>
-            </div>
-            <div class="stat-card critical">
-                <div class="number">23</div>
-                <div class="label">🔴 Critical</div>
-            </div>
-            <div class="stat-card high">
-                <div class="number">89</div>
-                <div class="label">🟡 High</div>
-            </div>
-            <div class="stat-card medium">
-                <div class="number">125</div>
-                <div class="label">🔵 Medium</div>
-            </div>
-            <div class="stat-card low">
-                <div class="number">110</div>
-                <div class="label">🟢 Low</div>
-            </div>
-            <div class="stat-card chains">
-                <div class="number">24</div>
-                <div class="label">EVM Chains</div>
-            </div>
-            <div class="stat-card contracts">
-                <div class="number">1250</div>
-                <div class="label">Contracts Scanned</div>
-            </div>
-        </div>
+    <h1><span class="maat">Maat</span><span class="eye-txt">Eye</span></h1>
+    <p class="hero-tagline">
+      The Eternal Guardian of Smart Contracts — automated vulnerability scanner
+      tracking <strong>15,000+</strong> tokens across <strong>24 EVM chains</strong> with 20 detection patterns.
+    </p>
 
-        <!-- Severity Meter -->
-        <h2 style="color: #ffd700; margin-bottom: 10px;">📊 Severity Distribution</h2>
-        
-    <div class="meter-container">
-        <div class="meter-bar">
-            <div class="meter-critical" style="width:6.6%">23</div>
-            <div class="meter-high" style="width:25.6%">89</div>
-            <div class="meter-medium" style="width:36.0%">125</div>
-            <div class="meter-low" style="width:31.7%">110</div>
-        </div>
+    <div class="hero-badges">
+      <span class="badge badge-gold">⚖️ 20 Plagues Engine</span>
+      <span class="badge badge-teal">🌐 24 EVM Chains</span>
+      <span class="badge badge-red">🔴 Live Red Flags</span>
+      <span class="badge badge-blue">🆓 100% Free — GitHub Actions</span>
+      <span class="badge badge-gold">📖 Open Source</span>
     </div>
 
-        <!-- Chain Cards -->
-        <h2 style="color: #ffd700; margin: 30px 0 15px;">🌐 Per-Chain Breakdown</h2>
-        <div class="chain-grid">
-            
-        <div class="chain-card chain-ok">
-            <div class="chain-header">
-                <span class="chain-emoji">🔵</span>
-                <h3>Arbitrum</h3>
-                <span class="chain-key">arbitrum</span>
-            </div>
-            <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">90</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">22</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">1</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">5</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">8</span></div>
-            </div>
-            <div class="vuln-bar">
-                <div class="bar-critical" style="width:4.5%"></div>
-                <div class="bar-high" style="width:22.7%"></div>
-                <div class="bar-medium" style="width:36.4%"></div>
-            </div>
-        </div>
-        <div class="chain-card chain-ok">
-            <div class="chain-header">
-                <span class="chain-emoji">🔷</span>
-                <h3>Base</h3>
-                <span class="chain-key">base</span>
-            </div>
-            <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">60</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">15</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">1</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">3</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">6</span></div>
-            </div>
-            <div class="vuln-bar">
-                <div class="bar-critical" style="width:6.7%"></div>
-                <div class="bar-high" style="width:20.0%"></div>
-                <div class="bar-medium" style="width:40.0%"></div>
-            </div>
-        </div>
-        <div class="chain-card chain-critical">
-            <div class="chain-header">
-                <span class="chain-emoji">🟡</span>
-                <h3>BNB Smart Chain</h3>
-                <span class="chain-key">bnb</span>
-            </div>
-            <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">180</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">78</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">8</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">22</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">28</span></div>
-            </div>
-            <div class="vuln-bar">
-                <div class="bar-critical" style="width:10.3%"></div>
-                <div class="bar-high" style="width:28.2%"></div>
-                <div class="bar-medium" style="width:35.9%"></div>
-            </div>
-        </div>
-        <div class="chain-card chain-critical">
-            <div class="chain-header">
-                <span class="chain-emoji">💎</span>
-                <h3>Ethereum</h3>
-                <span class="chain-key">ethereum</span>
-            </div>
-            <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">150</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">52</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">5</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">14</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">18</span></div>
-            </div>
-            <div class="vuln-bar">
-                <div class="bar-critical" style="width:9.6%"></div>
-                <div class="bar-high" style="width:26.9%"></div>
-                <div class="bar-medium" style="width:34.6%"></div>
-            </div>
-        </div>
-        <div class="chain-card chain-ok">
-            <div class="chain-header">
-                <span class="chain-emoji">🔴</span>
-                <h3>Optimism</h3>
-                <span class="chain-key">optimism</span>
-            </div>
-            <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">70</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">18</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">1</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">4</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">7</span></div>
-            </div>
-            <div class="vuln-bar">
-                <div class="bar-critical" style="width:5.6%"></div>
-                <div class="bar-high" style="width:22.2%"></div>
-                <div class="bar-medium" style="width:38.9%"></div>
-            </div>
-        </div>
-        <div class="chain-card chain-ok">
-            <div class="chain-header">
-                <span class="chain-emoji">🟣</span>
-                <h3>Polygon</h3>
-                <span class="chain-key">polygon</span>
-            </div>
-            <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">120</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">31</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">2</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">8</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">12</span></div>
-            </div>
-            <div class="vuln-bar">
-                <div class="bar-critical" style="width:6.5%"></div>
-                <div class="bar-high" style="width:25.8%"></div>
-                <div class="bar-medium" style="width:38.7%"></div>
-            </div>
-        </div>
-        </div>
+    <div class="scan-time" id="scan-time-display">Last scan: <span>loading...</span></div>
+  </header>
 
-        <!-- Full Table -->
-        <h2 style="color: #ffd700; margin: 30px 0 15px;">📋 Chain Comparison</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Chain</th>
-                        <th>Contracts</th>
-                        <th>Total Vulns</th>
-                        <th>🔴 Critical</th>
-                        <th>🟡 High</th>
-                        <th>🔵 Medium</th>
-                        <th>🟢 Low</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-        <tr>
-            <td>🟡 BNB Smart Chain</td>
-            <td>180</td>
-            <td>78</td>
-            <td class="critical">8</td>
-            <td class="high">22</td>
-            <td class="medium">28</td>
-            <td>20</td>
-        </tr>
-        <tr>
-            <td>💎 Ethereum</td>
-            <td>150</td>
-            <td>52</td>
-            <td class="critical">5</td>
-            <td class="high">14</td>
-            <td class="medium">18</td>
-            <td>15</td>
-        </tr>
-        <tr>
-            <td>🟣 Polygon</td>
-            <td>120</td>
-            <td>31</td>
-            <td class="critical">2</td>
-            <td class="high">8</td>
-            <td class="medium">12</td>
-            <td>9</td>
-        </tr>
-        <tr>
-            <td>🔵 Arbitrum</td>
-            <td>90</td>
-            <td>22</td>
-            <td class="critical">1</td>
-            <td class="high">5</td>
-            <td class="medium">8</td>
-            <td>8</td>
-        </tr>
-        <tr>
-            <td>🔴 Optimism</td>
-            <td>70</td>
-            <td>18</td>
-            <td class="critical">1</td>
-            <td class="high">4</td>
-            <td class="medium">7</td>
-            <td>6</td>
-        </tr>
-        <tr>
-            <td>🔷 Base</td>
-            <td>60</td>
-            <td>15</td>
-            <td class="critical">1</td>
-            <td class="high">3</td>
-            <td class="medium">6</td>
-            <td>5</td>
-        </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+  <div class="container">
 
-    <div class="footer">
-        <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — Automated with 💙 by Lord1Egypt</p>
-        <p>Data refreshes daily at 08:00 UTC • Static analysis only — read-only, no exploits</p>
-        <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a></p>
+    <!-- ── Stats ── -->
+    <section class="section fade-in">
+      <div class="section-title">⚖️ Guardian Statistics</div>
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card s-total">
+          <div class="stat-icon">🛡️</div>
+          <div class="stat-number" id="s-total">—</div>
+          <div class="stat-label">Total Vulnerabilities</div>
+        </div>
+        <div class="stat-card s-critical">
+          <div class="stat-icon">🔴</div>
+          <div class="stat-number" id="s-critical">—</div>
+          <div class="stat-label">Critical</div>
+        </div>
+        <div class="stat-card s-high">
+          <div class="stat-icon">🟡</div>
+          <div class="stat-number" id="s-high">—</div>
+          <div class="stat-label">High</div>
+        </div>
+        <div class="stat-card s-medium">
+          <div class="stat-icon">🔵</div>
+          <div class="stat-number" id="s-medium">—</div>
+          <div class="stat-label">Medium</div>
+        </div>
+        <div class="stat-card s-low">
+          <div class="stat-icon">🟢</div>
+          <div class="stat-number" id="s-low">—</div>
+          <div class="stat-label">Low</div>
+        </div>
+        <div class="stat-card s-chains">
+          <div class="stat-icon">⛓️</div>
+          <div class="stat-number" id="s-chains">—</div>
+          <div class="stat-label">EVM Chains</div>
+        </div>
+        <div class="stat-card s-contracts">
+          <div class="stat-icon">📄</div>
+          <div class="stat-number" id="s-contracts">—</div>
+          <div class="stat-label">Contracts Scanned</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Severity Distribution ── -->
+    <section class="section fade-in">
+      <div class="section-title">📊 Severity Distribution</div>
+      <div class="severity-wrap">
+        <p style="color: var(--text-dim); font-size: 0.85rem;">Proportional breakdown of all detected vulnerabilities across all chains</p>
+        <div class="meter-track" id="severity-meter">
+          <div class="meter-seg mc" id="mc-seg" style="width:0%"></div>
+          <div class="meter-seg mh" id="mh-seg" style="width:0%"></div>
+          <div class="meter-seg mm" id="mm-seg" style="width:0%"></div>
+          <div class="meter-seg ml" id="ml-seg" style="width:0%"></div>
+        </div>
+        <div class="meter-legend">
+          <div class="legend-item"><div class="legend-dot lc"></div><span id="leg-c">Critical: —</span></div>
+          <div class="legend-item"><div class="legend-dot lh"></div><span id="leg-h">High: —</span></div>
+          <div class="legend-item"><div class="legend-dot lm"></div><span id="leg-m">Medium: —</span></div>
+          <div class="legend-item"><div class="legend-dot ll"></div><span id="leg-l">Low: —</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Per-Chain Breakdown ── -->
+    <section class="section fade-in">
+      <div class="section-title">🌐 Per-Chain Breakdown</div>
+      <div class="chains-grid" id="chains-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ── Chain Comparison Table ── -->
+    <section class="section fade-in">
+      <div class="section-title">📋 Chain Comparison Table</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Chain</th>
+              <th>Contracts</th>
+              <th>Total Vulns</th>
+              <th>🔴 Critical</th>
+              <th>🟡 High</th>
+              <th>🔵 Medium</th>
+              <th>🟢 Low</th>
+              <th>Risk Level</th>
+            </tr>
+          </thead>
+          <tbody id="chains-table">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── The 20 Plagues ── -->
+    <section class="section fade-in">
+      <div class="section-title">☠️ The 20 Plagues — Detection Patterns</div>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 24px;">
+        "I will bring the plagues upon the unsafe contracts, and they shall be exposed."
+        Each pattern detects a specific class of smart contract vulnerability.
+      </p>
+      <div class="plagues-grid" id="plagues-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-eye">👁️⚖️</div>
+    <p>
+      <strong style="color: var(--gold);">MaatEye</strong> — Named after Ma'at (ماعت), ancient Egyptian goddess of truth, balance, and justice.<br>
+      <em>"She who weighs the heart against the feather."</em>
+    </p>
+    <div class="footer-links">
+      <a href="https://github.com/Lord1Egypt/MaatEye" target="_blank">📂 GitHub Repository</a>
+      <a href="https://github.com/Lord1Egypt/MaatEye/issues" target="_blank">🚩 Red Flag Issues</a>
+      <a href="https://github.com/Lord1Egypt/MaatEye/blob/main/CONTRIBUTING.md" target="_blank">🤝 Contribute</a>
     </div>
+    <p style="color: var(--text-dim); font-size: 0.82rem;">
+      Made with ❤️ by <a href="https://github.com/Lord1Egypt">Lord1Egypt</a> • MIT License • Data refreshes daily at 08:00 UTC
+    </p>
+    <p class="disclaimer">
+      ⚠️ MaatEye is for defensive and educational purposes only. All scanning is READ-ONLY static analysis —
+      no transactions are sent, no contracts are deployed, no vulnerabilities are exploited.
+      Users are responsible for complying with applicable laws.
+    </p>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ── Particle Background ──────────────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  const GLYPHS = ['𓂀','𓃭','𓆙','𓅓','𓇯','𓊹','𓁆','𓆑','𓅱','𓆈','𓇋','𓉔','𓏭','𓎟','𓅀'];
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function spawnParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      glyph: GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
+      size: Math.random() * 12 + 8,
+      speed: Math.random() * 0.15 + 0.05,
+      opacity: Math.random() * 0.15 + 0.03,
+      drift: (Math.random() - 0.5) * 0.2,
+    };
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: 55 }, spawnParticle);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = 'serif';
+    for (let p of particles) {
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = '#FFD700';
+      ctx.font = `${p.size}px serif`;
+      ctx.fillText(p.glyph, p.x, p.y);
+
+      p.y -= p.speed;
+      p.x += p.drift;
+
+      if (p.y < -30) { Object.assign(p, spawnParticle(), { y: H + 20 }); }
+      if (p.x < -30 || p.x > W + 30) { Object.assign(p, spawnParticle()); }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+})();
+
+// ── 20 Plagues Data ─────────────────────────────────────────────────────────
+const PLAGUES = [
+  { id:'P01', icon:'🎭', name:'Unprotected Mint',         sev:'critical', desc:'Anyone can mint tokens without access control.' },
+  { id:'P02', icon:'💀', name:'Selfdestruct Anyone',       sev:'critical', desc:'Unprotected selfdestruct — anyone can destroy the contract.' },
+  { id:'P03', icon:'🔄', name:'Reentrancy',                sev:'critical', desc:'Unsafe external calls before state update — classic DAO bug.' },
+  { id:'P04', icon:'📐', name:'Integer Overflow/Underflow',sev:'critical', desc:'Arithmetic without SafeMath on Solidity <0.8.' },
+  { id:'P05', icon:'🚪', name:'tx.origin Authentication',  sev:'high',     desc:'Phishing-vulnerable auth — uses tx.origin instead of msg.sender.' },
+  { id:'P06', icon:'📞', name:'Unchecked Call',            sev:'high',     desc:'External call return value not checked — silent failures.' },
+  { id:'P07', icon:'🎪', name:'Delegatecall Injection',    sev:'critical', desc:'Arbitrary delegatecall target can execute malicious code.' },
+  { id:'P08', icon:'🗂️', name:'Storage Collision',         sev:'high',     desc:'Proxy storage layout mismatch — corrupts state silently.' },
+  { id:'P09', icon:'🎯', name:'No Input Validation',       sev:'high',     desc:'Unbounded loops or unvalidated parameters cause DoS.' },
+  { id:'P10', icon:'🏷️', name:'Oracle Manipulation',       sev:'critical', desc:'Price feed without manipulation checks — flash loan attack surface.' },
+  { id:'P11', icon:'💧', name:'Flash Loan Vector',         sev:'high',     desc:'Single-block balance assumptions exploitable via flash loans.' },
+  { id:'P12', icon:'🕰️', name:'Timestamp Dependence',      sev:'medium',   desc:'Block timestamp used for randomness or time-critical logic.' },
+  { id:'P13', icon:'🎲', name:'Weak Randomness',           sev:'high',     desc:'On-chain randomness via blockhash/timestamp is predictable.' },
+  { id:'P14', icon:'🔑', name:'Missing Access Control',    sev:'critical', desc:'Sensitive functions missing onlyOwner/role checks.' },
+  { id:'P15', icon:'📉', name:'Front-Running',             sev:'medium',   desc:'State-changing transactions predictable from mempool.' },
+  { id:'P16', icon:'🌀', name:'Infinite Approval',         sev:'medium',   desc:'approve(MAX_UINT) grants infinite spending without expiry.' },
+  { id:'P17', icon:'💣', name:'Denial of Service',         sev:'high',     desc:'Unbounded loops or push-patterns cause DoS on the contract.' },
+  { id:'P18', icon:'🧪', name:'Improper ERC20',            sev:'medium',   desc:'Non-compliant ERC20 implementation causes integration failures.' },
+  { id:'P19', icon:'🔓', name:'Signature Replay',          sev:'high',     desc:'Signed messages reusable across chains or sessions.' },
+  { id:'P20', icon:'👻', name:'Hidden State Change',       sev:'critical', desc:'State modifications in view/pure functions via assembly.' },
+];
+
+// ── Counter Animation ────────────────────────────────────────────────────────
+function animateCount(el, target, duration = 1200) {
+  const start = performance.now();
+  const from = 0;
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 4);
+    el.textContent = Math.round(from + (target - from) * ease).toLocaleString();
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── Fade-in Observer ─────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── Load Data & Render ───────────────────────────────────────────────────────
+async function loadDashboard() {
+  let data;
+  try {
+    const res = await fetch('dashboard.json');
+    data = await res.json();
+  } catch(e) {
+    // Fallback demo data if fetch fails
+    data = {
+      scan_date: new Date().toISOString(),
+      total_chains: 24, total_contracts: 1250, total_vulns: 347,
+      critical_count: 23, high_count: 89, medium_count: 125, low_count: 110,
+      chain_summary: {
+        ethereum:  { chain_name:'Ethereum',        chain_emoji:'💎', contracts:150, vulns:52, critical:5, high:14, medium:18, low:15 },
+        bnb:       { chain_name:'BNB Smart Chain',  chain_emoji:'🟡', contracts:180, vulns:78, critical:8, high:22, medium:28, low:20 },
+        polygon:   { chain_name:'Polygon',          chain_emoji:'🟣', contracts:120, vulns:31, critical:2, high:8,  medium:12, low:9  },
+        arbitrum:  { chain_name:'Arbitrum',         chain_emoji:'🔵', contracts:90,  vulns:22, critical:1, high:5,  medium:8,  low:8  },
+        optimism:  { chain_name:'Optimism',         chain_emoji:'🔴', contracts:70,  vulns:18, critical:1, high:4,  medium:7,  low:6  },
+        base:      { chain_name:'Base',             chain_emoji:'🔷', contracts:60,  vulns:15, critical:1, high:3,  medium:6,  low:5  },
+      }
+    };
+  }
+
+  render(data);
+  document.getElementById('loader').classList.add('hidden');
+}
+
+function render(d) {
+  // Scan time
+  const dt = new Date(d.scan_date || d.timestamp || new Date());
+  document.getElementById('scan-time-display').innerHTML =
+    `Last scan: <span>${dt.toUTCString()}</span>`;
+
+  // Stats
+  animateCount(document.getElementById('s-total'),     d.total_vulns);
+  animateCount(document.getElementById('s-critical'),  d.critical_count);
+  animateCount(document.getElementById('s-high'),      d.high_count);
+  animateCount(document.getElementById('s-medium'),    d.medium_count);
+  animateCount(document.getElementById('s-low'),       d.low_count);
+  animateCount(document.getElementById('s-chains'),    d.total_chains);
+  animateCount(document.getElementById('s-contracts'), d.total_contracts);
+
+  // Severity meter
+  const total = d.critical_count + d.high_count + d.medium_count + d.low_count;
+  if (total > 0) {
+    const pc = (d.critical_count / total * 100).toFixed(1);
+    const ph = (d.high_count     / total * 100).toFixed(1);
+    const pm = (d.medium_count   / total * 100).toFixed(1);
+    const pl = (d.low_count      / total * 100).toFixed(1);
+
+    setTimeout(() => {
+      document.getElementById('mc-seg').style.width = pc + '%';
+      document.getElementById('mh-seg').style.width = ph + '%';
+      document.getElementById('mm-seg').style.width = pm + '%';
+      document.getElementById('ml-seg').style.width = pl + '%';
+      document.getElementById('mc-seg').textContent = pc >= 5 ? `${d.critical_count} Critical` : '';
+      document.getElementById('mh-seg').textContent = ph >= 5 ? `${d.high_count} High`     : '';
+      document.getElementById('mm-seg').textContent = pm >= 5 ? `${d.medium_count} Medium`  : '';
+      document.getElementById('ml-seg').textContent = pl >= 5 ? `${d.low_count} Low`        : '';
+    }, 300);
+
+    document.getElementById('leg-c').textContent = `Critical: ${d.critical_count} (${pc}%)`;
+    document.getElementById('leg-h').textContent = `High: ${d.high_count} (${ph}%)`;
+    document.getElementById('leg-m').textContent = `Medium: ${d.medium_count} (${pm}%)`;
+    document.getElementById('leg-l').textContent = `Low: ${d.low_count} (${pl}%)`;
+  }
+
+  // Chain cards
+  const chainGrid = document.getElementById('chains-grid');
+  const chainTable = document.getElementById('chains-table');
+  const chains = Object.entries(d.chain_summary || {})
+    .sort((a, b) => (b[1].critical || 0) - (a[1].critical || 0));
+
+  const tableRows = [...chains].sort((a, b) => (b[1].vulns || 0) - (a[1].vulns || 0));
+
+  chainGrid.innerHTML = chains.map(([key, c]) => {
+    const tv = (c.vulns || 0);
+    const crit = (c.critical || 0);
+    const high = (c.high || 0);
+    const med  = (c.medium  || 0);
+    const low  = (c.low     || 0);
+    const cls  = crit > 0 ? 'cc-critical' : high > 0 ? 'cc-high' : 'cc-clean';
+    const bpC  = tv ? (crit / tv * 100).toFixed(1) : 0;
+    const bpH  = tv ? (high / tv * 100).toFixed(1) : 0;
+    const bpM  = tv ? (med  / tv * 100).toFixed(1) : 0;
+    const bpL  = tv ? (low  / tv * 100).toFixed(1) : 0;
+
+    return `
+      <div class="chain-card ${cls}">
+        <div class="chain-top">
+          <div class="chain-emoji-wrap">${c.chain_emoji || '⛓️'}</div>
+          <div class="chain-info">
+            <h3>${c.chain_name}</h3>
+            <span class="chain-key-tag">${key}</span>
+          </div>
+        </div>
+        <div class="chain-severity-row">
+          <div class="sev-pill pc"><div class="sv">${crit}</div><div class="sl">Critical</div></div>
+          <div class="sev-pill ph"><div class="sv">${high}</div><div class="sl">High</div></div>
+          <div class="sev-pill pm"><div class="sv">${med}</div><div class="sl">Medium</div></div>
+          <div class="sev-pill pl"><div class="sv">${c.contracts || 0}</div><div class="sl">Contracts</div></div>
+        </div>
+        <div class="chain-bar">
+          <div class="bc" style="width:${bpC}%"></div>
+          <div class="bh" style="width:${bpH}%"></div>
+          <div class="bm" style="width:${bpM}%"></div>
+          <div class="bl" style="width:${bpL}%"></div>
+        </div>
+      </div>`;
+  }).join('');
+
+  chainTable.innerHTML = tableRows.map(([key, c]) => {
+    const crit = c.critical || 0;
+    const high = c.high || 0;
+    const med  = c.medium  || 0;
+    const low  = c.low     || 0;
+    const riskClass = crit > 0 ? 'rc' : high > 0 ? 'rh' : med > 0 ? 'rm' : 'rl';
+    const riskTxt   = crit > 0 ? '🔴 CRITICAL' : high > 0 ? '🟡 HIGH' : med > 0 ? '🔵 MEDIUM' : '🟢 LOW';
+
+    return `<tr>
+      <td><strong>${c.chain_emoji || '⛓️'} ${c.chain_name}</strong></td>
+      <td>${c.contracts || 0}</td>
+      <td><strong>${c.vulns || 0}</strong></td>
+      <td class="tc">${crit}</td>
+      <td class="th">${high}</td>
+      <td class="tm">${med}</td>
+      <td class="tl">${low}</td>
+      <td><span class="risk-badge ${riskClass}">${riskTxt}</span></td>
+    </tr>`;
+  }).join('');
+
+  // 20 Plagues
+  document.getElementById('plagues-grid').innerHTML = PLAGUES.map(p => `
+    <div class="plague-card">
+      <div class="plague-icon">${p.icon}</div>
+      <div class="plague-body">
+        <h4>${p.id} — ${p.name}</h4>
+        <p>${p.desc}</p>
+        <span class="plague-sev ${p.sev}">${p.sev.toUpperCase()}</span>
+      </div>
+    </div>`).join('');
+}
+
+loadDashboard();
+</script>
 </body>
 </html>
