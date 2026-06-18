@@ -158,6 +158,8 @@ flowchart TB
         A2[🧾 RPC Event Logs<br/>eth_getLogs Transfer] --> D
         A3[🔭 Explorer APIs<br/>Etherscan/Blockscout] --> D
         A4[📚 Known Token Lists<br/>Curated] --> D
+        A5[🦎 DexScreener Boosts<br/>Real-time trending] --> D
+        A6[🦙 DeFiLlama Coin List<br/>500K+ entries] --> D
     end
 
     subgraph "🔍 Scanning Pipeline"
@@ -176,8 +178,8 @@ flowchart TB
 
     subgraph "⏰ Schedule"
         M1[🌅 Daily 08:00 UTC<br/>New Token Scan] --> E
-        M2[📅 Weekly Full Scan<br/>All 15K+ tokens] --> E
-        M3[🧾 RPC Block Scan<br/>Recent blocks] --> D
+        M2[⚡ Hourly RPC Scan<br/>New token discovery] --> D
+        M3[📅 Weekly Full Scan<br/>All 15K+ tokens] --> E
     end
 
     subgraph "🧠 Self-Evolution"
@@ -195,7 +197,7 @@ User / Time Trigger
        ▼
 ┌──────────────────────┐     ┌────────────────────┐     ┌──────────────────┐
 │  Token Discovery     │────▶│  Token Registry    │────▶│  Scan Engine     │
-│  (4 sources, dedup)  │     │  (persistent JSON) │     │  (20 patterns)   │
+│  (6 sources, dedup)  │     │  (persistent JSON) │     │  (20 patterns)   │
 └──────────────────────┘     └────────────────────┘     └──────────────────┘
                                                                │
                                                                ▼
