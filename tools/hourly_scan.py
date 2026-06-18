@@ -222,9 +222,10 @@ def update_registry_from_results(chain_key: str, scan_results) -> None:
 
 
 def build_dashboard_json(output_path: str) -> None:
-    """Regenerate docs/dashboard.json from the live token registry."""
+    """Regenerate docs/dashboard.json AND docs/index.html from the live token registry."""
     sys.path.insert(0, str(Path(__file__).parent.parent))
     from tools.update_dashboard import from_registry
+    from tools.generate_dashboard import generate_html
 
     data = from_registry()
 
@@ -232,6 +233,12 @@ def build_dashboard_json(output_path: str) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(data, indent=2, ensure_ascii=False))
     logger.info(f"✅ dashboard.json updated: {output_path}")
+
+    # Also regenerate index.html
+    html = generate_html(data)
+    html_path = p.parent / "index.html"
+    html_path.write_text(html)
+    logger.info(f"✅ index.html updated: {html_path} ({html_path.stat().st_size} bytes)")
 
 
 def print_run_summary(

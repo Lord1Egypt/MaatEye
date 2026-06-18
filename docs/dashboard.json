@@ -1,12 +1,13 @@
 {
-  "scan_date": "2026-06-18T21:00:33.312854+00:00",
-  "total_chains": 24,
-  "total_contracts": 1250,
-  "total_vulns": 350,
-  "critical_count": 147,
-  "high_count": 161,
-  "medium_count": 42,
+  "scan_date": "2026-06-18T21:20:44.313923+00:00",
+  "total_chains": 15,
+  "total_contracts": 6359,
+  "total_vulns": 10216,
+  "critical_count": 216,
+  "high_count": 0,
+  "medium_count": 0,
   "low_count": 0,
+  "pattern_count": 50,
   "pattern_categories": {
     "ACCESS_CONTROL": 9,
     "ARITHMETIC": 5,
@@ -19,15 +20,507 @@
     "SIGNATURE_CRYPTO": 1,
     "TOKEN_ECONOMICS": 5
   },
+  "patterns": [
+    {
+      "id": "P01",
+      "name": "Unprotected Mint",
+      "severity": "critical",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P02",
+      "name": "Selfdestruct Anyone",
+      "severity": "critical",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P03",
+      "name": "Reentrancy",
+      "severity": "critical",
+      "category": "REENTRANCY",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P04",
+      "name": "Integer Overflow/Underflow",
+      "severity": "critical",
+      "category": "ARITHMETIC",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P05",
+      "name": "tx.origin Authentication",
+      "severity": "high",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P06",
+      "name": "Unchecked Call",
+      "severity": "high",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P07",
+      "name": "Delegatecall Injection",
+      "severity": "critical",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P08",
+      "name": "Storage Collision",
+      "severity": "high",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "expert"
+    },
+    {
+      "id": "P09",
+      "name": "No Input Validation",
+      "severity": "high",
+      "category": "BUSINESS_LOGIC",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P10",
+      "name": "Oracle Manipulation",
+      "severity": "critical",
+      "category": "TOKEN_ECONOMICS",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P11",
+      "name": "Flash Loan Attack Vector",
+      "severity": "high",
+      "category": "TOKEN_ECONOMICS",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P12",
+      "name": "Signature Replay",
+      "severity": "high",
+      "category": "SIGNATURE_CRYPTO",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P13",
+      "name": "Governance Attack",
+      "severity": "critical",
+      "category": "GOVERNANCE",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P14",
+      "name": "Unsafe Ownership Renounce",
+      "severity": "medium",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P15",
+      "name": "Incorrect Visibility",
+      "severity": "medium",
+      "category": "BUSINESS_LOGIC",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P16",
+      "name": "Uninitialized Proxy",
+      "severity": "critical",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P17",
+      "name": "Arbitrary External Call",
+      "severity": "critical",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P18",
+      "name": "Missing Access Control",
+      "severity": "high",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P19",
+      "name": "No SafeERC20",
+      "severity": "medium",
+      "category": "ERC_STANDARDS",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P20",
+      "name": "Timestamp Dependence",
+      "severity": "medium",
+      "category": "BUSINESS_LOGIC",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P21",
+      "name": "Unprotected Initializer",
+      "severity": "critical",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P22",
+      "name": "Role Admin Hijack",
+      "severity": "critical",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P23",
+      "name": "Ownership Transfer Without Two-Step",
+      "severity": "high",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P24",
+      "name": "Pausable Without Unpause Guard",
+      "severity": "high",
+      "category": "ACCESS_CONTROL",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P25",
+      "name": "Cross-Function Reentrancy",
+      "severity": "critical",
+      "category": "REENTRANCY",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P26",
+      "name": "Read-Only Reentrancy",
+      "severity": "high",
+      "category": "REENTRANCY",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P27",
+      "name": "Cross-Contract Reentrancy",
+      "severity": "critical",
+      "category": "REENTRANCY",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P28",
+      "name": "ERC721 Callback Reentrancy",
+      "severity": "critical",
+      "category": "REENTRANCY",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P29",
+      "name": "ERC1155 Batch Reentrancy",
+      "severity": "critical",
+      "category": "REENTRANCY",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P30",
+      "name": "Reentrancy Via Fallback",
+      "severity": "high",
+      "category": "REENTRANCY",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P31",
+      "name": "Flash Loan Reentrancy Bridge",
+      "severity": "critical",
+      "category": "REENTRANCY",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P32",
+      "name": "Precision Loss (Division Before Multiplication)",
+      "severity": "high",
+      "category": "ARITHMETIC",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P33",
+      "name": "Rounding in Favor of Wrong Party",
+      "severity": "high",
+      "category": "ARITHMETIC",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P34",
+      "name": "Fee Calculation Exploit",
+      "severity": "high",
+      "category": "ARITHMETIC",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P35",
+      "name": "Share Price Manipulation (EIP-4626)",
+      "severity": "critical",
+      "category": "ARITHMETIC",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P36",
+      "name": "Metamorphic Contract (selfdestruct + CREATE2)",
+      "severity": "critical",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "expert"
+    },
+    {
+      "id": "P37",
+      "name": "Implementation Selfdestruct",
+      "severity": "critical",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P38",
+      "name": "Constructor in Implementation",
+      "severity": "high",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P39",
+      "name": "Function Clashing (malicious implementation)",
+      "severity": "high",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P40",
+      "name": "UUPS Without Upgrade Guard",
+      "severity": "high",
+      "category": "PROXY_UPGRADEABLE",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P41",
+      "name": "Contract Existence Check Missing",
+      "severity": "high",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P42",
+      "name": "Gas Stipend Dependency",
+      "severity": "medium",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "easy"
+    },
+    {
+      "id": "P43",
+      "name": "Delegatecall to Untrusted Library",
+      "severity": "critical",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P44",
+      "name": "Staticcall With Side Effects",
+      "severity": "medium",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P45",
+      "name": "CREATE2 Address Collision",
+      "severity": "high",
+      "category": "EXTERNAL_CALLS",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P50",
+      "name": "Honeypot Detection",
+      "severity": "high",
+      "category": "TOKEN_ECONOMICS",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P51",
+      "name": "Fee-On-Transfer Accounting Mismatch",
+      "severity": "high",
+      "category": "TOKEN_ECONOMICS",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P52",
+      "name": "Deflationary Token Balance Change",
+      "severity": "high",
+      "category": "TOKEN_ECONOMICS",
+      "difficulty": "medium"
+    },
+    {
+      "id": "P60",
+      "name": "Flash Loan Governance Takeover",
+      "severity": "critical",
+      "category": "GOVERNANCE",
+      "difficulty": "hard"
+    },
+    {
+      "id": "P61",
+      "name": "Low Quorum / Low Proposal Threshold",
+      "severity": "high",
+      "category": "GOVERNANCE",
+      "difficulty": "medium"
+    }
+  ],
   "chain_summary": {
+    "arbitrum": {
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "🌀",
+      "contracts": 866,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "avalanche": {
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "🔺",
+      "contracts": 434,
+      "vulns": 10216,
+      "critical": 216,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "base": {
+      "chain_name": "Base",
+      "chain_emoji": "🔷",
+      "contracts": 1000,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "blast": {
+      "chain_name": "Blast",
+      "chain_emoji": "💥",
+      "contracts": 50,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "bnb": {
+      "chain_name": "BNB Chain",
+      "chain_emoji": "🟡",
+      "contracts": 1000,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "celo": {
+      "chain_name": "Celo",
+      "chain_emoji": "🌿",
+      "contracts": 50,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
     "ethereum": {
       "chain_name": "Ethereum",
-      "chain_emoji": "\ud83d\udc8e",
-      "contracts": 150,
-      "vulns": 100,
-      "critical": 21,
-      "high": 23,
-      "medium": 6,
+      "chain_emoji": "💎",
+      "contracts": 1600,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "gnosis": {
+      "chain_name": "Gnosis",
+      "chain_emoji": "🦉",
+      "contracts": 50,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "linea": {
+      "chain_name": "Linea",
+      "chain_emoji": "⬛",
+      "contracts": 50,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "mantle": {
+      "chain_name": "Mantle",
+      "chain_emoji": "⚙️",
+      "contracts": 50,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "metis": {
+      "chain_name": "Metis",
+      "chain_emoji": "🏛",
+      "contracts": 29,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "moonbeam": {
+      "chain_name": "Moonbeam",
+      "chain_emoji": "🌕",
+      "contracts": 25,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "optimism": {
+      "chain_name": "Optimism",
+      "chain_emoji": "🔴",
+      "contracts": 250,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "polygon": {
+      "chain_name": "Polygon",
+      "chain_emoji": "🟣",
+      "contracts": 864,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "scroll": {
+      "chain_name": "Scroll",
+      "chain_emoji": "📜",
+      "contracts": 41,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
       "low": 0
     }
   }

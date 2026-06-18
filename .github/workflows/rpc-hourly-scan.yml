@@ -123,8 +123,8 @@ jobs:
           git config user.name  "MaatEye Bot"
           git config user.email "maateye@bot.github.com"
 
-          git add data/token_registry.json docs/dashboard.json 2>/dev/null || true
-          git add data/ docs/dashboard.json 2>/dev/null || true
+          git add data/token_registry.json docs/dashboard.json docs/index.html 2>/dev/null || true
+          git add data/ docs/ 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "ℹ️ No changes to commit (no new tokens discovered this hour)"
