@@ -98,12 +98,12 @@ for chain_key, info in chain_summary.items():
             --input results/cross_chain_report.json \
             --output results/DASHBOARD.md
 
-      - name: 🏗️ Generate GitHub Pages Dashboard
+      - name: 📊 Update Dashboard JSON
         if: always()
         run: |
-          python tools/generate_dashboard.py \
+          python tools/update_dashboard.py \
             --input results/cross_chain_report.json \
-            --output docs/
+            --output docs/dashboard.json
 
       - name: 📝 Generate README Chain Badges
         if: always()

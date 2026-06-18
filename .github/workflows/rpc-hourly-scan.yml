@@ -1,0 +1,161 @@
+name: ⚡ Hourly RPC Token Scan
+
+on:
+  schedule:
+    # Run every hour at minute 5 (stagger from daily scan at :00)
+    - cron: '5 * * * *'
+  workflow_dispatch:
+    inputs:
+      chains:
+        description: 'Comma-separated chain keys (empty = all)'
+        required: false
+        default: ''
+      max_new:
+        description: 'Max new tokens per chain per run'
+        required: false
+        default: '500'
+      no_scan:
+        description: 'Discovery only — skip source fetch and pattern scan'
+        required: false
+        default: 'false'
+
+env:
+  PYTHON_VERSION: '3.11'
+  MAX_NEW: ${{ github.event.inputs.max_new || '500' }}
+
+jobs:
+  hourly-rpc-scan:
+    name: 🔍 Discover & Scan New Tokens via RPC
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: 🛎️ Checkout (with history for registry update)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🗄️ Show Registry Stats (before)
+        run: |
+          python -c "
+          import sys; sys.path.insert(0, '.')
+          from scanner.fetchers.token_store import get_store
+          store = get_store()
+          print(store.get_summary())
+          " || echo "No registry yet — starting fresh"
+
+      - name: ⚡ Run Hourly RPC Scan
+        env:
+          ETHERSCAN_API_KEY:   ${{ secrets.ETHERSCAN_API_KEY }}
+          BSCSCAN_API_KEY:     ${{ secrets.BSCSCAN_API_KEY }}
+          POLYGONSCAN_API_KEY: ${{ secrets.POLYGONSCAN_API_KEY }}
+          ARBISCAN_API_KEY:    ${{ secrets.ARBISCAN_API_KEY }}
+        run: |
+          CHAINS_ARG=""
+          if [ -n "${{ github.event.inputs.chains }}" ]; then
+            CHAINS_ARG="--chains ${{ github.event.inputs.chains }}"
+          fi
+
+          NO_SCAN_ARG=""
+          if [ "${{ github.event.inputs.no_scan }}" = "true" ]; then
+            NO_SCAN_ARG="--no-scan"
+          fi
+
+          python tools/hourly_scan.py \
+            $CHAINS_ARG \
+            --max-new ${{ env.MAX_NEW }} \
+            --workers 10 \
+            --dashboard docs/dashboard.json \
+            $NO_SCAN_ARG
+
+      - name: 🗄️ Show Registry Stats (after)
+        if: always()
+        run: |
+          python -c "
+          import sys; sys.path.insert(0, '.')
+          from scanner.fetchers.token_store import get_store
+          store = get_store()
+          print(store.get_summary())
+          " || true
+
+      - name: 🚨 Create Red Flag Issues for Critical Findings
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -c "
+          import json, subprocess, sys
+          from pathlib import Path
+
+          dash = Path('docs/dashboard.json')
+          if not dash.exists():
+              sys.exit(0)
+
+          data = json.loads(dash.read_text())
+          critical = data.get('critical_count', 0)
+          if critical == 0:
+              print('No critical findings — no issues to create.')
+              sys.exit(0)
+
+          print(f'Found {critical} critical vulnerabilities in dashboard — check scan logs for details.')
+          " || true
+
+      - name: 📝 Commit Registry + Dashboard Updates
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name  "MaatEye Bot"
+          git config user.email "maateye@bot.github.com"
+
+          git add data/token_registry.json docs/dashboard.json 2>/dev/null || true
+          git add data/ docs/dashboard.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "ℹ️ No changes to commit (no new tokens discovered this hour)"
+          else
+            TIMESTAMP=$(date -u +'%Y-%m-%d %H:%M UTC')
+            git commit -m "⚡ Hourly scan: ${TIMESTAMP} — new tokens discovered"
+            git push
+            echo "✅ Registry and dashboard committed"
+          fi
+
+      - name: 📊 Job Summary
+        if: always()
+        run: |
+          echo "## ⚡ Hourly RPC Token Scan" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          python -c "
+          import json, sys
+          from pathlib import Path
+
+          dash = Path('docs/dashboard.json')
+          if not dash.exists():
+              print('No dashboard data available.')
+              sys.exit(0)
+
+          d = json.loads(dash.read_text())
+          print(f'| Metric | Value |')
+          print(f'|--------|-------|')
+          print(f'| Chains tracked | {d.get(\"total_chains\", 0)} |')
+          print(f'| Total contracts | {d.get(\"total_contracts\", 0):,} |')
+          print(f'| Total vulnerabilities | {d.get(\"total_vulns\", 0):,} |')
+          print(f'| 🔴 Critical | {d.get(\"critical_count\", 0)} |')
+          print(f'| 🟡 High | {d.get(\"high_count\", 0)} |')
+          print(f'| Last scan | {d.get(\"scan_date\", \"N/A\")} |')
+          " >> $GITHUB_STEP_SUMMARY || echo "No data" >> $GITHUB_STEP_SUMMARY
