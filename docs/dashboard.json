@@ -1,11 +1,82 @@
 {
-  "scan_date": "2026-06-18T16:43:39.839190+00:00",
-  "total_chains": 0,
-  "total_contracts": 0,
-  "total_vulns": 0,
-  "critical_count": 0,
+  "scan_date": "2026-06-18T16:46:29.086045+00:00",
+  "total_chains": 7,
+  "total_contracts": 18,
+  "total_vulns": 2,
+  "critical_count": 2,
   "high_count": 0,
   "medium_count": 0,
   "low_count": 0,
-  "chain_summary": {}
+  "chain_summary": {
+    "arbitrum": {
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "🌀",
+      "contracts": 2,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "polygon": {
+      "chain_name": "Polygon",
+      "chain_emoji": "🟣",
+      "contracts": 2,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "optimism": {
+      "chain_name": "Optimism",
+      "chain_emoji": "🔴",
+      "contracts": 2,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "avalanche": {
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "🔺",
+      "contracts": 2,
+      "vulns": 2,
+      "critical": 2,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "base": {
+      "chain_name": "Base",
+      "chain_emoji": "🔷",
+      "contracts": 2,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "ethereum": {
+      "chain_name": "Ethereum",
+      "chain_emoji": "🔵",
+      "contracts": 5,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "bnb": {
+      "chain_name": "BNB Chain",
+      "chain_emoji": "🟡",
+      "contracts": 3,
+      "vulns": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    }
+  }
 }
