@@ -16,9 +16,13 @@ from scanner.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+import threading
+from collections import defaultdict
+
 # In-memory cache: {(chain_key, address): dict}
 _source_cache: dict[str, dict] = {}
 _last_request_time: dict[str, float] = {}  # Per-chain rate limiting
+_rate_limit_locks = defaultdict(threading.Lock)
 
 
 def fetch_contract_source(
@@ -54,12 +58,14 @@ def fetch_contract_source(
         logger.debug(f"  📦 Cache hit: {address} on {chain_obj.name}")
         return _source_cache[cache_key]
 
-    # Rate limiting per chain
-    last = _last_request_time.get(chain_obj.key, 0)
-    elapsed = time.time() - last
+    # Thread-safe rate limiting per chain
     min_interval = 1.0 / chain_obj.scan_limit_rps
-    if elapsed < min_interval:
-        time.sleep(min_interval - elapsed)
+    with _rate_limit_locks[chain_obj.key]:
+        last = _last_request_time.get(chain_obj.key, 0)
+        elapsed = time.time() - last
+        if elapsed < min_interval:
+            time.sleep(min_interval - elapsed)
+        _last_request_time[chain_obj.key] = time.time()
 
     # Try Etherscan-compatible API first
     result = _try_etherscan_api(address, chain_obj, api_key)
@@ -71,8 +77,6 @@ def fetch_contract_source(
     # Fallback: try direct RPC bytecode check (just to verify it's a contract)
     if result is None:
         result = _try_rpc_bytecode(address, chain_obj)
-
-    _last_request_time[chain_obj.key] = time.time()
 
     if result:
         _source_cache[cache_key] = result
