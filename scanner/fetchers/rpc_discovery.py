@@ -180,9 +180,13 @@ def discover_tokens_via_rpc(
         
         if "error" in result:
             error_msg = result["error"].get("message", "")
-            if "limit" in error_msg.lower():
+            if "limit" in error_msg.lower() or "too many" in error_msg.lower():
+                if batch_size <= 10:
+                    logger.warning(f"  ⚠️ RPC rate limit persists at minimum batch size. Skipping to next chunk.")
+                    current_from = current_to
+                    continue
                 # Reduce batch size and retry
-                batch_size = max(batch_size // 2, 50)
+                batch_size = max(batch_size // 2, 10)
                 logger.debug(f"  📉 Reducing batch to {batch_size} due to rate limit")
                 continue
             else:
