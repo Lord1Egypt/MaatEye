@@ -41,6 +41,36 @@ def main():
     scan_parser.add_argument("--network", default="mainnet",
                              help="Ethereum network (mainnet, sepolia, etc.)")
     scan_parser.add_argument("--rpc", help="Custom RPC endpoint")
+    scan_parser.add_argument("--chain", default=None,
+                             help="Chain to scan (ethereum, bnb, polygon, etc.)")
+
+    # ── Scan-Chain Command ──────────────────────────────────────────────────
+    chain_parser = subparsers.add_parser("scan-chain",
+        help="Scan top tokens on a specific chain")
+    chain_parser.add_argument("chain", help="Chain key (ethereum, bnb, polygon, etc.)")
+    chain_parser.add_argument("--count", type=int, default=10,
+                              help="Number of top tokens to scan")
+    chain_parser.add_argument("--patterns", default="all",
+                              help="Comma-separated pattern IDs or 'all'")
+    chain_parser.add_argument("--format", choices=["json", "markdown", "text"],
+                              default="json", help="Output format")
+    chain_parser.add_argument("--output", help="Output file path")
+
+    # ── Scan-All Command ────────────────────────────────────────────────────
+    scan_all_parser = subparsers.add_parser("scan-all",
+        help="Scan top tokens across ALL supported EVM chains")
+    scan_all_parser.add_argument("--tokens-per-chain", type=int, default=10,
+                                 help="Number of top tokens per chain")
+    scan_all_parser.add_argument("--patterns", default="all",
+                                 help="Comma-separated pattern IDs or 'all'")
+    scan_all_parser.add_argument("--format", choices=["json", "markdown", "text"],
+                                 default="json", help="Output format")
+    scan_all_parser.add_argument("--output", help="Output file path")
+
+    # ── Chains Command ──────────────────────────────────────────────────────
+    chains_parser = subparsers.add_parser("chains", help="List supported chains")
+    chains_parser.add_argument("--show-all", action="store_true",
+                               help="Show all chains including RPC URLs")
 
     # ── Patterns Command ────────────────────────────────────────────────────
     patterns_parser = subparsers.add_parser("patterns", help="Manage detection patterns")
@@ -66,6 +96,12 @@ def main():
 
     if args.command == "scan":
         run_scan(args)
+    elif args.command == "scan-chain":
+        run_scan_chain(args)
+    elif args.command == "scan-all":
+        run_scan_all(args)
+    elif args.command == "chains":
+        run_chains(args)
     elif args.command == "patterns":
         manage_patterns(args)
     elif args.command == "validate":
@@ -125,6 +161,7 @@ def run_scan(args):
         network=args.network,
         rpc_endpoint=args.rpc,
         pattern_ids=pattern_ids,
+        chain_key=args.chain,
     )
 
     results = engine.scan(addresses)
@@ -143,9 +180,94 @@ def run_scan(args):
     else:
         print(output)
 
-    # Return non-zero if critical vulns found (for CI)
-    if results.critical_count > 0:
-        sys.exit(0)  # Don't fail CI for findings — just report
+
+def run_scan_chain(args):
+    """Scan top tokens on a specific chain."""
+    from scanner.engine import ScanEngine
+
+    logger.info(f"🌐 Scanning chain: {args.chain}")
+
+    pattern_ids = None
+    if args.patterns and args.patterns != "all":
+        pattern_ids = [p.strip() for p in args.patterns.split(",")]
+
+    engine = ScanEngine(
+        pattern_ids=pattern_ids,
+        chain_key=args.chain,
+    )
+
+    results = engine.scan_chain(args.chain, count=args.count)
+
+    # Format output
+    if args.format == "json":
+        output = json.dumps(results.to_dict(), indent=2)
+    elif args.format == "markdown":
+        output = results.to_markdown()
+    else:
+        output = results.to_text()
+
+    if args.output:
+        Path(args.output).write_text(output)
+        logger.info(f"✅ Results written to {args.output}")
+    else:
+        print(output)
+
+
+def run_scan_all(args):
+    """Scan top tokens across ALL supported EVM chains."""
+    from scanner.engine import ScanEngine
+
+    logger.info("🌍 Cross-chain scan — ALL EVM chains")
+
+    pattern_ids = None
+    if args.patterns and args.patterns != "all":
+        pattern_ids = [p.strip() for p in args.patterns.split(",")]
+
+    engine = ScanEngine(pattern_ids=pattern_ids)
+
+    results = engine.scan_all_chains(tokens_per_chain=args.tokens_per_chain)
+
+    # Format output
+    if args.format == "json":
+        output = json.dumps(results.to_dict(), indent=2)
+    elif args.format == "markdown":
+        output = results.to_markdown()
+    else:
+        output = results.to_text()
+
+    if args.output:
+        Path(args.output).write_text(output)
+        logger.info(f"✅ Cross-chain results written to {args.output}")
+    else:
+        print(output)
+
+
+def run_chains(args):
+    """List all supported EVM chains."""
+    from scanner.chains import EVM_CHAINS, ALIASES
+
+    print("\n🌐 🌐 🌐  MAATEYE — SUPPORTED EVM CHAINS  🌐 🌐 🌐")
+    print("=" * 75)
+    print(f"{'Key':<14} {'Chain':<20} {'Chain ID':<10} {'Symbol':<8} {'RPC':<25}")
+    print("-" * 75)
+
+    for key, chain in sorted(EVM_CHAINS.items()):
+        status = "✅" if chain.enabled else "❌"
+        rpc_short = chain.rpc_url.replace("https://", "")[:24]
+        print(f"{status} {key:<12} {chain.name:<20} {chain.chain_id:<10} "
+              f"{chain.symbol:<8} {rpc_short:<25}")
+
+    print("-" * 75)
+    print(f"Total: {len(EVM_CHAINS)} EVM chains")
+
+    if args.show_all:
+        print("\n🔗 Explorer APIs:")
+        for key, chain in sorted(EVM_CHAINS.items()):
+            print(f"  {chain.emoji} {chain.name}: {chain.explorer_api}")
+
+        print("\n🔤 Aliases:")
+        for alias, target in sorted(ALIASES.items()):
+            print(f"  {alias} → {target}")
 
 
 def manage_patterns(args):

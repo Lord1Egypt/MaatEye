@@ -27,12 +27,16 @@ class GitHubReporter:
         severity = vuln.get("severity", "medium")
         pattern_name = vuln.get("pattern_name", "Unknown")
         description = vuln.get("description", "No description")
+        chain = vuln.get("chain", "ethereum")
+        chain_name = vuln.get("chain_name", "Ethereum")
+        chain_emoji = vuln.get("chain_emoji", "🔵")
 
-        title = f"🚩 [RedFlag] {pattern_name} in {contract[:10]}...{contract[-6:]}"
+        title = f"🚩 [RedFlag] {chain_emoji} {pattern_name} on {chain_name} — {contract[:10]}...{contract[-6:]}"
 
         body = f"""## 🚩 Red Flag: {pattern_name}
 
 **Contract:** `{contract}`
+**Chain:** {chain_emoji} **{chain_name}** (`{chain}`)
 **Severity:** {severity}
 **Pattern:** `{vuln.get('pattern_id', 'N/A')}`
 **Confidence:** {vuln.get('confidence', 0.5):.0%}
@@ -54,6 +58,7 @@ class GitHubReporter:
 ---
 
 > 🏛️ *Flagged by MaatEye — The Eternal Guardian of Smart Contracts*
+> 🌐 *Cross-chain scan across {chain_emoji} {chain_name}*
 """
 
         labels = ["Red Flag", severity]

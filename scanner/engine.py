@@ -33,6 +33,11 @@ class Vulnerability:
     evidence: str
     confidence: float  # 0.0 - 1.0
     recommendation: str
+    chain: str = "ethereum"       # Chain key
+    chain_name: str = "Ethereum"  # Chain display name
+    chain_emoji: str = "🔵"       # Chain emoji
+    explorer_url: str = ""        # Link to explorer
+
 
 
 @dataclass
@@ -42,6 +47,10 @@ class ContractResult:
     contract_name: str
     compiler: str
     source_length: int
+    chain: str = "ethereum"
+    chain_name: str = "Ethereum"
+    chain_emoji: str = "🔵"
+    explorer_url: str = ""
     vulnerabilities: list[Vulnerability] = field(default_factory=list)
     error: Optional[str] = None
     scan_time_ms: float = 0.0
@@ -75,21 +84,53 @@ class ScanResults:
     contracts: dict[str, ContractResult] = field(default_factory=dict)
     scan_time_seconds: float = 0.0
     timestamp: str = ""
+    chains_scanned: list[str] = field(default_factory=list)
+    low_count: int = 0
+    contracts: dict[str, ContractResult] = field(default_factory=dict)
+    scan_time_seconds: float = 0.0
+    timestamp: str = ""
+    chains_scanned: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
+        # Build per-chain summary
+        chain_summary = {}
+        for addr, c in self.contracts.items():
+            ch = c.chain
+            if ch not in chain_summary:
+                chain_summary[ch] = {
+                    "chain_name": c.chain_name,
+                    "chain_emoji": c.chain_emoji,
+                    "contracts": 0,
+                    "vulns": 0,
+                    "critical": 0,
+                    "high": 0,
+                    "medium": 0,
+                }
+            chain_summary[ch]["contracts"] += 1
+            chain_summary[ch]["vulns"] += c.vuln_count
+            chain_summary[ch]["critical"] += c.critical_count
+            chain_summary[ch]["high"] += c.high_count
+            chain_summary[ch]["medium"] += c.medium_count
+
         return {
             "tool": "MaatEye",
             "version": "1.0.0-alpha",
             "timestamp": self.timestamp,
             "scan_time_seconds": self.scan_time_seconds,
+            "total_chains": len(self.chains_scanned),
+            "chains_scanned": self.chains_scanned,
             "total_contracts": self.total_contracts,
             "total_vulns": self.total_vulns,
             "critical_count": self.critical_count,
             "high_count": self.high_count,
             "medium_count": self.medium_count,
             "low_count": self.low_count,
+            "chain_summary": chain_summary,
             "contracts": {
                 addr: {
+                    "chain": c.chain,
+                    "chain_name": c.chain_name,
+                    "chain_emoji": c.chain_emoji,
                     "contract_name": c.contract_name or "Unknown",
                     "compiler": c.compiler or "N/A",
                     "source_length": c.source_length,
@@ -103,11 +144,14 @@ class ScanResults:
                             "pattern_id": v.pattern_id,
                             "pattern_name": v.pattern_name,
                             "severity": v.severity,
+                            "chain": v.chain,
+                            "chain_name": v.chain_name,
                             "description": v.description,
                             "location": v.location,
                             "snippet": v.snippet,
                             "confidence": v.confidence,
                             "recommendation": v.recommendation,
+                            "explorer_url": v.explorer_url,
                         }
                         for v in c.vulnerabilities
                     ],
@@ -116,10 +160,11 @@ class ScanResults:
             },
         }
 
-    def to_markdown(self) -> str:
+    def to_markdown(self, by_chain: bool = True) -> str:
         lines = [
-            "# 👁️⚖️ MaatEye Scan Report\n",
+            "# 👁️⚖️ MaatEye Cross-Chain Scan Report\n",
             f"**Timestamp:** {self.timestamp}\n",
+            f"**Chains Scanned:** {len(self.chains_scanned)}\n",
             f"**Contracts Scanned:** {self.total_contracts}\n",
             f"**Total Vulnerabilities:** {self.total_vulns}\n",
             f"**🔴 Critical:** {self.critical_count} | "
@@ -128,29 +173,69 @@ class ScanResults:
             "---\n",
         ]
 
-        for addr, contract in self.contracts.items():
-            status = "🔴" if contract.critical_count > 0 else (
-                "🟡" if contract.high_count > 0 else (
-                    "🔵" if contract.medium_count > 0 else "🟢"))
-            lines.append(f"## {status} `{addr}`\n")
-            lines.append(f"- **Name:** {contract.contract_name or 'Unknown'}")
-            lines.append(f"- **Compiler:** {contract.compiler or 'N/A'}")
-            lines.append(f"- **Source Size:** {contract.source_length} bytes")
-            lines.append(f"- **Findings:** {contract.vuln_count}\n")
+        if by_chain and self.chains_scanned:
+            # Group by chain
+            chain_groups: dict[str, list[ContractResult]] = {}
+            for c in self.contracts.values():
+                ch = c.chain
+                if ch not in chain_groups:
+                    chain_groups[ch] = []
+                chain_groups[ch].append(c)
 
-            for v in contract.vulnerabilities:
-                emoji = {"critical": "🔴", "high": "🟡", "medium": "🔵", "low": "🟢"}
-                lines.append(f"### {emoji.get(v.severity, '⚪')} {v.pattern_name}")
-                lines.append(f"- **Pattern:** `{v.pattern_id}`")
-                lines.append(f"- **Severity:** {v.severity}")
-                lines.append(f"- **Description:** {v.description}")
-                lines.append(f"- **Location:** `{v.location}`")
-                lines.append(f"- **Confidence:** {v.confidence:.0%}")
-                if v.snippet:
-                    lines.append(f"- **Snippet:**\n```solidity\n{v.snippet}\n```")
-                lines.append(f"- **Recommendation:** {v.recommendation}\n")
+            for chain_key in sorted(chain_groups.keys()):
+                contracts = chain_groups[chain_key]
+                c = contracts[0]
+                total_v = sum(c2.vuln_count for c2 in contracts)
+                crit = sum(c2.critical_count for c2 in contracts)
+                high = sum(c2.high_count for c2 in contracts)
+                med = sum(c2.medium_count for c2 in contracts)
 
-            lines.append("---\n")
+                status = "🔴" if crit > 0 else ("🟡" if high > 0 else "🟢")
+                lines.append(f"## {status} {c.chain_emoji} {c.chain_name} ({len(contracts)} contracts, {total_v} vulns)\n")
+                
+                for contract in contracts:
+                    addr = contract.address
+                    cs = "🔴" if contract.critical_count > 0 else ("🟡" if contract.high_count > 0 else "🟢")
+                    explorer_link = f"[🔗]({contract.explorer_url}/address/{addr})" if contract.explorer_url else ""
+                    lines.append(f"### {cs} `{addr[:12]}...{addr[-6:]}` {explorer_link}")
+                    lines.append(f"- **Name:** {contract.contract_name or 'Unknown'}")
+                    lines.append(f"- **Findings:** {contract.vuln_count} (🔴{contract.critical_count} 🟡{contract.high_count} 🔵{contract.medium_count})\n")
+
+                    for v in contract.vulnerabilities:
+                        emoji = {"critical": "🔴", "high": "🟡", "medium": "🔵", "low": "🟢"}
+                        lines.append(f"  {emoji.get(v.severity, '⚪')} **{v.pattern_name}**")
+                        lines.append(f"  - {v.description[:120]}")
+                        lines.append(f"  - **Confidence:** {v.confidence:.0%}")
+                        if v.snippet:
+                            lines.append(f"  - **Snippet:** `{v.snippet[:80]}...`")
+                        lines.append("")
+
+                lines.append("---\n")
+        else:
+            for addr, contract in self.contracts.items():
+                status = "🔴" if contract.critical_count > 0 else (
+                    "🟡" if contract.high_count > 0 else (
+                        "🔵" if contract.medium_count > 0 else "🟢"))
+                lines.append(f"## {status} `{addr}`\n")
+                lines.append(f"- **Chain:** {contract.chain_emoji} {contract.chain_name}")
+                lines.append(f"- **Name:** {contract.contract_name or 'Unknown'}")
+                lines.append(f"- **Compiler:** {contract.compiler or 'N/A'}")
+                lines.append(f"- **Source Size:** {contract.source_length} bytes")
+                lines.append(f"- **Findings:** {contract.vuln_count}\n")
+
+                for v in contract.vulnerabilities:
+                    emoji = {"critical": "🔴", "high": "🟡", "medium": "🔵", "low": "🟢"}
+                    lines.append(f"### {emoji.get(v.severity, '⚪')} {v.pattern_name}")
+                    lines.append(f"- **Pattern:** `{v.pattern_id}`")
+                    lines.append(f"- **Severity:** {v.severity}")
+                    lines.append(f"- **Description:** {v.description}")
+                    lines.append(f"- **Location:** `{v.location}`")
+                    lines.append(f"- **Confidence:** {v.confidence:.0%}")
+                    if v.snippet:
+                        lines.append(f"- **Snippet:**\n```solidity\n{v.snippet}\n```")
+                    lines.append(f"- **Recommendation:** {v.recommendation}\n")
+
+                lines.append("---\n")
 
         return "\n".join(lines)
 
@@ -183,11 +268,21 @@ class ScanEngine:
         rpc_endpoint: Optional[str] = None,
         pattern_ids: Optional[list[str]] = None,
         max_workers: int = 5,
+        chain_key: Optional[str] = None,  # Multi-chain support
     ):
         self.network = network
         self.rpc_endpoint = rpc_endpoint
         self.pattern_ids = pattern_ids
         self.max_workers = max_workers
+        self.chain_key = chain_key
+
+        # Resolve chain context
+        self.chain_ctx = None
+        if chain_key:
+            from scanner.chains import get_chain
+            self.chain_ctx = get_chain(chain_key)
+            if self.chain_ctx:
+                self.network = chain_key
 
         # Load configuration
         self.config = load_config()
@@ -206,7 +301,8 @@ class ScanEngine:
                 if p.get("enabled", True)
             }
 
-        logger.info(f"🧩 Loaded {len(self.active_patterns)} active patterns")
+        logger.info(f"🧩 Loaded {len(self.active_patterns)} active patterns"
+                     f"{' for ' + self.chain_ctx.name if self.chain_ctx else ''}")
 
     def scan(self, addresses: list[str]) -> ScanResults:
         """Scan a list of contract addresses."""
@@ -254,7 +350,11 @@ class ScanEngine:
     def _scan_single(self, address: str) -> ContractResult:
         """Scan a single contract address."""
         t0 = time.time()
-        logger.debug(f"  🔍 Scanning {address}...")
+        chain_name = self.chain_ctx.name if self.chain_ctx else "Ethereum"
+        chain_key = self.chain_ctx.key if self.chain_ctx else "ethereum"
+        chain_emoji = self.chain_ctx.emoji if self.chain_ctx else "🔵"
+        explorer_url = self.chain_ctx.explorer_url if self.chain_ctx else ""
+        logger.debug(f"  🔍 Scanning {address} on {chain_name}...")
 
         # Fetch source code
         source_data = self._fetch_source(address)
@@ -265,6 +365,10 @@ class ScanEngine:
                 contract_name="",
                 compiler="",
                 source_length=0,
+                chain=chain_key,
+                chain_name=chain_name,
+                chain_emoji=chain_emoji,
+                explorer_url=explorer_url,
                 error=source_data["error"],
                 scan_time_ms=elapsed,
             )
@@ -272,12 +376,17 @@ class ScanEngine:
         source_code = source_data.get("source_code", "")
         contract_name = source_data.get("contract_name", "")
         compiler = source_data.get("compiler", "")
+        source_chain = source_data.get("chain", chain_key)
 
         result = ContractResult(
             address=address,
             contract_name=contract_name,
             compiler=compiler,
             source_length=len(source_code),
+            chain=source_chain,
+            chain_name=source_data.get("chain_name", chain_name),
+            chain_emoji=chain_emoji,
+            explorer_url=explorer_url,
         )
 
         # Run all patterns against the source
@@ -296,25 +405,124 @@ class ScanEngine:
         return result
 
     def _fetch_source(self, address: str) -> dict:
-        """Fetch contract source code."""
+        """Fetch contract source code from the appropriate chain."""
         # Try cache first
         cached = get_contract_from_cache(address)
         if cached:
             return cached
 
-        # Fetch from Etherscan
-        try:
-            source = fetch_contract_source(address, self.network)
-            if source:
-                return source
-        except Exception as e:
-            logger.warning(f"  ⚠️ Etherscan fetch failed for {address}: {e}")
+        # If chain context is set, use multi-chain fetcher
+        if self.chain_ctx:
+            from scanner.fetchers.multichain import fetch_contract_source as mc_fetch
+            try:
+                source = mc_fetch(address, self.chain_ctx)
+                if source:
+                    return source
+            except Exception as e:
+                logger.warning(f"  ⚠️ Multi-chain fetch failed for {address}: {e}")
+        else:
+            # Legacy: try Etherscan (Ethereum mainnet)
+            try:
+                source = fetch_contract_source(address, self.network)
+                if source:
+                    return source
+            except Exception as e:
+                logger.warning(f"  ⚠️ Etherscan fetch failed for {address}: {e}")
 
         return {"error": "Source code not available (unverified contract or fetch failed)"}
 
+    def scan_chain(self, chain_key: str, count: int = 20) -> ScanResults:
+        """
+        Discover and scan top tokens on a specific chain.
+        Harmless: READ-ONLY — never sends transactions, never exploits.
+        """
+        from scanner.chains import get_chain, EVM_CHAINS
+        from scanner.fetchers.token_discovery import discover_top_tokens
+
+        chain = get_chain(chain_key)
+        if not chain:
+            logger.error(f"❌ Unknown chain: {chain_key}")
+            return ScanResults(timestamp=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+
+        logger.info(f"🌐 Scanning {chain.emoji} {chain.name}...")
+
+        # Discover tokens
+        addresses = discover_top_tokens(chain, count=count)
+        if not addresses:
+            logger.warning(f"  ⚠️ No tokens found on {chain.name}")
+            return ScanResults(timestamp=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+
+        # Create chain-specific engine
+        chain_engine = ScanEngine(
+            chain_key=chain_key,
+            pattern_ids=self.pattern_ids,
+            max_workers=min(self.max_workers, 3),  # Be gentle with explorer APIs
+        )
+
+        # Scan
+        results = chain_engine.scan(addresses)
+        return results
+
+    def scan_all_chains(self, tokens_per_chain: int = 10) -> ScanResults:
+        """
+        Scan top tokens across ALL EVM chains.
+        Generates a cross-chain vulnerability report.
+        Harmless: READ-ONLY — purely static analysis.
+        """
+        from scanner.chains import list_chains
+        from scanner.fetchers.token_discovery import discover_all_chains
+
+        chains = list_chains()
+        all_addresses: dict[str, list[str]] = {}
+        total_expected = 0
+
+        logger.info(f"🌍 Cross-chain scan: {len(chains)} chains")
+
+        # Discover tokens on all chains
+        for chain in chains:
+            try:
+                from scanner.fetchers.token_discovery import discover_top_tokens
+                addrs = discover_top_tokens(chain, count=tokens_per_chain)
+                if addrs:
+                    all_addresses[chain.key] = addrs
+                    total_expected += len(addrs)
+            except Exception as e:
+                logger.warning(f"  ⚠️ Token discovery failed for {chain.name}: {e}")
+
+        # Scan each chain
+        start_time = time.time()
+        master_results = ScanResults(
+            timestamp=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        )
+
+        for chain_key, addresses in all_addresses.items():
+            chain_engine = ScanEngine(
+                chain_key=chain_key,
+                pattern_ids=self.pattern_ids,
+                max_workers=min(self.max_workers, 3),
+            )
+            chain_results = chain_engine.scan(addresses)
+            master_results.contracts.update(chain_results.contracts)
+
+        # Aggregate
+        master_results.total_contracts = len(master_results.contracts)
+        master_results.chains_scanned = list(all_addresses.keys())
+        master_results.scan_time_seconds = round(time.time() - start_time, 2)
+
+        for c in master_results.contracts.values():
+            master_results.total_vulns += c.vuln_count
+            master_results.critical_count += c.critical_count
+            master_results.high_count += c.high_count
+            master_results.medium_count += c.medium_count
+
+        logger.info(f"✅ Cross-chain scan complete: "
+                     f"{len(master_results.chains_scanned)} chains, "
+                     f"{master_results.total_contracts} contracts, "
+                     f"{master_results.total_vulns} vulns")
+
+        return master_results
+
     def _apply_pattern(
-        self,
-        result: ContractResult,
         pattern: dict,
         source_code: str,
         address: str,

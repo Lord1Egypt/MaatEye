@@ -1,14 +1,14 @@
-name: 🔄 Scheduled Weekly Scan
+name: 🌐 Daily Cross-Chain Vulnerability Scan
 on:
   schedule:
-    # Every Saturday at 06:00 UTC
-    - cron: '0 6 * * 6'
+    # Run daily at 08:00 UTC
+    - cron: '0 8 * * *'
   workflow_dispatch:
     inputs:
-      contracts:
-        description: 'Contract addresses to scan (comma-separated, or "auto" for top tokens)'
+      tokens_per_chain:
+        description: 'Number of top tokens to scan per chain'
         required: false
-        default: 'auto'
+        default: '10'
       patterns:
         description: 'Patterns to run (comma-separated, or "all")'
         required: false
@@ -16,11 +16,11 @@ on:
 
 env:
   PYTHON_VERSION: '3.11'
-  SCAN_MODE: ${{ github.event.inputs.contracts || 'auto' }}
+  TOKENS_PER_CHAIN: ${{ github.event.inputs.tokens_per_chain || '10' }}
 
 jobs:
-  scan:
-    name: 🔍 Vulnerability Scan
+  cross-chain-scan:
+    name: 🌍 Scan All 24 EVM Chains
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -40,51 +40,91 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install slither-analyzer 2>/dev/null || true
 
-      - name: 🧪 Run Scanner
+      - name: 🌐 Run Cross-Chain Scanner
         id: scan
         run: |
-          if [ "${{ env.SCAN_MODE }}" = "auto" ]; then
-            python -m scanner.main scan --top 20 --format json --output results/latest_scan.json
-          else
-            python -m scanner.main scan --addresses "${{ env.SCAN_MODE }}" --format json --output results/latest_scan.json
-          fi
+          python -m scanner.main scan-all \
+            --tokens-per-chain ${{ env.TOKENS_PER_CHAIN }} \
+            --format json \
+            --output results/cross_chain_report.json
+        timeout-minutes: 60
 
       - name: 🚩 Check Results
         id: check
         run: |
-          python -m scanner.reporters.gh_reporter check --input results/latest_scan.json --output results/actions.txt
+          python -m scanner.reporters.gh_reporter check \
+            --input results/cross_chain_report.json \
+            --output results/actions.txt
 
-      - name: 📤 Upload Scan Results
+      - name: 📤 Upload Cross-Chain Report
         uses: actions/upload-artifact@v4
         with:
-          name: scan-results
-          path: results/latest_scan.json
+          name: cross-chain-report
+          path: results/cross_chain_report.json
 
-      - name: 🚨 Create Red Flag Issues
+      - name: 📄 Generate Chain Summary Reports
+        run: |
+          python -c "
+import json, sys
+from pathlib import Path
+
+with open('results/cross_chain_report.json') as f:
+    data = json.load(f)
+
+# Generate per-chain markdown reports
+chain_summary = data.get('chain_summary', {})
+for chain_key, info in chain_summary.items():
+    safe_name = chain_key.replace('/', '_')
+    report = f'''# 🌐 {info['chain_emoji']} {info['chain_name']} — Scan Report
+
+| Metric | Value |
+|--------|-------|
+| Contracts Scanned | {info['contracts']} |
+| Vulnerabilities Found | {info['vulns']} |
+| 🔴 Critical | {info['critical']} |
+| 🟡 High | {info['high']} |
+| 🔵 Medium | {info['medium']} |
+'''
+    Path(f'results/chains/{safe_name}.md').parent.mkdir(parents=True, exist_ok=True)
+    Path(f'results/chains/{safe_name}.md').write_text(report)
+    print(f'  📄 {chain_key}: {info[\"vulns\"]} vulns')
+"
+
+      - name: 📊 Update Cross-Chain Dashboard
+        if: always()
+        run: |
+          python -m scanner.reporters.gh_reporter dashboard \
+            --input results/cross_chain_report.json \
+            --output results/DASHBOARD.md
+
+      - name: 📝 Generate README Chain Badges
+        if: always()
+        run: |
+          python -c "
+import json
+with open('results/cross_chain_report.json') as f:
+    data = json.load(f)
+
+chain_summary = data.get('chain_summary', {})
+# Print a summary for the commit message
+total_vulns = data.get('total_vulns', 0)
+critical = data.get('critical_count', 0)
+high = data.get('high_count', 0)
+chains = data.get('total_chains', 0)
+contracts = data.get('total_contracts', 0)
+print(f'🌍 {chains} chains, {contracts} contracts, {total_vulns} vulns (🔴{critical} 🟡{high})')
+"
+
+      - name: 🚨 Create Red Flag Issues for Critical Vulns
         if: steps.check.outputs.has_vulns == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python -m scanner.reporters.gh_reporter issues \
-            --input results/latest_scan.json \
+            --input results/cross_chain_report.json \
             --repo ${{ github.repository }} \
             --token ${{ github.token }}
-
-      - name: 📄 Update README Badges
-        if: always()
-        run: |
-          python -m scanner.reporters.gh_reporter badges \
-            --input results/latest_scan.json \
-            --readme README.md
-
-      - name: 📊 Update Status Dashboard
-        if: always()
-        run: |
-          python -m scanner.reporters.gh_reporter dashboard \
-            --input results/latest_scan.json \
-            --output results/DASHBOARD.md
 
       - name: 📝 Commit Results
         if: always()
@@ -97,21 +137,28 @@ jobs:
           if git diff --cached --quiet; then
             echo "ℹ️ No changes to commit"
           else
-            git commit -m "📊 Auto-update: Weekly scan results $(date +'%Y-%m-%d')"
+            git commit -m "📊 Daily cross-chain scan: $(date +'%Y-%m-%d')"
             git push
           fi
 
       - name: 📬 Summary
         if: always()
         run: |
-          echo "## 📋 Scan Complete" >> $GITHUB_STEP_SUMMARY
+          echo "## 🌍 Cross-Chain Scan Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          cat results/latest_scan.json | python -c "
-import json, sys
-data = json.load(sys.stdin)
+          python -c "
+import json
+with open('results/cross_chain_report.json') as f:
+    data = json.load(f)
+print(f'**Chains scanned:** {data.get(\"total_chains\", 0)}')
 print(f'**Contracts scanned:** {data.get(\"total_contracts\", 0)}')
-print(f'**Vulnerabilities found:** {data.get(\"total_vulns\", 0)}')
-print(f'**Critical:** {data.get(\"critical_count\", 0)}')
-print(f'**High:** {data.get(\"high_count\", 0)}')
-print(f'**Medium:** {data.get(\"medium_count\", 0)}')
+print(f'**Total vulnerabilities:** {data.get(\"total_vulns\", 0)}')
+print(f'**🔴 Critical:** {data.get(\"critical_count\", 0)}')
+print(f'**🟡 High:** {data.get(\"high_count\", 0)}')
+print(f'**🔵 Medium:** {data.get(\"medium_count\", 0)}')
+print()
+chain_summary = data.get('chain_summary', {})
+for key, info in sorted(chain_summary.items()):
+    emoji = info.get('chain_emoji', '🌐')
+    print(f'- {emoji} {info[\"chain_name\"]}: {info[\"vulns\"]} vulns ({info[\"critical\"]} critical)')
 " >> $GITHUB_STEP_SUMMARY

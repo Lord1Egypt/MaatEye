@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/github/actions/workflow/status/Lord1Egypt/MaatEye/scan-scheduled.yml?style=for-the-badge&labelColor=1a1a2e&color=00d4aa" alt="Scheduled Scan"/>
   <img src="https://img.shields.io/github/issues/Lord1Egypt/MaatEye/Red%20Flag?style=for-the-badge&labelColor=1a1a2e&color=ff4444" alt="Red Flags"/>
   <img src="https://img.shields.io/badge/Patterns-20%20Plagues-gold?style=for-the-badge&labelColor=1a1a2e" alt="Patterns"/>
+  <img src="https://img.shields.io/badge/Chains-24%20EVM-blue?style=for-the-badge&labelColor=1a1a2e" alt="Chains"/>
   <img src="https://img.shields.io/github/license/Lord1Egypt/MaatEye?style=for-the-badge&labelColor=1a1a2e&color=00d4aa" alt="License"/>
 </p>
 
@@ -168,7 +169,20 @@ python -m scanner.main scan --file contracts.txt
 python -m scanner.main scan --address 0x... --format json --output report.json
 ```
 
-### 3. Custom Patterns
+### 3. Scan a Specific Chain
+
+```bash
+# List all supported chains
+python -m scanner.main chains
+
+# Scan top 10 tokens on BNB Chain
+python -m scanner.main scan-chain bnb --count 10 --format markdown
+
+# Scan top 10 tokens on ALL 24 EVM chains
+python -m scanner.main scan-all --tokens-per-chain 10 --format json --output cross_chain.json
+```
+
+### 4. Custom Patterns
 
 ```bash
 # Add a custom pattern
@@ -180,17 +194,58 @@ python -m scanner.main patterns list
 
 ---
 
+## 🌐 Supported Chains (24 EVM)
+
+MaatEye scans **24 EVM-compatible blockchains** using free public RPC endpoints from [publicnode.com](https://publicnode.com).
+
+| # | Chain | Chain ID | Token | Discovered Tokens |
+|---|-------|----------|-------|-------------------|
+| 🔵 | **Ethereum** | 1 | ETH | 30 |
+| 🟡 | **BNB Chain** | 56 | BNB | 20 |
+| 🟣 | **Polygon** | 137 | MATIC | 20 |
+| 🔷 | **Base** | 8453 | ETH | 20 |
+| 🌀 | **Arbitrum One** | 42161 | ETH | 20 |
+| 🔴 | **Optimism** | 10 | ETH | 20 |
+| 🔺 | **Avalanche C-Chain** | 43114 | AVAX | 20 |
+| ⬛ | **Linea** | 59144 | ETH | 15 |
+| 📜 | **Scroll** | 534352 | ETH | 15 |
+| 💥 | **Blast** | 81457 | ETH | 15 |
+| 🦉 | **Gnosis** | 100 | xDAI | 15 |
+| 🌿 | **Celo** | 42220 | CELO | 15 |
+| 🌕 | **Moonbeam** | 1284 | GLMR | 15 |
+| 🏛 | **Metis** | 1088 | METIS | 15 |
+| 🟨 | **opBNB** | 204 | BNB | 10 |
+| 💓 | **PulseChain** | 369 | PLS | 10 |
+| ⚙️ | **Mantle** | 5000 | MNT | 10 |
+| 🥁 | **Taiko** | 167000 | ETH | 10 |
+| 🐻 | **Berachain** | 80094 | BERA | 10 |
+| 🌊 | **Soneium** | 1868 | ETH | 10 |
+| 🦄 | **Unichain** | 130 | ETH | 10 |
+| ⬜ | **Fraxtal** | 252 | frxETH | 10 |
+| 🌶 | **Chiliz** | 88888 | CHZ | 10 |
+| ⚡ | **Sonic** | 146 | S | 10 |
+
+**Total: 24 EVM chains, ~350+ tokens scanned daily**
+
+> 🔒 **RPC endpoints from [publicnode.com](https://publicnode.com)** — free, no API key required, rate-limited respectfully.
+> 
+> ⚠️ **All scanning is READ-ONLY static analysis** — we never send transactions, never deploy, never exploit.
+
+---
+
 ## 🧪 Project Status
 
 | Milestone | Status | ETA |
 |-----------|--------|-----|
 | 🏗️ Repo Structure & CI/CD | ✅ Done | v0.1 |
-| 🔴 5 Critical Patterns | ✅ Done | v0.2 |
-| 🟡 10 High/Medium Patterns | 🔄 In Progress | v0.3 |
-| 🔵 Full 20 Plagues | 📅 Planned | v0.4 |
-| 🔬 Slither Integration | 📅 Planned | v0.5 |
-| 🌉 Multi-chain Support | 📅 Planned | v0.6 |
-| 🤖 Auto-Fix Suggestions | 📅 Planned | v0.7 |
+| 🔴 20 Plagues Patterns | ✅ Done | v0.2 |
+| 🌐 24 EVM Chains Support | ✅ Done | v0.3 |
+| 📅 Daily Cross-Chain Scan | ✅ Done | v0.3 |
+| 🚩 Auto Red Flag Issues | ✅ Done | v0.2 |
+| 🔬 Slither Integration | 🔄 In Progress | v0.4 |
+| 🌉 Non-EVM Chains (Solana, BTC, etc.) | 📅 Planned | v0.5 |
+| 🤖 Auto-Fix Suggestions | 📅 Planned | v0.6 |
+| 📊 Live Vulnerability Dashboard | 📅 Planned | v0.7 |
 | 🧠 ML Pattern Detection | 📅 Planned | v1.0 |
 
 ---
