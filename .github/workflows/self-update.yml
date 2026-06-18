@@ -1,0 +1,49 @@
+name: 🧹 Self-Update Pattern Registry
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - 'scanner/patterns/new/**'
+
+jobs:
+  auto-merge-pattern:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install
+        run: pip install -r requirements.txt
+
+      - name: 🔢 Re-index Patterns
+        run: |
+          python -m scanner.main reindex
+
+      - name: 📝 Commit Re-index
+        run: |
+          git config user.name "MaatEye Bot"
+          git config user.email "maateye@bot.github.com"
+          git add config/patterns_index.json
+          if git diff --cached --quiet; then
+            echo "ℹ️ No re-index needed"
+          else
+            git commit -m "🔄 Auto re-index after PR merge"
+            git push
+          fi
+
+      - name: 🎉 Welcome Pattern
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.pull_request.number }} \
+            --body "🎉 **Pattern merged!** Thank you for contributing to MaatEye's ever-growing vision. Your pattern is now live in the next scan."

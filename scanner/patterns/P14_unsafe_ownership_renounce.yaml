@@ -1,0 +1,29 @@
+# 👑 P14 — Unsafe Ownership Renounce
+# Detects renounceOwnership without backup/recovery
+id: "P14"
+name: "Unsafe Ownership Renounce"
+severity: "medium"
+enabled: true
+description: >
+  The contract inherits from Ownable (or similar) and calls
+  renounceOwnership() without setting up a backup admin or
+  timelock. This permanently locks all owner-only functions.
+detectors:
+  - type: "regex"
+    description: "renounceOwnership in code (permanently locks owner functions)"
+    pattern: "renounceOwnership|_renounceOwnership"
+    confidence: 0.70
+    recommendation: >
+      Before renouncing ownership, consider:
+      1. Adding a timelock so changes can be reviewed
+      2. Setting up a multisig as the new owner
+      3. Ensuring no critical functions depend on owner access
+      Once renounced, there is NO recovery.
+
+  - type: "regex"
+    description: "Ownable pattern without timelock or multi-sig backup"
+    pattern: "is\\s+Ownable|Ownable\\s*\\{"
+    confidence: 0.25
+    recommendation: >
+      Consider using Ownable2Step (OpenZeppelin) for safer ownership
+      transfers, and adding a TimelockController for admin operations.

@@ -1,0 +1,27 @@
+# 🎪 P07 — Delegatecall Injection
+# Detects arbitrary delegatecall targets
+id: "P07"
+name: "Delegatecall Injection"
+severity: "critical"
+enabled: true
+description: >
+  The contract uses delegatecall with a user-controlled target address.
+  This allows attackers to execute arbitrary code in the contract's context,
+  effectively gaining full control of the contract's state and ETH.
+detectors:
+  - type: "regex"
+    description: "delegatecall with variable target"
+    pattern: "delegatecall\\s*\\([^)]*\\b(address|target|addr|to|destination)\\b[^)]*\\)"
+    confidence: 0.85
+    recommendation: >
+      Never use delegatecall with user-supplied addresses. Use a fixed,
+      upgradeable proxy pattern like OpenZeppelin's, or maintain a whitelist
+      of approved implementation addresses.
+
+  - type: "regex"
+    description: "delegatecall in assembly"
+    pattern: "delegatecall\\s*\\(|\\bdelegatecall\\b"
+    confidence: 0.60
+    recommendation: >
+      Review delegatecall usage carefully. Ensure the target is from a trusted
+      source and properly validated.

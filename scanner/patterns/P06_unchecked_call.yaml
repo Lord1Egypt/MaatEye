@@ -1,0 +1,33 @@
+# 📞 P06 — Unchecked Call
+# Detects external calls without return value verification
+id: "P06"
+name: "Unchecked Call"
+severity: "high"
+enabled: true
+description: >
+  The contract makes external calls without checking the return value.
+  Failed calls (especially to send/transfer) can silently fail,
+  leading to incorrect state.
+detectors:
+  - type: "regex"
+    description: "send() without checking return value"
+    pattern: "\\.send\\s*\\([^)]*\\)\\s*;"
+    confidence: 0.80
+    recommendation: >
+      Always check the return value of send(): require(x.send(amount)).
+      Consider using a withdrawal pattern instead.
+
+  - type: "regex"
+    description: "call() without checking return value"
+    pattern: "\\.call\\s*\\{[^}]*\\}\\s*\\([^)]*\\)\\s*;"
+    confidence: 0.70
+    recommendation: >
+      Always check the return value of call(): 
+      (bool success, ) = addr.call{value: amount}("");
+      require(success, "Transfer failed");
+
+  - type: "regex"
+    description: "Low-level call without success check in same function"
+    pattern: "\\.call\\s*\\([^)]*\\)[^;}]{0,30};"
+    confidence: 0.50
+    recommendation: "Verify that the return value of this call is properly checked."

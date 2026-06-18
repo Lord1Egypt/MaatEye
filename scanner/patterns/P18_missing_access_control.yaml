@@ -1,0 +1,35 @@
+# 🚫 P18 — Missing Access Control
+# Detects critical functions without access restriction
+id: "P18"
+name: "Missing Access Control"
+severity: "high"
+enabled: true
+description: >
+  Critical state-modifying functions lack access control modifiers.
+  Functions like pause, withdraw, setFee, or updateImplementation
+  should be restricted to authorized roles.
+detectors:
+  - type: "function_signature"
+    description: "Admin/sensitive function without access control"
+    func_pattern: "function\\s+(pause|unpause|withdraw|setFee|setRate|updateImpl|upgradeTo|setAddress|setOwner|setAdmin|setGov|changeFee|updateFee|setPercent|setThreshold)\\s*\\("
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyAdmin"
+      - "onlyRole"
+      - "authorized"
+      - "isAuthorized"
+      - "hasRole"
+      - "whenPaused"
+      - "whenNotPaused"
+    confidence: 0.80
+    recommendation: >
+      Add appropriate access control to all administrative functions.
+      Use OpenZeppelin's AccessControl or Ownable for role-based permissions.
+
+  - type: "regex"
+    description: "Pause-like function without restricted modifier"
+    pattern: "function\\s+(togglePause|setPaused|emergencyStop|halt|shutdown|activate|deactivate)\\s*\\([^)]*\\)\\s*(public|external)"
+    confidence: 0.65
+    recommendation: >
+      Emergency functions should always have restricted access.
+      Consider a multisig + timelock for critical operations.

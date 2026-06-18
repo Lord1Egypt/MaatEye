@@ -1,0 +1,55 @@
+name: 🔍 Contract Scan Request
+description: Submit a smart contract address for vulnerability scanning
+title: "🔍 Scan: [contract-address]"
+labels: ["scan-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 👁️ Submit a Contract for MaatEye Scan
+  
+  - type: input
+    id: contract_address
+    attributes:
+      label: Contract Address
+      description: The Ethereum address of the contract to scan
+      placeholder: "0x..."
+    validations:
+      required: true
+
+  - type: input
+    id: network
+    attributes:
+      label: Network
+      description: Which network is this on?
+      placeholder: "Ethereum Mainnet"
+      value: "Ethereum Mainnet"
+
+  - type: dropdown
+    id: reason
+    attributes:
+      label: Reason for Scan
+      description: Why are you submitting this contract?
+      options:
+        - I suspect a vulnerability
+        - Due diligence before investing
+        - Just curious / educational
+        - Part of an audit
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Any specific concerns or context?
+      placeholder: "I noticed that..."
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Agreement
+      options:
+        - label: I understand this is a public scan and results will be visible to everyone
+          required: true

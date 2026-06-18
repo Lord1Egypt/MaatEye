@@ -1,0 +1,34 @@
+# 🛡️ P19 — No SafeERC20
+# Detects direct ERC20 transfers without return value check
+id: "P19"
+name: "No SafeERC20"
+severity: "medium"
+enabled: true
+description: >
+  The contract uses direct transfer/transferFrom calls on ERC20
+  tokens without checking the return value. Some tokens (USDT,
+  BNB, etc.) don't return a boolean, causing silent failures.
+detectors:
+  - type: "regex"
+    description: "Direct transfer/transferFrom without SafeERC20 wrapper"
+    pattern: "\\.(transfer|transferFrom)\\s*\\([^)]*\\)\\s*;"
+    confidence: 0.40
+    recommendation: >
+      Use OpenZeppelin's SafeERC20 library which handles non-standard
+      token behavior (USDT, BNB, etc.). Replace:
+      token.transfer(to, amount) → safeTransfer(token, to, amount)
+
+  - type: "ast_pattern"
+    description: "Missing SafeERC20 import despite using transfer"
+    required_elements:
+      - ".transfer("
+    forbidden_elements:
+      - "SafeERC20"
+      - "safeTransfer"
+      - "safeTransferFrom"
+      - "safeApprove"
+    confidence: 0.50
+    recommendation: >
+      You're making raw ERC20 transfers without using SafeERC20.
+      Some tokens don't return a boolean (USDT) — this will
+      silently fail. Use safeTransfer() from OpenZeppelin.

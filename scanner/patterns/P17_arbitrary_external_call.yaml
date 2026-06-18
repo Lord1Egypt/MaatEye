@@ -1,0 +1,38 @@
+# 🎪 P17 — Arbitrary External Call
+# Detects unrestricted external calls
+id: "P17"
+name: "Arbitrary External Call"
+severity: "critical"
+enabled: true
+description: >
+  The contract makes external calls to user-supplied addresses
+  without restriction. This allows attackers to call arbitrary
+  contracts, potentially draining funds or manipulating state.
+detectors:
+  - type: "regex"
+    description: "Arbitrary call to user-supplied address"
+    pattern: "address\\(\\w+\\)\\.call\\s*\\{[^}]*\\}\\s*\\(([^)]*)\\b(data|payload|_data)\\b[^)]*\\)"
+    confidence: 0.75
+    recommendation: >
+      Never make external calls to user-supplied addresses without
+      a whitelist. If arbitrary calls are needed, implement:
+      1) A whitelist of approved target addresses
+      2) Function signature filtering
+      3) Rate limiting and value caps
+
+  - type: "regex"
+    description: "Delegatecall with variable target (user-controlled)"
+    pattern: "\\.delegatecall\\s*\\([^)]*\\b(msg\\.data|calldata|data|payload)\\b"
+    confidence: 0.85
+    recommendation: >
+      Arbitrary delegatecall with user data is EXTREMELY dangerous.
+      This gives the caller full control of the contract's state.
+      Remove this pattern immediately.
+
+  - type: "regex"
+    description: "Staticcall with variable target"
+    pattern: "staticcall\\s*\\([^)]*\\b(target|address|addr|to)\\b"
+    confidence: 0.50
+    recommendation: >
+      Even static calls to unknown contracts can reenter or
+      manipulate oracle-like state. Consider a whitelist.

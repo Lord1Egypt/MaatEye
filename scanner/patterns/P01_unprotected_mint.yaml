@@ -1,0 +1,32 @@
+# 🎭 P01 — Unprotected Mint
+# Detects mint functions without access control
+id: "P01"
+name: "Unprotected Mint"
+severity: "critical"
+enabled: true
+description: >
+  The contract has a mint function that can be called by anyone.
+  This allows arbitrary token creation, leading to infinite supply
+  and complete loss of token value.
+detectors:
+  - type: "function_signature"
+    description: "Mint function without onlyOwner or equivalent access control"
+    func_pattern: "function\\s+(mint|mintTo|mintBatch|createToken|issue)\\s*\\("
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyAdmin"
+      - "onlyRole"
+      - "authorized"
+      - "isAuthorized"
+      - "hasRole"
+      - "whenNotPaused"
+    confidence: 0.85
+    recommendation: >
+      Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function.
+      Consider adding a maximum supply cap and rate limiting.
+
+  - type: "regex"
+    description: "Public mint function with no auth check in body"
+    pattern: "function\\s+mint\\w*\\s*\\([^)]*\\)\\s*public[^}]{50,300}\\b_mint\\b"
+    confidence: 0.60
+    recommendation: "Verify that this mint function has proper authorization checks before _mint call."

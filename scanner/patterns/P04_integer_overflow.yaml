@@ -1,0 +1,34 @@
+# 📐 P04 — Integer Overflow/Underflow
+# Detects arithmetic operations without overflow protection
+id: "P04"
+name: "Integer Overflow/Underflow"
+severity: "critical"
+enabled: true
+description: >
+  The contract uses raw arithmetic operations (+, -, *, /) without
+  overflow checks. In Solidity <0.8.0, this can cause silent
+  overflows. Even in >=0.8.0, unchecked blocks can hide issues.
+detectors:
+  - type: "regex"
+    description: "Raw arithmetic in Solidity <0.8 (no built-in overflow check)"
+    pattern: "pragma\\s+solidity\\s+[<]?\\s*0\\.([0-7]\\d?)\\."
+    confidence: 0.90
+    recommendation: >
+      Upgrade to Solidity 0.8.0+ for built-in overflow checking, or
+      use OpenZeppelin's SafeMath library for older versions.
+
+  - type: "regex"
+    description: "Arithmetic inside unchecked block"
+    pattern: "unchecked\\s*\\{[^}]{10,}(\\+|\\-|\\*|\\/)\\s*="
+    confidence: 0.40
+    recommendation: >
+      If using unchecked blocks, ensure all values are bounded and
+      cannot realistically overflow. Consider adding explicit
+      require() checks for edge values.
+
+  - type: "regex"
+    description: "Manual overflow check (good practice detected)"
+    pattern: "(require\\(.*(>=|<=|==|!=).*\\s*[-+]|SafeMath|safeAdd|safeSub|safeMul)"
+    confidence: 0.10
+    # Low confidence = this is actually a GOOD thing — we note it
+    recommendation: "Manual overflow checks detected — verify they cover all arithmetic paths."

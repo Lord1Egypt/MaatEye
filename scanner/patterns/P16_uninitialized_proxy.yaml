@@ -1,0 +1,34 @@
+# 🍼 P16 — Uninitialized Proxy
+# Detects missing initialization guard in upgradeable contracts
+id: "P16"
+name: "Uninitialized Proxy"
+severity: "critical"
+enabled: true
+description: >
+  Upgradeable proxy contracts must use an initializer function
+  instead of a constructor. Without proper initialization guards,
+  anyone can call the init function and become the owner, or the
+  implementation remains uninitialized.
+detectors:
+  - type: "regex"
+    description: "Missing initializer modifier on init function"
+    pattern: "function\\s+(initialize|init|__init|setup)\\s*\\([^)]*\\)"
+    confidence: 0.50
+    recommendation: >
+      Add the initializer modifier (from OpenZeppelin) to prevent
+      re-initialization. Consider using Initializable.sol or
+      UUPSUpgradeable pattern with constructor-based initialization.
+
+  - type: "ast_pattern"
+    description: "Upgradeable contract without initialization"
+    required_elements:
+      - "initializable"
+      - "Initializable"
+      - "initializer"
+      - "onlyInitializing"
+    confidence: 0.30
+    recommendation: >
+      If using upgradeable contracts, ensure:
+      1) The implementation has an initializer function
+      2) It cannot be selfdestructed
+      3) The proxy is initialized immediately after deployment

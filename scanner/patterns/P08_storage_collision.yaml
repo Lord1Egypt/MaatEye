@@ -1,0 +1,29 @@
+# 🗂️ P08 — Storage Collision
+# Detects potential proxy storage layout mismatches
+id: "P08"
+name: "Storage Collision"
+severity: "high"
+enabled: true
+description: >
+  In proxy/upgradeable patterns, storage layout must be preserved
+  across implementations. Storage collision occurs when a new
+  implementation overwrites storage slots used by the proxy or
+  previous implementations.
+detectors:
+  - type: "regex"
+    description: "Potential proxy pattern with storage gaps"
+    pattern: "(uint256\\[\\d+\\]\\s+private\\s+__gap|_gap|__gap|__reserved)|\\bUUPS\\b|\\bTransparentUpgradeableProxy\\b"
+    confidence: 0.40
+    recommendation: >
+      If using upgradeable contracts, verify storage layout compatibility
+      with tools like OpenZeppelin's storage layout checker.
+      Always include a storage gap (__gap) in upgradable base contracts.
+
+  - type: "regex"
+    description: "Inherited contracts in upgradeable context — potential collision"
+    pattern: "contract\\s+\\w+\\s+is\\s+\\w+(,\\s*\\w+)*\\s*\\{[^}]{0,100}(initialize|initializer)\\b"
+    confidence: 0.30
+    recommendation: >
+      Review inheritance order in upgradeable contracts. Storage slots
+      follow C3 linearization — order matters. Use tools to verify
+      the storage layout does not change between upgrades.

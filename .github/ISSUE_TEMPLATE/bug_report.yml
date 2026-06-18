@@ -1,0 +1,33 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior
+title: "🐛 [Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+
+  - type: input
+    id: version
+    attributes:
+      label: Version/Commit
+      placeholder: "e.g., v1.0.0 or commit hash"

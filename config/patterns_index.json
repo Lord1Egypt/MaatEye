@@ -1,0 +1,142 @@
+[
+  {
+    "id": "P01",
+    "name": "Unprotected Mint",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P01_unprotected_mint.yaml"
+  },
+  {
+    "id": "P02",
+    "name": "Selfdestruct Anyone",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P02_selfdestruct_anyone.yaml"
+  },
+  {
+    "id": "P03",
+    "name": "Reentrancy",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P03_reentrancy.yaml"
+  },
+  {
+    "id": "P04",
+    "name": "Integer Overflow/Underflow",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P04_integer_overflow.yaml"
+  },
+  {
+    "id": "P05",
+    "name": "tx.origin Authentication",
+    "severity": "high",
+    "enabled": true,
+    "file": "P05_tx_origin_auth.yaml"
+  },
+  {
+    "id": "P06",
+    "name": "Unchecked Call",
+    "severity": "high",
+    "enabled": true,
+    "file": "P06_unchecked_call.yaml"
+  },
+  {
+    "id": "P07",
+    "name": "Delegatecall Injection",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P07_delegatecall_injection.yaml"
+  },
+  {
+    "id": "P08",
+    "name": "Storage Collision",
+    "severity": "high",
+    "enabled": true,
+    "file": "P08_storage_collision.yaml"
+  },
+  {
+    "id": "P09",
+    "name": "No Input Validation",
+    "severity": "high",
+    "enabled": true,
+    "file": "P09_no_input_validation.yaml"
+  },
+  {
+    "id": "P10",
+    "name": "Oracle Manipulation",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P10_oracle_manipulation.yaml"
+  },
+  {
+    "id": "P11",
+    "name": "Flash Loan Attack Vector",
+    "severity": "high",
+    "enabled": true,
+    "file": "P11_flash_loan_vector.yaml"
+  },
+  {
+    "id": "P12",
+    "name": "Signature Replay",
+    "severity": "high",
+    "enabled": true,
+    "file": "P12_signature_replay.yaml"
+  },
+  {
+    "id": "P13",
+    "name": "Governance Attack",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P13_governance_attack.yaml"
+  },
+  {
+    "id": "P14",
+    "name": "Unsafe Ownership Renounce",
+    "severity": "medium",
+    "enabled": true,
+    "file": "P14_unsafe_ownership_renounce.yaml"
+  },
+  {
+    "id": "P15",
+    "name": "Incorrect Visibility",
+    "severity": "medium",
+    "enabled": true,
+    "file": "P15_incorrect_visibility.yaml"
+  },
+  {
+    "id": "P16",
+    "name": "Uninitialized Proxy",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P16_uninitialized_proxy.yaml"
+  },
+  {
+    "id": "P17",
+    "name": "Arbitrary External Call",
+    "severity": "critical",
+    "enabled": true,
+    "file": "P17_arbitrary_external_call.yaml"
+  },
+  {
+    "id": "P18",
+    "name": "Missing Access Control",
+    "severity": "high",
+    "enabled": true,
+    "file": "P18_missing_access_control.yaml"
+  },
+  {
+    "id": "P19",
+    "name": "No SafeERC20",
+    "severity": "medium",
+    "enabled": true,
+    "file": "P19_no_safe_erc20.yaml"
+  },
+  {
+    "id": "P20",
+    "name": "Timestamp Dependence",
+    "severity": "medium",
+    "enabled": true,
+    "file": "P20_timestamp_dependence.yaml"
+  }
+]

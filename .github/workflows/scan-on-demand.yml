@@ -1,0 +1,71 @@
+name: 🚀 On-Demand Contract Scan
+on:
+  issues:
+    types: [opened, edited]
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'scanner/patterns/**'
+      - 'config/**'
+
+jobs:
+  scan-submission:
+    if: |
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'scan-request')) ||
+      github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🔍 Extract Contract Address
+        id: extract
+        run: |
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            BODY="${{ github.event.issue.body }}"
+            ADDR=$(echo "$BODY" | grep -oP '0x[a-fA-F0-9]{40}' | head -1)
+            echo "address=$ADDR" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔬 Run Scan
+        id: scan
+        run: |
+          if [ -n "${{ steps.extract.outputs.address }}" ]; then
+            python -m scanner.main scan --address "${{ steps.extract.outputs.address }}" --format json --output results/on_demand.json
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            python -m scanner.main scan --test-patterns --format json --output results/pr_test.json
+          fi
+
+      - name: 🚩 Create Comment with Results
+        if: steps.scan.outputs.result_file
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RESULT_FILE="${{ steps.scan.outputs.result_file }}"
+          if [ -f "$RESULT_FILE" ]; then
+            python -m scanner.reporters.gh_reporter comment \
+              --input "$RESULT_FILE" \
+              --repo ${{ github.repository }} \
+              --issue-number ${{ github.event.issue.number || github.event.pull_request.number }} \
+              --token ${{ github.token }}
+          fi
+
+      - name: ✅ Validate Patterns (PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          python -m scanner.main validate --all-patterns

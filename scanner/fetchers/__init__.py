@@ -1,0 +1,1 @@
+"""MaatEye — Fetchers package."""

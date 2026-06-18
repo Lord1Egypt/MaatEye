@@ -1,0 +1,33 @@
+# 🔄 P03 — Reentrancy
+# Detects reentrancy vulnerabilities in external calls
+id: "P03"
+name: "Reentrancy"
+severity: "critical"
+enabled: true
+description: >
+  The contract makes an external call (transfer/send/call) before
+  updating internal state. This allows reentrancy attacks where
+  the callee can recursively call back into the contract.
+detectors:
+  - type: "ast_pattern"
+    description: "External call before state update (classic reentrancy)"
+    required_elements:
+      - ".call("
+      - ".transfer("
+      - ".send("
+    forbidden_elements:
+      - "ReentrancyGuard"
+      - "nonReentrant"
+      - "lock"
+    confidence: 0.50
+    recommendation: >
+      Apply the Checks-Effects-Interactions pattern: update state BEFORE
+      making external calls. Add a reentrancy guard (e.g., OpenZeppelin's
+      ReentrancyGuard) for defense-in-depth.
+
+  - type: "regex"
+    description: "Balance update after external call"
+    pattern: "\\.(call|transfer|send)\\([^)]*\\)[^;}]{0,200}(balanceOf|_burn|_transfer|balances|supply)"
+    confidence: 0.75
+    recommendation: >
+      Move the state update before the external call to prevent reentrancy.

@@ -1,0 +1,32 @@
+# 🎯 P09 — No Input Validation
+# Detects functions with dangerous parameters lacking validation
+id: "P09"
+name: "No Input Validation"
+severity: "high"
+enabled: true
+description: >
+  Functions accept user-supplied parameters without validation.
+  Unchecked inputs can lead to unbounded loops, array index errors,
+  or out-of-gas conditions.
+detectors:
+  - type: "regex"
+    description: "Unbounded array iteration (potential gas griefing)"
+    pattern: "for\\s*\\([^)]*\\s*<\\s*\\w+\\.(length|balanceOf)\\b"
+    confidence: 0.50
+    recommendation: >
+      Avoid iterating over unbounded arrays. Use pagination or
+      pull-based withdrawal patterns instead of push-based loops.
+
+  - type: "regex"
+    description: "Function taking array parameter without length check"
+    pattern: "function\\s+\\w+\\s*\\([^)]*(uint256\\[\\]|address\\[\\]|bytes\\[\\])[^)]*\\)[^;{]*\\{"
+    confidence: 0.35
+    recommendation: >
+      Add bounds checking on array parameters. Consider maximum
+      array lengths to prevent out-of-gas attacks.
+
+  - type: "regex"
+    description: "Unvalidated address parameter"
+    pattern: "function\\s+\\w+\\s*\\([^)]*\\baddress\\s+[^)]+\\)[^;{]*\\{[^}]{0,200}(?:require\\([^)]*address[^)]*\\)|revert|return)"
+    confidence: 0.20
+    recommendation: "Consider adding address(0) validation for sensitive functions."

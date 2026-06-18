@@ -1,0 +1,27 @@
+# 🔍 P15 — Incorrect Visibility
+# Detects internal/external functions with wrong visibility
+id: "P15"
+name: "Incorrect Visibility"
+severity: "medium"
+enabled: true
+description: >
+  Functions that appear to be internal helper functions are
+  declared as public or external, unnecessarily exposing
+  them to external callers.
+detectors:
+  - type: "regex"
+    description: "Internal-like function named with underscore prefix but public"
+    pattern: "function\\s+_(\\w+)\\s*\\([^)]*\\)\\s*(public|external)"
+    confidence: 0.60
+    recommendation: >
+      Functions prefixed with underscore (_) are conventionally
+      internal/private. If they're public, either rename them
+      or change visibility to internal/private.
+
+  - type: "regex"
+    description: "Sensitive operation in public function (should be restricted)"
+    pattern: "function\\s+(withdraw|transferFrom|approve|burn|mint)\\s*\\([^)]*\\)\\s*public[^;{]*\\{"
+    confidence: 0.20
+    recommendation: >
+      Verify that public visibility is intentional for these
+      sensitive functions. Consider adding access controls.

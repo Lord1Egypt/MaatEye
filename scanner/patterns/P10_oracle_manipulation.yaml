@@ -1,0 +1,38 @@
+# 🏷️ P10 — Oracle Manipulation
+# Detects patterns vulnerable to price oracle manipulation
+id: "P10"
+name: "Oracle Manipulation"
+severity: "critical"
+enabled: true
+description: >
+  The contract uses a price oracle that can be manipulated,
+  typically via flash loans. Common patterns include using
+  spot price from a single AMM pool without TWAP or multiple
+  data sources.
+detectors:
+  - type: "regex"
+    description: "Spot price from AMM without TWAP"
+    pattern: "(reserve0|reserve1|getReserves|slot0|sqrtPriceX96|spotPrice)\\s*\\([^)]*\\)"
+    confidence: 0.50
+    recommendation: >
+      Use a TWAP (Time-Weighted Average Price) oracle instead of spot price.
+      For Uniswap V2, use the cumulative price mechanism. For V3, use the
+      TWAP oracle built into the pool.
+
+  - type: "regex"
+    description: "Single oracle dependency (no fallback)"
+    pattern: "(oracle|priceFeed|getPrice|latestAnswer|latestRoundData)\\s*\\([^)]*\\)"
+    confidence: 0.30
+    recommendation: >
+      Consider using multiple oracle sources (e.g., Chainlink + Uniswap TWAP)
+      with a median or weighted-average aggregation to prevent single-source
+      manipulation.
+
+  - type: "regex"
+    description: "Manual price calculation from reserves (flash loan vulnerable)"
+    pattern: "reserve0\\s*[*/]\\s*[0-9]+|reserve1\\s*[*/]\\s*[0-9]+|(amountIn|amountOut)\\s*=\\s*getAmount"
+    confidence: 0.45
+    recommendation: >
+      Spot prices from AMM reserves can be manipulated with flash loans.
+      Always use a manipulation-resistant TWAP oracle for critical price
+      calculations.

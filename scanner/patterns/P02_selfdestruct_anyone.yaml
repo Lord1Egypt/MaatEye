@@ -1,0 +1,30 @@
+# 💀 P02 — Selfdestruct Anyone
+# Detects selfdestruct calls accessible without restriction
+id: "P02"
+name: "Selfdestruct Anyone"
+severity: "critical"
+enabled: true
+description: >
+  The contract contains a selfdestruct call that can be triggered
+  by anyone. This allows any user to destroy the contract and
+  send its balance to an arbitrary address.
+detectors:
+  - type: "regex"
+    description: "selfdestruct without access control"
+    pattern: "(selfdestruct|suicide|self_destruct)\\s*\\([^)]*\\)"
+    confidence: 0.70
+    recommendation: >
+      Remove selfdestruct or add strict access control (onlyOwner).
+      Consider using a timelock + multisig for critical operations.
+
+  - type: "function_signature"
+    description: "Public function containing selfdestruct without auth"
+    func_pattern: "function\\s+(destroy|kill|close|selfdestruct|emergencyStop)\\s*\\("
+    modifier_forbids:
+      - "onlyOwner"
+      - "onlyAdmin"
+      - "onlyRole"
+    confidence: 0.90
+    recommendation: >
+      Add onlyOwner modifier to destroy function. Consider a two-step
+      process with a timelock for irreversibility.

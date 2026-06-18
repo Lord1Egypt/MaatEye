@@ -1,0 +1,117 @@
+name: 🔄 Scheduled Weekly Scan
+on:
+  schedule:
+    # Every Saturday at 06:00 UTC
+    - cron: '0 6 * * 6'
+  workflow_dispatch:
+    inputs:
+      contracts:
+        description: 'Contract addresses to scan (comma-separated, or "auto" for top tokens)'
+        required: false
+        default: 'auto'
+      patterns:
+        description: 'Patterns to run (comma-separated, or "all")'
+        required: false
+        default: 'all'
+
+env:
+  PYTHON_VERSION: '3.11'
+  SCAN_MODE: ${{ github.event.inputs.contracts || 'auto' }}
+
+jobs:
+  scan:
+    name: 🔍 Vulnerability Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install slither-analyzer 2>/dev/null || true
+
+      - name: 🧪 Run Scanner
+        id: scan
+        run: |
+          if [ "${{ env.SCAN_MODE }}" = "auto" ]; then
+            python -m scanner.main scan --top 20 --format json --output results/latest_scan.json
+          else
+            python -m scanner.main scan --addresses "${{ env.SCAN_MODE }}" --format json --output results/latest_scan.json
+          fi
+
+      - name: 🚩 Check Results
+        id: check
+        run: |
+          python -m scanner.reporters.gh_reporter check --input results/latest_scan.json --output results/actions.txt
+
+      - name: 📤 Upload Scan Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: results/latest_scan.json
+
+      - name: 🚨 Create Red Flag Issues
+        if: steps.check.outputs.has_vulns == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -m scanner.reporters.gh_reporter issues \
+            --input results/latest_scan.json \
+            --repo ${{ github.repository }} \
+            --token ${{ github.token }}
+
+      - name: 📄 Update README Badges
+        if: always()
+        run: |
+          python -m scanner.reporters.gh_reporter badges \
+            --input results/latest_scan.json \
+            --readme README.md
+
+      - name: 📊 Update Status Dashboard
+        if: always()
+        run: |
+          python -m scanner.reporters.gh_reporter dashboard \
+            --input results/latest_scan.json \
+            --output results/DASHBOARD.md
+
+      - name: 📝 Commit Results
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "MaatEye Bot"
+          git config user.email "maateye@bot.github.com"
+          git add results/ README.md 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "ℹ️ No changes to commit"
+          else
+            git commit -m "📊 Auto-update: Weekly scan results $(date +'%Y-%m-%d')"
+            git push
+          fi
+
+      - name: 📬 Summary
+        if: always()
+        run: |
+          echo "## 📋 Scan Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat results/latest_scan.json | python -c "
+import json, sys
+data = json.load(sys.stdin)
+print(f'**Contracts scanned:** {data.get(\"total_contracts\", 0)}')
+print(f'**Vulnerabilities found:** {data.get(\"total_vulns\", 0)}')
+print(f'**Critical:** {data.get(\"critical_count\", 0)}')
+print(f'**High:** {data.get(\"high_count\", 0)}')
+print(f'**Medium:** {data.get(\"medium_count\", 0)}')
+" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,26 @@
+# ✍️ P12 — Signature Replay
+# Detects missing nonce/chainId in EIP-712 signatures
+id: "P12"
+name: "Signature Replay"
+severity: "high"
+enabled: true
+description: >
+  The contract uses signed messages (EIP-712 or personal_sign)
+  for authorization without including a nonce or chainId.
+  This allows the same signature to be replayed across
+  different chains or multiple times.
+detectors:
+  - type: "regex"
+    description: "EIP-712 signatures without nonce check"
+    pattern: "(ecrecover|ECDSA\\.recover|SignatureChecker|_verifySig|_validateSignature)\\s*\\([^)]*[^n][^o][^n][^c][^e][^)]*\\)"
+    confidence: 0.50
+    recommendation: >
+      Always include a nonce (incremented per user) and chainId in
+      your EIP-712 typed data to prevent replay attacks across
+      chains and repeated use.
+
+  - type: "regex"
+    description: "Potential missing chainId in signature validation"
+    pattern: "\\bchainId\\b"
+    confidence: 0.15  # Low = this is GOOD — they included chainId
+    recommendation: "chainId detected — good practice for cross-chain replay protection."

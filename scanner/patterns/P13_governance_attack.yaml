@@ -1,0 +1,35 @@
+# 🗳️ P13 — Governance Attack
+# Detects governance vulnerabilities
+id: "P13"
+name: "Governance Attack"
+severity: "critical"
+enabled: true
+description: >
+  The contract has governance features that can be exploited:
+  low quorum requirements, short voting periods, or vote
+  manipulation via flash loans / delegation attacks.
+detectors:
+  - type: "regex"
+    description: "Low quorum check (may indicate governance vulnerability)"
+    pattern: "quorum|minVotingPower|minParticipation|minimumQuorum|_quorum"
+    confidence: 0.40
+    recommendation: >
+      Ensure quorum requirements are high enough to prevent malicious
+      proposals from passing. Consider dynamic quorum based on total supply.
+
+  - type: "regex"
+    description: "Short voting period (potential governance manipulation)"
+    pattern: "votingPeriod|votingDelay|votingDuration|proposalThreshold"
+    confidence: 0.30
+    recommendation: >
+      Ensure voting periods are long enough (typically 3-7 days) to
+      prevent rapid governance attacks during market volatility.
+
+  - type: "regex"
+    description: "Flash-loanable governance token check"
+    pattern: "getVotes|getPastVotes|balanceOf\\s*\\([^)]*\\)\\s*[>=]"
+    confidence: 0.35
+    recommendation: >
+      If using balance-based voting, tokens can be borrowed via flash loans
+      to pass malicious proposals. Consider using checkpointed voting
+      power (e.g., Compound's Comp model) with a snapshot mechanism.

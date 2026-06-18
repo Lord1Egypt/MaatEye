@@ -1,0 +1,35 @@
+# 💧 P11 — Flash Loan Attack Vector
+# Detects patterns susceptible to flash loan attacks
+id: "P11"
+name: "Flash Loan Attack Vector"
+severity: "high"
+enabled: true
+description: >
+  The contract exhibits patterns that are commonly exploited in
+  flash loan attacks, particularly around price-dependent
+  calculations without manipulation protection.
+detectors:
+  - type: "ast_pattern"
+    description: "Price-dependent logic without TWAP — flash loan bait"
+    required_elements:
+      - "balanceOf"
+      - "require"
+    forbidden_elements:
+      - "twap"
+      - "TWAP"
+      - "accumulated"
+      - "cumulative"
+    confidence: 0.35
+    recommendation: >
+      Flash loan attacks typically exploit price-dependent calculations.
+      Use TWAP oracles, limit price impact, and consider adding a
+      minimum liquidity requirement for critical operations.
+
+  - type: "regex"
+    description: "Asset ratio based on balance (typical flash loan target)"
+    pattern: "IERC20\\(\\w+\\)\\.balanceOf\\(address\\(this\\)\\)[^;]*[<>!=]"
+    confidence: 0.40
+    recommendation: >
+      If calculating asset ratios from contract balances, be aware that
+      flash loans can temporarily inflate these. Consider using an
+      internal accounting system separate from actual balances.

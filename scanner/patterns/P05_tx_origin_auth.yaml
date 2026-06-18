@@ -1,0 +1,22 @@
+# 🚪 P05 — tx.origin Authentication
+# Detects use of tx.origin for access control
+id: "P05"
+name: "tx.origin Authentication"
+severity: "high"
+enabled: true
+description: >
+  The contract uses tx.origin for authorization checks. This is
+  dangerous because it can be exploited in phishing-style attacks
+  where an intermediate contract tricks the user.
+detectors:
+  - type: "regex"
+    description: "tx.origin used in require/modifier condition"
+    pattern: "(require|if|modifier)\\s*\\([^)]*tx\\.origin[^)]*\\)"
+    confidence: 0.95
+    recommendation: >
+      Replace tx.origin with msg.sender for access control.
+      tx.origin should never be used for authorization —
+      use msg.sender which is the direct caller.
+notes: >
+  CWE-477: Use of Obsolete Functions
+  SWC-115: Authorization through tx.origin

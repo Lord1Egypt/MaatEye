@@ -1,0 +1,32 @@
+# ⏰ P20 — Timestamp Dependence
+# Detects reliance on block.timestamp for critical logic
+id: "P20"
+name: "Timestamp Dependence"
+severity: "medium"
+enabled: true
+description: >
+  The contract uses block.timestamp for critical logic like
+  randomness, expiration checks, or financial calculations.
+  Miners can manipulate block.timestamp within a ~15-second
+  window, potentially exploiting time-dependent logic.
+detectors:
+  - type: "regex"
+    description: "block.timestamp used in financial calculation"
+    pattern: "block\\.timestamp|now\\s"
+    confidence: 0.30
+    recommendation: >
+      block.timestamp can be manipulated by miners within a short
+      window (~15s). For critical logic:
+      1) Don't use it for randomness — use Chainlink VRF
+      2) Don't use it for financial calculations — it's not precise
+      3) For expiration checks, allow a buffer window (e.g., ±1 hour)
+      4) Consider using block.number for time approximation
+
+  - type: "regex"
+    description: "Timestamp used in expiration/deadline check"
+    pattern: "block\\.timestamp\\s*[><=!]+\\s*\\w+|now\\s*[><=!]+\\s*\\w+"
+    confidence: 0.45
+    recommendation: >
+      For deadline/expiration checks, allow a grace period of
+      several blocks to account for timestamp manipulation.
+      Consider using block.number * avgBlockTime as alternative.
