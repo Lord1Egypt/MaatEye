@@ -133,6 +133,18 @@ def test_view_making_external_call_is_flagged_p26():
     assert "P26" in _pattern_ids(_scan(VIEW_MAKES_CALL))
 
 
+def test_eth_transfer_not_flagged_as_no_safe_erc20():
+    # P19 is about raw ERC20 transfers; ETH single-arg transfer must not trip it.
+    assert "P19" not in _pattern_ids(_scan(ETH_TRANSFER))
+
+
+def test_raw_erc20_transfer_flagged_p19():
+    raw = ("pragma solidity 0.8.20; contract C { function f(address t) external {"
+           " IERC20(t).transfer(msg.sender, 1); } }"
+           " interface IERC20 { function transfer(address,uint256) external returns (bool); }")
+    assert "P19" in _pattern_ids(_scan(raw))
+
+
 def test_unprotected_mint_is_caught():
     assert "P01" in _pattern_ids(_scan(VULN_UNPROTECTED_MINT))
 

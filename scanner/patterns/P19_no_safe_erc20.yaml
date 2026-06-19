@@ -14,26 +14,16 @@ description: >
   tokens without checking the return value. Some tokens (USDT,
   BNB, etc.) don't return a boolean, causing silent failures.
 detectors:
+  # Match a CALL to ERC20 transfer/transferFrom — i.e. two+ arguments (note the
+  # comma), so ETH's single-arg `.transfer(amount)` (P42's territory) and the
+  # token's own `function transfer(` definition (no leading dot) are excluded.
+  # The removed ast_pattern required only `.transfer(` anywhere, which flagged
+  # every contract that moved any token or ETH.
   - type: "regex"
-    description: "Direct transfer/transferFrom without SafeERC20 wrapper"
-    pattern: "\\.(transfer|transferFrom)\\s*\\([^)]*\\)\\s*;"
-    confidence: 0.40
+    description: "Raw ERC20 transfer/transferFrom call without SafeERC20"
+    pattern: "\\.(transfer|transferFrom)\\s*\\(\\s*[^,)]+,[^)]*\\)"
+    confidence: 0.55
     recommendation: >
-      Use OpenZeppelin's SafeERC20 library which handles non-standard
-      token behavior (USDT, BNB, etc.). Replace:
-      token.transfer(to, amount) → safeTransfer(token, to, amount)
-
-  - type: "ast_pattern"
-    description: "Missing SafeERC20 import despite using transfer"
-    required_elements:
-      - ".transfer("
-    forbidden_elements:
-      - "SafeERC20"
-      - "safeTransfer"
-      - "safeTransferFrom"
-      - "safeApprove"
-    confidence: 0.50
-    recommendation: >
-      You're making raw ERC20 transfers without using SafeERC20.
-      Some tokens don't return a boolean (USDT) — this will
-      silently fail. Use safeTransfer() from OpenZeppelin.
+      Use OpenZeppelin's SafeERC20 which handles non-standard tokens (USDT etc.
+      don't return a bool). Replace token.transfer(to, amount) with
+      SafeERC20.safeTransfer(token, to, amount).
