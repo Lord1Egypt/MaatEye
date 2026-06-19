@@ -146,7 +146,15 @@ jobs:
             echo "ℹ️ No changes to commit"
           else
             git commit -m "📊 Daily cross-chain scan: $(date +'%Y-%m-%d')"
-            git push
+            # The hourly bot commits to main concurrently — retry with rebase so a
+            # push race doesn't discard a completed scan. Keep our scan data on
+            # conflict (-X ours); the bot re-adds any new tokens next hour.
+            n=0
+            until git push; do
+              n=$((n+1)); [ "$n" -gt 5 ] && echo "❌ push failed after retries" && exit 1
+              echo "🔁 push rejected — rebasing on latest main (attempt $n)"
+              git pull --rebase -X ours origin main || git rebase --abort
+            done
           fi
 
       - name: 📬 Summary
