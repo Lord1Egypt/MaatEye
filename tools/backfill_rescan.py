@@ -18,11 +18,7 @@ from scanner.engine import ScanEngine
 from scanner.fetchers.token_store import get_store
 
 
-def main():
-    chain = sys.argv[1] if len(sys.argv) > 1 else "avalanche"
-    limit = int(sys.argv[2]) if len(sys.argv) > 2 else 0
-
-    store = get_store()
+def rescan_one(store, chain: str, limit: int = 0) -> None:
     tokens = list(store.tokens.get(chain, {}).keys())
     if limit:
         tokens = tokens[:limit]
@@ -57,8 +53,22 @@ def main():
                   f"old_sum={old_total} new_sum={new_total} verified={verified}", flush=True)
 
     store.save()
-    print(f"✅ {chain}: re-scanned {done} tokens in {time.time()-t0:.0f}s", flush=True)
-    print(f"   vuln total {old_total} -> {new_total} | verified-source contracts: {verified}", flush=True)
+    print(f"✅ {chain}: re-scanned {done} tokens in {time.time()-t0:.0f}s | "
+          f"vuln {old_total}->{new_total} | verified-source: {verified}", flush=True)
+
+
+def main():
+    chain = sys.argv[1] if len(sys.argv) > 1 else "avalanche"
+    limit = int(sys.argv[2]) if len(sys.argv) > 2 else 0
+
+    store = get_store()
+    if chain == "all":
+        # Avalanche is keyless and already backfilled; do the rest first.
+        chains = [c for c in store.tokens if c != "avalanche"] + ["avalanche"]
+        for c in chains:
+            rescan_one(store, c, limit)
+    else:
+        rescan_one(store, chain, limit)
 
 
 if __name__ == "__main__":
