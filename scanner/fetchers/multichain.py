@@ -13,6 +13,7 @@ from urllib.parse import urlencode
 
 from scanner.chains import EVMChain, get_chain, EVM_CHAINS
 from scanner.utils.logger import get_logger
+from scanner.utils.source_prep import flatten_sources
 
 logger = get_logger(__name__)
 
@@ -128,17 +129,12 @@ def _try_etherscan_api(address: str, chain: EVMChain, api_key: str = "") -> Opti
         if not source_code:
             return None
 
-        # Handle Solidity standard JSON input
-        if source_code.startswith("{"):
-            try:
-                parsed = json.loads(source_code)
-                sources = parsed.get("sources", {})
-                combined = []
-                for path, content in sources.items():
-                    combined.append(f"// File: {path}\n{content.get('content', '')}")
-                source_code = "\n\n".join(combined)
-            except json.JSONDecodeError:
-                pass
+        # Flatten Solidity Standard-JSON input, including Etherscan's ``{{...}}``
+        # double-brace wrapping (plain json.loads fails on it). Keeps the
+        # project's own files, drops bundled third-party libraries.
+        flat, _ = flatten_sources(source_code)
+        if flat:
+            source_code = flat
 
         return {
             "address": address,
@@ -181,6 +177,12 @@ def _try_blockscout_api(address: str, chain: EVMChain) -> Optional[dict]:
         source_code = result.get("SourceCode", "")
         if not source_code:
             return None
+
+        # Same normalization as the Etherscan path (Blockscout can also return
+        # Standard-JSON for multi-file verified contracts).
+        flat, _ = flatten_sources(source_code)
+        if flat:
+            source_code = flat
 
         return {
             "address": address,

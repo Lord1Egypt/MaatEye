@@ -31,6 +31,18 @@ def _write_output(path: str, content: str) -> None:
     p.write_text(content)
 
 
+def _maybe_update_registry(args, results) -> None:
+    """If --update-registry was passed, persist scan outcomes to the registry
+    so the (registry-driven) dashboard reflects this scan."""
+    if not getattr(args, "update_registry", False):
+        return
+    from scanner.fetchers.token_store import get_store
+    store = get_store()
+    applied = store.apply_scan_results(results, source="scan")
+    store.save()
+    logger.info(f"🗄️  Registry updated from scan: {applied} contracts applied")
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="maateye",
@@ -67,6 +79,9 @@ def main():
     chain_parser.add_argument("--format", choices=["json", "markdown", "text"],
                               default="json", help="Output format")
     chain_parser.add_argument("--output", help="Output file path")
+    chain_parser.add_argument("--update-registry", action="store_true",
+                              help="Persist scan results into the token registry "
+                                   "(so the dashboard reflects this scan)")
 
     # ── Scan-All Command ────────────────────────────────────────────────────
     scan_all_parser = subparsers.add_parser("scan-all",
@@ -78,6 +93,9 @@ def main():
     scan_all_parser.add_argument("--format", choices=["json", "markdown", "text"],
                                  default="json", help="Output format")
     scan_all_parser.add_argument("--output", help="Output file path")
+    scan_all_parser.add_argument("--update-registry", action="store_true",
+                                 help="Persist scan results into the token registry "
+                                      "(so the dashboard reflects this scan)")
 
     # ── Chains Command ──────────────────────────────────────────────────────
     chains_parser = subparsers.add_parser("chains", help="List supported chains")
@@ -374,6 +392,8 @@ def run_scan_chain(args):
 
     results = engine.scan_chain(args.chain, count=args.count)
 
+    _maybe_update_registry(args, results)
+
     # Format output
     if args.format == "json":
         output = json.dumps(results.to_dict(), indent=2)
@@ -402,6 +422,8 @@ def run_scan_all(args):
     engine = ScanEngine(pattern_ids=pattern_ids)
 
     results = engine.scan_all_chains(tokens_per_chain=args.tokens_per_chain)
+
+    _maybe_update_registry(args, results)
 
     # Format output
     if args.format == "json":

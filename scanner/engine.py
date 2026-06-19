@@ -10,10 +10,32 @@ from typing import Optional
 
 from scanner.utils.config import load_config, get_all_patterns, get_pattern_by_id
 from scanner.utils.logger import get_logger
+from scanner.utils.source_prep import prepare_for_scan
 from scanner.fetchers.etherscan import fetch_contract_source
 from scanner.fetchers.local import get_contract_from_cache
 
 logger = get_logger(__name__)
+
+
+class _VirtualMatch:
+    """Stand-in match object for ``ast_pattern`` detectors, which flag a whole
+    contract rather than a regex span. Implements the subset of the ``re.Match``
+    API the recording loop uses (``start``/``end``/``group``/``groups``).
+    Previously this lacked ``end()``, so P26/P27/P39/P44 crashed on every
+    contract and were silently dropped.
+    """
+
+    def start(self) -> int:
+        return 0
+
+    def end(self) -> int:
+        return 0
+
+    def group(self, *args) -> str:
+        return ""
+
+    def groups(self) -> tuple:
+        return ()
 
 
 # ── Result Models ─────────────────────────────────────────────────────────────
@@ -379,10 +401,16 @@ class ScanEngine:
                 scan_time_ms=elapsed,
             )
 
-        source_code = source_data.get("source_code", "")
+        raw_source = source_data.get("source_code", "")
         contract_name = source_data.get("contract_name", "")
         compiler = source_data.get("compiler", "")
         source_chain = source_data.get("chain", chain_key)
+
+        # Normalize before matching: flatten Standard-JSON (incl. Etherscan's
+        # ``{{...}}`` double-wrap), drop third-party dependency files, and blank
+        # out comments/string literals. Without this the patterns match across
+        # bundled OpenZeppelin/etc. code and prose, inflating findings ~10x.
+        source_code = prepare_for_scan(raw_source)
 
         result = ContractResult(
             address=address,
@@ -544,6 +572,10 @@ class ScanEngine:
         severity = pattern.get("severity", "medium")
         detectors = pattern.get("detectors", [])
 
+        # Tracks (pattern_id, line) already recorded for this contract so the
+        # same finding is not counted once per detector / overlapping match.
+        seen: set = set()
+
         for detector in detectors:
             det_type = detector.get("type", "regex")
             det_pattern = detector.get("pattern", "")
@@ -594,20 +626,22 @@ class ScanEngine:
                 any_forbidden = any(el in source_code for el in forbidden_elements)
 
                 if all_present and not any_forbidden:
-                    # Create a virtual match
-                    class VirtualMatch:
-                        def groups(self):
-                            return ()
-                        def group(self, *args):
-                            return ""
-                        def start(self):
-                            return 0
+                    matches = [_VirtualMatch()]
 
-                    matches = [VirtualMatch()]
-
+            # Dedup: one finding per (pattern, source line). A pattern that hits
+            # the same line via several detectors — or a greedy regex that
+            # matches an overlapping span repeatedly — is a single finding, not
+            # many. This is what kept inflating contracts to dozens of "vulns".
             for match in matches:
+                pos = match.start()
+                line_no = source_code.count("\n", 0, pos) + 1
+                dedup_key = (pid, line_no)
+                if dedup_key in seen:
+                    continue
+                seen.add(dedup_key)
+
                 # Extract snippet around the match
-                start = max(0, match.start() - 100)
+                start = max(0, pos - 100)
                 end = min(len(source_code), match.end() + 200)
                 snippet = source_code[start:end]
 
@@ -624,7 +658,7 @@ class ScanEngine:
                     description=det_description or f"Detected {pname} pattern",
                     location=match.group() if hasattr(match, 'group') and match.groups() else det_location,
                     snippet=snippet.strip(),
-                    evidence=f"Pattern matched at position {match.start()}",
+                    evidence=f"Pattern matched at line {line_no}",
                     confidence=det_confidence,
                     recommendation=det_recommendation or "Review the flagged code",
                 )
