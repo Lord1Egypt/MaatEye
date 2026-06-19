@@ -1,5 +1,5 @@
 {
-  "scan_date": "2026-06-19T12:27:18.822091+00:00",
+  "scan_date": "2026-06-19T14:12:07.524896+00:00",
   "total_chains": 15,
   "total_discovered": 6527,
   "total_analyzed": 216,
@@ -90,7 +90,7 @@
     {
       "id": "P09",
       "name": "No Input Validation",
-      "severity": "high",
+      "severity": "medium",
       "category": "BUSINESS_LOGIC",
       "difficulty": "easy"
     },
