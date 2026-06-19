@@ -4,12 +4,12 @@
   <img src="https://img.shields.io/badge/Version-1.0.0--alpha-gold?style=for-the-badge&labelColor=1a1a2e" alt="Version"/>
   <img src="https://img.shields.io/github/actions/workflow/status/Lord1Egypt/MaatEye/scan-scheduled.yml?style=for-the-badge&labelColor=1a1a2e&color=00d4aa" alt="Scheduled Scan"/>
   <img src="https://img.shields.io/github/issues/Lord1Egypt/MaatEye/Red%20Flag?style=for-the-badge&labelColor=1a1a2e&color=ff4444" alt="Red Flags"/>
-  <img src="https://img.shields.io/badge/Patterns-20%20Plagues-gold?style=for-the-badge&labelColor=1a1a2e" alt="Patterns"/>
-  <img src="https://img.shields.io/badge/Chains-24%20EVM-blue?style=for-the-badge&labelColor=1a1a2e" alt="Chains"/>
-  <img src="https://img.shields.io/badge/Tokens-15K%2B-orange?style=for-the-badge&labelColor=1a1a2e" alt="Tokens"/>
+  <img src="https://img.shields.io/badge/Patterns-50%20Plagues-gold?style=for-the-badge&labelColor=1a1a2e" alt="Patterns"/>
+  <img src="https://img.shields.io/badge/Chains-55%20configured-blue?style=for-the-badge&labelColor=1a1a2e" alt="Chains"/>
+  <img src="https://img.shields.io/badge/Registry-~6.5K%20tokens-orange?style=for-the-badge&labelColor=1a1a2e" alt="Tokens"/>
   <img src="https://img.shields.io/github/license/Lord1Egypt/MaatEye?style=for-the-badge&labelColor=1a1a2e&color=00d4aa" alt="License"/>
   <br>
-  <img src="https://img.shields.io/badge/CoinGecko-15K%20Tokens-blueviolet?style=flat-square" alt="CoinGecko"/>
+  <img src="https://img.shields.io/badge/CoinGecko-15K%2B%20catalog-blueviolet?style=flat-square" alt="CoinGecko"/>
   <img src="https://img.shields.io/badge/RPC%20Event%20Logs-Real%20Time-brightgreen?style=flat-square" alt="RPC"/>
   <img src="https://img.shields.io/badge/Etherscan%20API-Compatible-lightgrey?style=flat-square" alt="Etherscan"/>
   <img src="https://img.shields.io/badge/DEX%20Subgraphs-TheGraph-ff69b4?style=flat-square" alt="TheGraph"/>
@@ -31,7 +31,7 @@
 
 ## 🚀 Vision
 
-**MaatEye** is an open-source, community-driven **smart contract vulnerability scanner** that automatically detects **20+ dangerous patterns** across **24 EVM chains**, tracking **15,000+ tokens** from CoinGecko + RPC event logs + explorer APIs.
+**MaatEye** is an open-source, community-driven **smart contract vulnerability scanner** that automatically detects **50 dangerous patterns** across **55 configured EVM chains** (15 currently populated), tracking **~6,500 discovered tokens** in a persistent registry — sourced from CoinGecko (15K+ token catalog) + RPC event logs + explorer APIs + DexScreener + DeFiLlama.
 
 > Not a pentest tool. Not an exploit kit.  
 > **A guardian that watches, warns, and protects.**
@@ -41,7 +41,7 @@
 | Feature | MaatEye | Others |
 |---------|---------|--------|
 | 🆓 **100% Free** (runs on GitHub Actions) | ✅ | ❌ Paid APIs ($100+/mo) |
-| 🌐 **Mass Token Discovery** (15K+ tokens) | ✅ CoinGecko + RPC logs | ❌ Top 50 only |
+| 🌐 **Mass Token Discovery** (6 sources, 15K+ catalog) | ✅ CoinGecko + RPC logs | ❌ Top 50 only |
 | 🔄 **Self-updating** (new patterns auto-deploy) | ✅ | ❌ Manual updates |
 | 🚩 **Live Red Flag registry** (public Issues) | ✅ | ❌ Private DB |
 | 🧩 **Community patterns** (anyone can PR) | ✅ | ❌ Closed source |
@@ -120,32 +120,105 @@ All discovered tokens are stored in a **deduplicated JSON registry**:
 
 ---
 
-## 📋 The 20 Plagues — Detection Patterns
+## 📋 The 50 Plagues — Detection Patterns
 
 > *"I will bring the plagues upon the unsafe contracts, and they shall be exposed."*
 
-| # | Pattern | Severity | Detection |
-|---|---------|----------|-----------|
-| 🎭 | **P01 — Unprotected Mint** | 🔴 Critical | Anyone can mint tokens |
-| 💀 | **P02 — Selfdestruct Anyone** | 🔴 Critical | Anyone can kill the contract |
-| 🔄 | **P03 — Reentrancy** | 🔴 Critical | Unsafe external calls before state update |
-| 📐 | **P04 — Integer Overflow/Underflow** | 🔴 Critical | Arithmetic without SafeMath |
-| 🚪 | **P05 — tx.origin Authentication** | 🟡 High | Phishing-vulnerable auth |
-| 📞 | **P06 — Unchecked Call** | 🟡 High | Call without return value check |
-| 🎪 | **P07 — Delegatecall Injection** | 🔴 Critical | Arbitrary delegatecall target |
-| 🗂️ | **P08 — Storage Collision** | 🟡 High | Proxy storage layout mismatch |
-| 🎯 | **P09 — No Input Validation** | 🟡 High | Unbounded loops, unvalidated params |
-| 🏷️ | **P10 — Oracle Manipulation** | 🔴 Critical | Price feed without manipulation checks |
-| 💧 | **P11 — Flash Loan Attack Vector** | 🟡 High | Susceptible to flash loan price manipulation |
-| ✍️ | **P12 — Signature Replay** | 🟡 High | EIP-712 without nonce/chainId |
-| 🗳️ | **P13 — Governance Attack** | 🔴 Critical | Low quorum, vote manipulation |
-| 👑 | **P14 — Ownership Renounce (Unsafe)** | 🟡 Medium | Renounce without timelock |
-| 🔍 | **P15 — Incorrect Visibility** | 🟡 Medium | Internal functions exposed as public |
-| 🍼 | **P16 — Uninitialized Proxy** | 🔴 Critical | Proxy without initialization guard |
-| 🎪 | **P17 — Arbitrary External Call** | 🔴 Critical | Unrestricted external call destination |
-| 🚫 | **P18 — Missing Access Control** | 🟡 High | Critical functions without onlyOwner |
-| 🛡️ | **P19 — No SafeERC20** | 🟡 Medium | Direct transfer without return check |
-| ⏰ | **P20 — Timestamp Dependence** | 🟡 Medium | `block.timestamp` for critical logic |
+MaatEye ships **50 detection patterns** (`scanner/patterns/P*.yaml`) organized into **10 vulnerability categories**. Each pattern is a regex / function-signature / lightweight-AST rule with a severity and a YAML definition you can read and extend.
+
+**Severity legend:** 🔴 Critical · 🟡 High · 🟠 Medium
+
+### 🔐 Access Control (9)
+| Pattern | Severity |
+|---------|----------|
+| P01 — Unprotected Mint | 🔴 |
+| P02 — Selfdestruct Anyone | 🔴 |
+| P21 — Unprotected Initializer | 🔴 |
+| P22 — Role Admin Hijack | 🔴 |
+| P05 — tx.origin Authentication | 🟡 |
+| P18 — Missing Access Control | 🟡 |
+| P23 — Ownership Transfer Without Two-Step | 🟡 |
+| P24 — Pausable Without Unpause Guard | 🟡 |
+| P14 — Unsafe Ownership Renounce | 🟠 |
+
+### 🔄 Reentrancy (8)
+| Pattern | Severity |
+|---------|----------|
+| P03 — Reentrancy | 🔴 |
+| P25 — Cross-Function Reentrancy | 🔴 |
+| P27 — Cross-Contract Reentrancy | 🔴 |
+| P28 — ERC721 Callback Reentrancy | 🔴 |
+| P29 — ERC1155 Batch Reentrancy | 🔴 |
+| P31 — Flash Loan Reentrancy Bridge | 🔴 |
+| P26 — Read-Only Reentrancy | 🟡 |
+| P30 — Reentrancy Via Fallback | 🟡 |
+
+### 📞 External Calls (8)
+| Pattern | Severity |
+|---------|----------|
+| P07 — Delegatecall Injection | 🔴 |
+| P17 — Arbitrary External Call | 🔴 |
+| P43 — Delegatecall to Untrusted Library | 🔴 |
+| P06 — Unchecked Call | 🟡 |
+| P41 — Contract Existence Check Missing | 🟡 |
+| P45 — CREATE2 Address Collision | 🟡 |
+| P42 — Gas Stipend Dependency | 🟠 |
+| P44 — Staticcall With Side Effects | 🟠 |
+
+### 🧩 Proxy / Upgradeable (7)
+| Pattern | Severity |
+|---------|----------|
+| P16 — Uninitialized Proxy | 🔴 |
+| P36 — Metamorphic Contract (selfdestruct + CREATE2) | 🔴 |
+| P37 — Implementation Selfdestruct | 🔴 |
+| P08 — Storage Collision | 🟡 |
+| P38 — Constructor in Implementation | 🟡 |
+| P39 — Function Clashing | 🟡 |
+| P40 — UUPS Without Upgrade Guard | 🟡 |
+
+### 📐 Arithmetic (5)
+| Pattern | Severity |
+|---------|----------|
+| P04 — Integer Overflow/Underflow | 🔴 |
+| P35 — Share Price Manipulation (EIP-4626) | 🔴 |
+| P32 — Precision Loss (Division Before Multiplication) | 🟡 |
+| P33 — Rounding in Favor of Wrong Party | 🟡 |
+| P34 — Fee Calculation Exploit | 🟡 |
+
+### 🪙 Token Economics (5)
+| Pattern | Severity |
+|---------|----------|
+| P10 — Oracle Manipulation | 🔴 |
+| P11 — Flash Loan Attack Vector | 🟡 |
+| P50 — Honeypot Detection | 🟡 |
+| P51 — Fee-On-Transfer Accounting Mismatch | 🟡 |
+| P52 — Deflationary Token Balance Change | 🟡 |
+
+### 🗳️ Governance (3)
+| Pattern | Severity |
+|---------|----------|
+| P13 — Governance Attack | 🔴 |
+| P60 — Flash Loan Governance Takeover | 🔴 |
+| P61 — Low Quorum / Low Proposal Threshold | 🟡 |
+
+### 🧠 Business Logic (3)
+| Pattern | Severity |
+|---------|----------|
+| P09 — No Input Validation | 🟡 |
+| P15 — Incorrect Visibility | 🟠 |
+| P20 — Timestamp Dependence | 🟠 |
+
+### ✍️ Signature / Crypto (1)
+| Pattern | Severity |
+|---------|----------|
+| P12 — Signature Replay (EIP-712 without nonce/chainId) | 🟡 |
+
+### 🛡️ ERC Standards (1)
+| Pattern | Severity |
+|---------|----------|
+| P19 — No SafeERC20 | 🟠 |
+
+> The live dashboard renders the full pattern catalog with categories and severity counts: **[lord1egypt.github.io/MaatEye](https://lord1egypt.github.io/MaatEye/)**
 
 ---
 
@@ -154,7 +227,7 @@ All discovered tokens are stored in a **deduplicated JSON registry**:
 ```mermaid
 flowchart TB
     subgraph "🪙 Token Discovery Layer"
-        A1[🪙 CoinGecko API<br/>15K+ tokens] --> D[🗄️ Token Registry<br/>Dedup + Incremental]
+        A1[🪙 CoinGecko API<br/>15K+ catalog] --> D[🗄️ Token Registry<br/>Dedup + Incremental]
         A2[🧾 RPC Event Logs<br/>eth_getLogs Transfer] --> D
         A3[🔭 Explorer APIs<br/>Etherscan/Blockscout] --> D
         A4[📚 Known Token Lists<br/>Curated] --> D
@@ -164,7 +237,7 @@ flowchart TB
 
     subgraph "🔍 Scanning Pipeline"
         D --> E[📡 Source Fetcher<br/>Etherscan/Blockscout/RPC]
-        E --> F[🔬 Static Analyzer<br/>20 Plagues Engine]
+        E --> F[🔬 Static Analyzer<br/>50 Plagues Engine]
         F --> G[🎯 Pattern Matcher<br/>Regex + Function Sig + AST]
     end
 
@@ -177,9 +250,8 @@ flowchart TB
     end
 
     subgraph "⏰ Schedule"
-        M1[⚡ Hourly Scan<br/>New token discovery] --> D
-        M2[🌅 Daily 08:00 UTC<br/>Cross-Chain Vuln Scan] --> E
-        M3[📅 Weekly Full Scan<br/>All 15K+ tokens] --> E
+        M1["⚡ Hourly (cron 5 * * * *)<br/>Discover + scan new tokens"] --> D
+        M2["🌅 Daily 08:00 UTC<br/>Cross-Chain Vuln Scan"] --> E
     end
 
     subgraph "🧠 Self-Evolution"
@@ -197,7 +269,7 @@ User / Time Trigger
        ▼
 ┌──────────────────────┐     ┌────────────────────┐     ┌──────────────────┐
 │  Token Discovery     │────▶│  Token Registry    │────▶│  Scan Engine     │
-│  (6 sources, dedup)  │     │  (persistent JSON) │     │  (20 patterns)   │
+│  (6 sources, dedup)  │     │  (persistent JSON) │     │  (50 patterns)   │
 └──────────────────────┘     └────────────────────┘     └──────────────────┘
                                                                │
                                                                ▼
@@ -260,7 +332,7 @@ python -m scanner.main chains
 # Scan top tokens on BNB Chain
 python -m scanner.main scan-chain bnb --count 50 --format markdown
 
-# Scan ALL 24 EVM chains
+# Scan ALL configured EVM chains
 python -m scanner.main scan-all --tokens-per-chain 20 --format json --output cross_chain.json
 
 # Scan specifically from registry
@@ -269,9 +341,9 @@ python -m scanner.main scan-registry --chain ethereum --limit 100
 
 ---
 
-## 🌐 Supported Chains (24 EVM)
+## 🌐 Supported Chains (55 configured · 15 populated)
 
-MaatEye scans **24 EVM-compatible blockchains** using free public RPC endpoints from [publicnode.com](https://publicnode.com).
+MaatEye has **55 EVM-compatible chains configured** in `scanner/chains.py`, all using free public RPC endpoints from [publicnode.com](https://publicnode.com). **15 chains are currently populated** in the live registry (the rest activate as discovery reaches them). The most active chains are listed below.
 
 | # | Chain | Chain ID | Token | Discovery Sources |
 |---|-------|----------|-------|-------------------|
@@ -313,8 +385,8 @@ MaatEye scans **24 EVM-compatible blockchains** using free public RPC endpoints 
 | Milestone | Status | Version |
 |-----------|--------|---------|
 | 🏗️ Repo Structure & CI/CD | ✅ Done | v0.1 |
-| 🔴 20 Plagues Patterns | ✅ Done | v0.2 |
-| 🌐 24 EVM Chains Support | ✅ Done | v0.3 |
+| 🔴 50 Plagues Patterns (10 categories) | ✅ Done | v0.5 |
+| 🌐 55 EVM Chains Configured | ✅ Done | v0.3 |
 | 📅 Daily Cross-Chain Scan | ✅ Done | v0.3 |
 | 🚩 Auto Red Flag Issues | ✅ Done | v0.3 |
 | 🪙 CoinGecko Token Discovery | ✅ Done | v0.4 |

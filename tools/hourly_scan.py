@@ -8,7 +8,7 @@ Strategy:
   1. Scan Transfer events in the last ~1 hour of blocks on all chains
   2. Filter to ONLY addresses never seen before (dedup via registry)
   3. Take up to --max-new tokens per chain
-  4. Fetch source code + run 20 Plague patterns on each
+  4. Fetch source code + run all 50 detection patterns on each
   5. Update token registry with results
   6. Regenerate docs/dashboard.json (cumulative stats)
 
@@ -216,7 +216,12 @@ def update_registry_from_results(chain_key: str, scan_results) -> None:
             max_sev = "low"
         store.update_scan_result(chain_key, addr, contract.vuln_count, max_sev)
         if contract.source_length > 0:
-            store.mark_has_source(chain_key, addr)
+            # Only credit as verified coverage when REAL source was analyzed —
+            # a bytecode-only placeholder must not inflate the "analyzed" count.
+            store.mark_has_source(
+                chain_key, addr,
+                verified=getattr(contract, "has_verified_source", False),
+            )
 
     store.save()
 
@@ -368,7 +373,7 @@ def main() -> None:
         print_run_summary({}, total_new_discovered, total_registered, time.time() - start_time)
         return
 
-    # Phase 3: Scan each chain (source fetch + 20 Plague patterns)
+    # Phase 3: Scan each chain (source fetch + 50 detection patterns)
     print("\nPhase 3 — Vulnerability Scan")
     print("-" * 40)
     chain_results = {}

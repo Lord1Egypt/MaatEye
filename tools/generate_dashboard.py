@@ -44,13 +44,19 @@ SEVERITY_EMOJI = {
 def generate_html(data: dict) -> str:
     """Generate the complete dashboard HTML — ALL sections, REAL data."""
 
-    # ── Top-level stats ────────────────────────────────────────────────
-    total = data.get("total_vulns", 0)
-    critical = data.get("critical_count", 0)
-    high = data.get("high_count", 0)
-    medium = data.get("medium_count", 0)
-    low = data.get("low_count", 0)
-    total_contracts = data.get("total_contracts", 0)
+    # ── Top-level stats (honest, self-consistent) ─────────────────────
+    # findings = pattern matches; the severity numbers are CONTRACT counts
+    # whose worst finding is that severity, and they sum to flagged_contracts.
+    total = data.get("total_findings", data.get("total_vulns", 0))
+    sev = data.get("contracts_by_severity", {})
+    critical = sev.get("critical", data.get("critical_count", 0))
+    high = sev.get("high", data.get("high_count", 0))
+    medium = sev.get("medium", data.get("medium_count", 0))
+    low = sev.get("low", data.get("low_count", 0))
+    flagged = data.get("flagged_contracts", critical + high + medium + low)
+    total_discovered = data.get("total_discovered", data.get("total_contracts", 0))
+    total_analyzed = data.get("total_analyzed", 0)
+    total_contracts = total_discovered  # back-compat local name
     total_chains = data.get("total_chains", 0)
     scan_date = data.get("scan_date", "N/A")
     pattern_count = data.get("pattern_count", 0)
@@ -75,19 +81,20 @@ def generate_html(data: dict) -> str:
         </div>
     </div>"""
 
-    # ── Vulns meter (hide when 0) ─────────────────────────────────────
-    if total > 0:
+    # ── Flagged-contracts-by-severity meter ───────────────────────────
+    # Denominator is `flagged` (not findings) so the segments always add to 100%.
+    if flagged > 0:
         vuln_meter = f"""
         <div class="meter-container">
             <div class="meter-bar">
-                <div class="meter-critical" style="width:{critical/max(total,1)*100:.1f}%">{critical:,}</div>
-                <div class="meter-high" style="width:{high/max(total,1)*100:.1f}%">{high:,}</div>
-                <div class="meter-medium" style="width:{medium/max(total,1)*100:.1f}%">{medium:,}</div>
-                <div class="meter-low" style="width:{low/max(total,1)*100:.1f}%">{low:,}</div>
+                <div class="meter-critical" style="width:{critical/max(flagged,1)*100:.1f}%">{critical:,}</div>
+                <div class="meter-high" style="width:{high/max(flagged,1)*100:.1f}%">{high:,}</div>
+                <div class="meter-medium" style="width:{medium/max(flagged,1)*100:.1f}%">{medium:,}</div>
+                <div class="meter-low" style="width:{low/max(flagged,1)*100:.1f}%">{low:,}</div>
             </div>
         </div>"""
     else:
-        vuln_meter = '<div class="meter-container"><div class="meter-bar"><div class="meter-low" style="width:100%">0 findings — clean 🛡️</div></div></div>'
+        vuln_meter = '<div class="meter-container"><div class="meter-bar"><div class="meter-low" style="width:100%">No flagged contracts yet — clean 🛡️</div></div></div>'
 
     # Highest pattern ID
     max_pat_id = max((p.get("id", "P00") for p in patterns), default="P00")
@@ -118,13 +125,16 @@ def generate_html(data: dict) -> str:
     # ── Chain Cards ────────────────────────────────────────────────────
     chain_cards = ""
     for key, info in sorted(chains.items()):
-        has_vulns = info.get("vulns", 0) > 0
-        if has_vulns:
+        c_findings = info.get("findings", info.get("vulns", 0))
+        c_flagged = info.get("flagged", 0)
+        c_discovered = info.get("discovered", info.get("contracts", 0))
+        c_analyzed = info.get("analyzed", 0)
+        if c_findings > 0:
             vuln_class = "chain-red" if info["critical"] >= 5 else "chain-orange" if info["high"] >= 10 else "chain-green"
         else:
             vuln_class = "chain-none"
-        # bar widths
-        v = max(info["vulns"], 1)
+        # severity bar widths are relative to flagged contracts (self-consistent)
+        v = max(c_flagged, 1)
         chain_cards += f"""
         <div class="chain-card {vuln_class}">
             <div class="chain-header">
@@ -133,11 +143,11 @@ def generate_html(data: dict) -> str:
                 <span class="chain-key">{key}</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">{info['contracts']}</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">{info['vulns']}</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">{info['critical']}</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">{info['high']}</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">{info['medium']}</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">{c_discovered:,}</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">{c_analyzed:,}</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">{c_findings:,}</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">{info['critical']}</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">{info['high']}</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:{info['critical']/v*100:.1f}%"></div>
@@ -148,12 +158,13 @@ def generate_html(data: dict) -> str:
 
     # ── Chain Comparison Table ─────────────────────────────────────────
     table_rows = ""
-    for key, info in sorted(chains.items(), key=lambda x: -x[1]["vulns"]):
+    for key, info in sorted(chains.items(), key=lambda x: -x[1].get("findings", x[1].get("vulns", 0))):
         table_rows += f"""
         <tr>
             <td>{info['chain_emoji']} {info['chain_name']}</td>
-            <td>{info['contracts']}</td>
-            <td>{info['vulns']}</td>
+            <td>{info.get('discovered', info.get('contracts', 0)):,}</td>
+            <td>{info.get('analyzed', 0):,}</td>
+            <td>{info.get('findings', info.get('vulns', 0)):,}</td>
             <td class="critical">{info['critical']}</td>
             <td class="high">{info['high']}</td>
             <td class="medium">{info['medium']}</td>
@@ -288,17 +299,18 @@ tr:hover {{ background:#1a2340; }}
     <!-- ═══ STATS CARDS ═══ -->
     <div class="stats-grid">
         <div class="stat-card total"><div class="number">{total:,}</div><div class="label">Total Findings</div></div>
-        <div class="stat-card critical"><div class="number">{critical:,}</div><div class="label">🔴 Contracts w/ Critical</div></div>
-        <div class="stat-card high"><div class="number">{high:,}</div><div class="label">🟡 Contracts w/ High</div></div>
-        <div class="stat-card medium"><div class="number">{medium:,}</div><div class="label">🔵 Contracts w/ Medium</div></div>
-        <div class="stat-card low"><div class="number">{low:,}</div><div class="label">🟢 Contracts w/ Low</div></div>
+        <div class="stat-card critical"><div class="number">{flagged:,}</div><div class="label">🚩 Flagged Contracts</div></div>
+        <div class="stat-card critical"><div class="number">{critical:,}</div><div class="label">🔴 Critical Contracts</div></div>
+        <div class="stat-card high"><div class="number">{high:,}</div><div class="label">🟡 High Contracts</div></div>
+        <div class="stat-card contracts"><div class="number">{total_analyzed:,}</div><div class="label">Analyzed (verified src)</div></div>
+        <div class="stat-card low"><div class="number">{total_discovered:,}</div><div class="label">Discovered</div></div>
         <div class="stat-card chains"><div class="number">{total_chains}</div><div class="label">EVM Chains</div></div>
-        <div class="stat-card contracts"><div class="number">{total_contracts:,}</div><div class="label">Contracts Scanned</div></div>
         <div class="stat-card patterns"><div class="number">{pattern_count}</div><div class="label">Detection Patterns</div></div>
     </div>
 
-    <!-- ═══ VULNERABILITY METER ═══ -->
-    <h2 class="section-title">📊 Severity Distribution (Vulnerabilities)</h2>
+    <!-- ═══ SEVERITY METER ═══ -->
+    <h2 class="section-title">📊 Flagged Contracts by Severity</h2>
+    <p class="section-sub">{flagged:,} flagged contracts · {total:,} total findings across them</p>
     {vuln_meter}
 
     <!-- ═══ PATTERN CATEGORIES ═══ -->
@@ -321,6 +333,7 @@ tr:hover {{ background:#1a2340; }}
 
     <!-- ═══ PER-CHAIN CARDS ═══ -->
     <h2 class="section-title">🌐 Per-Chain Breakdown</h2>
+    <p class="section-sub">Discovered = tokens found · Analyzed = verified source examined · Findings = pattern matches</p>
     <div class="chain-grid">
         {chain_cards}
     </div>
@@ -330,7 +343,7 @@ tr:hover {{ background:#1a2340; }}
     <div class="table-container">
         <table>
             <thead>
-                <tr><th>Chain</th><th>Contracts</th><th>Total Vulns</th><th>🔴 Critical</th><th>🟡 High</th><th>🔵 Medium</th><th>🟢 Low</th></tr>
+                <tr><th>Chain</th><th>Discovered</th><th>Analyzed</th><th>Findings</th><th>🔴 Crit.</th><th>🟡 High</th><th>🔵 Med.</th><th>🟢 Low</th></tr>
             </thead>
             <tbody>
                 {table_rows}
@@ -341,10 +354,10 @@ tr:hover {{ background:#1a2340; }}
 </div>
 
 <div class="footer">
-    <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — {pattern_count} Patterns · {total_chains} Chains · Automated with 💙 by Lord1Egypt</p>
-    <p>𝝛 v0.5 Pattern Explosion — From 20 to 50 patterns in one session 🔥</p>
-    <p>Data refreshes daily at 08:00 UTC • Static analysis only — read-only, no exploits</p>
-    <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a> · Dashboard</p>
+    <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — {pattern_count} patterns · {total_chains} chains · built with 💙 by Lord1Egypt</p>
+    <p>Numbers reconcile by design: severity counts are <i>contracts</i> (sum to flagged), findings are <i>pattern matches</i>.</p>
+    <p>Registry refreshes hourly • Static analysis only — read-only, no transactions, no exploits</p>
+    <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a> · Live Dashboard</p>
 </div>
 
 </body>

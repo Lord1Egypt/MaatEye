@@ -51,6 +51,7 @@ class ContractResult:
     chain_name: str = "Ethereum"
     chain_emoji: str = "🔵"
     explorer_url: str = ""
+    source_type: str = ""  # etherscan | blockscout | bytecode_only | ""
     vulnerabilities: list[Vulnerability] = field(default_factory=list)
     error: Optional[str] = None
     scan_time_ms: float = 0.0
@@ -58,6 +59,11 @@ class ContractResult:
     @property
     def vuln_count(self) -> int:
         return len(self.vulnerabilities)
+
+    @property
+    def has_verified_source(self) -> bool:
+        """True only when real verified source was analyzed (not a bytecode placeholder)."""
+        return self.source_type in ("etherscan", "blockscout")
 
     @property
     def critical_count(self) -> int:
@@ -70,6 +76,10 @@ class ContractResult:
     @property
     def medium_count(self) -> int:
         return sum(1 for v in self.vulnerabilities if v.severity == "medium")
+
+    @property
+    def low_count(self) -> int:
+        return sum(1 for v in self.vulnerabilities if v.severity == "low")
 
 
 @dataclass
@@ -336,6 +346,7 @@ class ScanEngine:
             results.critical_count += c.critical_count
             results.high_count += c.high_count
             results.medium_count += c.medium_count
+            results.low_count += c.low_count
 
         logger.info(f"✅ Scan complete: {results.total_contracts} contracts, "
                      f"{results.total_vulns} vulns in {results.scan_time_seconds:.1f}s")
@@ -382,6 +393,7 @@ class ScanEngine:
             chain_name=source_data.get("chain_name", chain_name),
             chain_emoji=chain_emoji,
             explorer_url=explorer_url,
+            source_type=source_data.get("source_type", ""),
         )
 
         # Run all patterns against the source
@@ -509,6 +521,7 @@ class ScanEngine:
             master_results.critical_count += c.critical_count
             master_results.high_count += c.high_count
             master_results.medium_count += c.medium_count
+            master_results.low_count += c.low_count
 
         logger.info(f"✅ Cross-chain scan complete: "
                      f"{len(master_results.chains_scanned)} chains, "
