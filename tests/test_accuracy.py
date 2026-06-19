@@ -8,8 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from scanner.engine import ScanEngine, _VirtualMatch
 
 
-def _engine_with_source(src: str) -> ScanEngine:
-    eng = ScanEngine(chain_key="ethereum")
+def _engine_with_source(src: str, min_confidence: float = 0.5) -> ScanEngine:
+    eng = ScanEngine(chain_key="ethereum", min_confidence=min_confidence)
     eng._fetch_source = lambda a: {
         "source_code": src,
         "contract_name": "T",
@@ -52,6 +52,20 @@ def test_no_pattern_crashes_on_real_ish_contract():
     assert res.vuln_count >= 0
 
 
+def test_confidence_threshold_filters_low_confidence_detectors():
+    # block.timestamp only matches P20 detectors (confidence 0.30/0.45). With
+    # the default 0.5 threshold they are filtered; with threshold 0 they fire.
+    src = "contract C { function f() public view returns (uint) { return block.timestamp; } }"
+
+    default_eng = _engine_with_source(src)  # min_confidence=0.5
+    default_res = default_eng._scan_single("0xtest")
+    assert not [v for v in default_res.vulnerabilities if v.pattern_id == "P20"]
+
+    loose_eng = _engine_with_source(src, min_confidence=0.0)
+    loose_res = loose_eng._scan_single("0xtest")
+    assert [v for v in loose_res.vulnerabilities if v.pattern_id == "P20"]
+
+
 def test_findings_deduped_per_line():
     # Same vuln keyword repeated on distinct lines => one finding per line;
     # repeated on the SAME line => still one finding.
@@ -62,7 +76,9 @@ def test_findings_deduped_per_line():
         "  function c() public view returns (uint) { return block.timestamp + block.timestamp; }\n"  # line 4, twice
         "}\n"
     )
-    eng = _engine_with_source(src)
+    # Disable the confidence threshold so the (low-confidence) P20 timestamp
+    # detector fires — this test targets the dedup mechanism specifically.
+    eng = _engine_with_source(src, min_confidence=0.0)
     res = eng._scan_single("0xtest")
     p20 = [v for v in res.vulnerabilities if v.pattern_id == "P20"]
     lines = {v.evidence for v in p20}

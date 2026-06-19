@@ -296,12 +296,18 @@ class ScanEngine:
         pattern_ids: Optional[list[str]] = None,
         max_workers: int = 5,
         chain_key: Optional[str] = None,  # Multi-chain support
+        min_confidence: float = 0.5,
     ):
         self.network = network
         self.rpc_endpoint = rpc_endpoint
         self.pattern_ids = pattern_ids
         self.max_workers = max_workers
         self.chain_key = chain_key
+        # Detectors below this confidence are skipped. Many detectors are
+        # low-confidence heuristics (e.g. "function takes an array param") or
+        # informational "good practice detected" notes that should never be
+        # reported as vulnerabilities; thresholding removes that noise.
+        self.min_confidence = min_confidence
 
         # Resolve chain context
         self.chain_ctx = None
@@ -583,6 +589,10 @@ class ScanEngine:
             det_location = detector.get("location", "")
             det_recommendation = detector.get("recommendation", "")
             det_confidence = detector.get("confidence", 0.7)
+
+            # Skip low-confidence / informational detectors entirely.
+            if det_confidence < self.min_confidence:
+                continue
 
             matches = []
 
