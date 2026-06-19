@@ -43,6 +43,11 @@ jobs:
 
       - name: 🌐 Run Cross-Chain Scanner
         id: scan
+        env:
+          # One Etherscan V2 key unlocks verified source on ~60 chains (selected
+          # by chainid). Without it, only keyless explorers (e.g. Avalanche/
+          # Snowtrace) return source and every other chain stays at 0 analyzed.
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
         run: |
           python -m scanner.main scan-all \
             --tokens-per-chain ${{ env.TOKENS_PER_CHAIN }} \
