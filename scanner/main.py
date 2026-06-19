@@ -19,6 +19,18 @@ from scanner.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
+def _write_output(path: str, content: str) -> None:
+    """Write text to ``path``, creating parent directories as needed.
+
+    Output targets like ``results/cross_chain_report.json`` live in a directory
+    that may not exist yet (e.g. fresh CI checkout), so ensure it first.
+    """
+    p = Path(path)
+    if p.parent and not p.parent.exists():
+        p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(content)
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="maateye",
@@ -247,7 +259,7 @@ def run_tokens(args):
             ext = "txt"
 
         output_path = args.output or f"data/token_export_{label}.{ext}"
-        Path(output_path).write_text(content)
+        _write_output(output_path, content)
         print(f"📤 Exported {len(tokens)} tokens → {output_path}")
         return
 
@@ -339,7 +351,7 @@ def run_scan(args):
         output = results.to_text()
 
     if args.output:
-        Path(args.output).write_text(output)
+        _write_output(args.output, output)
         logger.info(f"✅ Results written to {args.output}")
     else:
         print(output)
@@ -371,7 +383,7 @@ def run_scan_chain(args):
         output = results.to_text()
 
     if args.output:
-        Path(args.output).write_text(output)
+        _write_output(args.output, output)
         logger.info(f"✅ Results written to {args.output}")
     else:
         print(output)
@@ -400,7 +412,7 @@ def run_scan_all(args):
         output = results.to_text()
 
     if args.output:
-        Path(args.output).write_text(output)
+        _write_output(args.output, output)
         logger.info(f"✅ Cross-chain results written to {args.output}")
     else:
         print(output)
