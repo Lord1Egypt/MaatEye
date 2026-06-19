@@ -107,27 +107,8 @@ def fetch_contract_source(
 ETHERSCAN_V2_API = "https://api.etherscan.io/v2/api"
 
 
-def _try_etherscan_api(address: str, chain: EVMChain, api_key: str = "") -> Optional[dict]:
-    """Try an Etherscan-compatible explorer API for verified source.
-
-    With a key, use the Etherscan **V2 unified** endpoint (one key → all chains
-    via chainid) — this is what lets every chain return verified source, not
-    just Avalanche. Without a key, fall back to the chain's native V1 endpoint,
-    which still works keyless for some explorers (e.g. Snowtrace/Avalanche).
-    """
-    params = {
-        "module": "contract",
-        "action": "getsourcecode",
-        "address": address,
-    }
-
-    if api_key and getattr(chain, "chain_id", 0):
-        url = f"{ETHERSCAN_V2_API}?{urlencode({**params, 'chainid': chain.chain_id, 'apikey': api_key})}"
-    elif chain.explorer_api:
-        url = f"{chain.explorer_api}?{urlencode({**params, 'apikey': api_key or ''})}"
-    else:
-        return None
-
+def _fetch_etherscan_url(url: str, address: str, chain: EVMChain) -> Optional[dict]:
+    """GET an Etherscan-format getsourcecode URL and parse verified source."""
     try:
         req = Request(url, headers={"User-Agent": "MaatEye/1.0"})
         with urlopen(req, timeout=15) as resp:
@@ -157,10 +138,38 @@ def _try_etherscan_api(address: str, chain: EVMChain, api_key: str = "") -> Opti
             "source_code": source_code,
             "source_type": "etherscan",
         }
-
     except Exception as e:
-        logger.debug(f"  ⚠️ Etherscan API failed for {chain.name}: {e}")
+        logger.debug(f"  ⚠️ Etherscan fetch failed for {chain.name}: {e}")
         return None
+
+
+def _try_etherscan_api(address: str, chain: EVMChain, api_key: str = "") -> Optional[dict]:
+    """Try an Etherscan-compatible explorer API for verified source.
+
+    Order of attempts:
+      1. Etherscan **V2 unified** endpoint (one key → ~64 chains via chainid).
+      2. The chain's **native** endpoint (with key if any, else keyless).
+    Trying both means chains that aren't on Etherscan V2 (e.g. Metis, Scroll)
+    still resolve via their own explorer, and keyless explorers (Snowtrace)
+    keep working when no key is configured.
+    """
+    params = {
+        "module": "contract",
+        "action": "getsourcecode",
+        "address": address,
+    }
+
+    urls = []
+    if api_key and getattr(chain, "chain_id", 0):
+        urls.append(f"{ETHERSCAN_V2_API}?{urlencode({**params, 'chainid': chain.chain_id, 'apikey': api_key})}")
+    if chain.explorer_api:
+        urls.append(f"{chain.explorer_api}?{urlencode({**params, 'apikey': api_key or ''})}")
+
+    for url in urls:
+        result = _fetch_etherscan_url(url, address, chain)
+        if result:
+            return result
+    return None
 
 
 def _try_blockscout_api(address: str, chain: EVMChain) -> Optional[dict]:
