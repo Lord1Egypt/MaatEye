@@ -238,15 +238,24 @@ def check_results():
     critical = results.get("critical_count", 0)
     total = results.get("total_vulns", 0)
 
-    with open(args.output, "w") as f:
-        f.write(f"has_vulns={'true' if critical > 0 else 'false'}\n")
-        f.write(f"critical={critical}\n")
-        f.write(f"total={total}\n")
+    lines = [
+        f"has_vulns={'true' if critical > 0 else 'false'}",
+        f"critical={critical}",
+        f"total={total}",
+    ]
 
-    # Set output for GitHub Actions
-    print(f"has_vulns={'true' if critical > 0 else 'false'}")
-    print(f"critical={critical}")
-    print(f"total={total}")
+    with open(args.output, "w") as f:
+        f.write("\n".join(lines) + "\n")
+
+    # Expose as GitHub Actions step outputs so downstream `if:` gates work
+    # (e.g. steps.check.outputs.has_vulns). Falls back to stdout locally.
+    gh_output = os.environ.get("GITHUB_OUTPUT")
+    if gh_output:
+        with open(gh_output, "a") as f:
+            f.write("\n".join(lines) + "\n")
+
+    for line in lines:
+        print(line)
 
 
 def create_issues():

@@ -20,7 +20,7 @@ env:
 
 jobs:
   cross-chain-scan:
-    name: 🌍 Scan All 24 EVM Chains
+    name: 🌍 Scan All Configured EVM Chains
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -65,31 +65,31 @@ jobs:
 
       - name: 📄 Generate Chain Summary Reports
         run: |
-          python -c "
-import json, sys
-from pathlib import Path
+          python <<'PY'
+          import json
+          from pathlib import Path
 
-with open('results/cross_chain_report.json') as f:
-    data = json.load(f)
+          with open('results/cross_chain_report.json') as f:
+              data = json.load(f)
 
-# Generate per-chain markdown reports
-chain_summary = data.get('chain_summary', {})
-for chain_key, info in chain_summary.items():
-    safe_name = chain_key.replace('/', '_')
-    report = f'''# 🌐 {info['chain_emoji']} {info['chain_name']} — Scan Report
-
-| Metric | Value |
-|--------|-------|
-| Contracts Scanned | {info['contracts']} |
-| Vulnerabilities Found | {info['vulns']} |
-| 🔴 Critical | {info['critical']} |
-| 🟡 High | {info['high']} |
-| 🔵 Medium | {info['medium']} |
-'''
-    Path(f'results/chains/{safe_name}.md').parent.mkdir(parents=True, exist_ok=True)
-    Path(f'results/chains/{safe_name}.md').write_text(report)
-    print(f'  📄 {chain_key}: {info[\"vulns\"]} vulns')
-"
+          chain_summary = data.get('chain_summary', {})
+          for chain_key, info in chain_summary.items():
+              safe_name = chain_key.replace('/', '_')
+              report = (
+                  f"# 🌐 {info['chain_emoji']} {info['chain_name']} — Scan Report\n\n"
+                  "| Metric | Value |\n"
+                  "|--------|-------|\n"
+                  f"| Contracts Scanned | {info['contracts']} |\n"
+                  f"| Vulnerabilities Found | {info['vulns']} |\n"
+                  f"| 🔴 Critical | {info['critical']} |\n"
+                  f"| 🟡 High | {info['high']} |\n"
+                  f"| 🔵 Medium | {info['medium']} |\n"
+              )
+              out = Path(f"results/chains/{safe_name}.md")
+              out.parent.mkdir(parents=True, exist_ok=True)
+              out.write_text(report)
+              print(f"  📄 {chain_key}: {info['vulns']} vulns")
+          PY
 
       - name: 📊 Update Cross-Chain Dashboard
         if: always()
@@ -98,30 +98,25 @@ for chain_key, info in chain_summary.items():
             --input results/cross_chain_report.json \
             --output results/DASHBOARD.md
 
-      - name: 📊 Update Dashboard JSON
+      - name: 📊 Update Dashboard JSON + HTML (from registry)
         if: always()
         run: |
-          python tools/update_dashboard.py \
-            --input results/cross_chain_report.json \
-            --output docs/dashboard.json
+          python tools/update_dashboard.py
 
-      - name: 📝 Generate README Chain Badges
+      - name: 📝 Print Scan Summary Line
         if: always()
         run: |
-          python -c "
-import json
-with open('results/cross_chain_report.json') as f:
-    data = json.load(f)
-
-chain_summary = data.get('chain_summary', {})
-# Print a summary for the commit message
-total_vulns = data.get('total_vulns', 0)
-critical = data.get('critical_count', 0)
-high = data.get('high_count', 0)
-chains = data.get('total_chains', 0)
-contracts = data.get('total_contracts', 0)
-print(f'🌍 {chains} chains, {contracts} contracts, {total_vulns} vulns (🔴{critical} 🟡{high})')
-"
+          python <<'PY'
+          import json
+          with open('results/cross_chain_report.json') as f:
+              data = json.load(f)
+          total_vulns = data.get('total_vulns', 0)
+          critical = data.get('critical_count', 0)
+          high = data.get('high_count', 0)
+          chains = data.get('total_chains', 0)
+          contracts = data.get('total_contracts', 0)
+          print(f"🌍 {chains} chains, {contracts} contracts, {total_vulns} vulns (🔴{critical} 🟡{high})")
+          PY
 
       - name: 🚨 Create Red Flag Issues for Critical Vulns
         if: steps.check.outputs.has_vulns == 'true'
@@ -153,19 +148,19 @@ print(f'🌍 {chains} chains, {contracts} contracts, {total_vulns} vulns (🔴{c
         run: |
           echo "## 🌍 Cross-Chain Scan Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          python -c "
-import json
-with open('results/cross_chain_report.json') as f:
-    data = json.load(f)
-print(f'**Chains scanned:** {data.get(\"total_chains\", 0)}')
-print(f'**Contracts scanned:** {data.get(\"total_contracts\", 0)}')
-print(f'**Total vulnerabilities:** {data.get(\"total_vulns\", 0)}')
-print(f'**🔴 Critical:** {data.get(\"critical_count\", 0)}')
-print(f'**🟡 High:** {data.get(\"high_count\", 0)}')
-print(f'**🔵 Medium:** {data.get(\"medium_count\", 0)}')
-print()
-chain_summary = data.get('chain_summary', {})
-for key, info in sorted(chain_summary.items()):
-    emoji = info.get('chain_emoji', '🌐')
-    print(f'- {emoji} {info[\"chain_name\"]}: {info[\"vulns\"]} vulns ({info[\"critical\"]} critical)')
-" >> $GITHUB_STEP_SUMMARY
+          python <<'PY' >> $GITHUB_STEP_SUMMARY
+          import json
+          with open('results/cross_chain_report.json') as f:
+              data = json.load(f)
+          print(f"**Chains scanned:** {data.get('total_chains', 0)}")
+          print(f"**Contracts scanned:** {data.get('total_contracts', 0)}")
+          print(f"**Total vulnerabilities:** {data.get('total_vulns', 0)}")
+          print(f"**🔴 Critical:** {data.get('critical_count', 0)}")
+          print(f"**🟡 High:** {data.get('high_count', 0)}")
+          print(f"**🔵 Medium:** {data.get('medium_count', 0)}")
+          print()
+          chain_summary = data.get('chain_summary', {})
+          for key, info in sorted(chain_summary.items()):
+              emoji = info.get('chain_emoji', '🌐')
+              print(f"- {emoji} {info['chain_name']}: {info['vulns']} vulns ({info['critical']} critical)")
+          PY
