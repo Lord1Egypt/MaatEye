@@ -95,8 +95,15 @@ def from_registry() -> dict:
         "sonic":     {"name": "Sonic",         "emoji": "⚡"},
     }
 
+    # IMPORTANT — keep two metrics strictly separate so the numbers always reconcile:
+    #   • findings  = total pattern matches (sum of per-contract vuln_count)
+    #   • contracts-by-severity = COUNT OF CONTRACTS whose worst finding is that severity
+    # critical + high + medium + low (contracts) == flagged_contracts, never == findings.
     chain_summary = {}
-    total_vulns = 0
+    total_findings = 0
+    total_discovered = 0
+    total_analyzed = 0
+    total_flagged = 0
     total_crit = 0
     total_high = 0
     total_med = 0
@@ -105,35 +112,40 @@ def from_registry() -> dict:
     for chain_key, tokens in sorted(registry.items()):
         meta = CHAIN_META.get(chain_key, {"name": chain_key.title(), "emoji": "🌐"})
 
-        # Count actual scan data from tokens if available
-        chain_vulns = 0
+        chain_findings = 0
+        chain_analyzed = 0
+        chain_flagged = 0
         chain_crit = 0
         chain_high = 0
         chain_med = 0
         chain_low = 0
 
-        # Use severity info from registry if stored
         for addr, info in tokens.items():
-            if isinstance(info, dict):
-                max_sev = info.get("max_severity", "")
-                vcount = info.get("vuln_count", 0)
-                if vcount:
-                    chain_vulns += vcount
-                if max_sev == "critical":
-                    chain_crit += 1
-                elif max_sev == "high":
-                    chain_high += 1
-                elif max_sev == "medium":
-                    chain_med += 1
-                elif max_sev == "low":
-                    chain_low += 1
+            if not isinstance(info, dict):
+                continue
+            max_sev = info.get("max_severity", "")
+            vcount = info.get("vuln_count", 0)
+            # "Analyzed" = real verified source was examined. A finding proves real
+            # source existed, so vuln_count>0 also counts (backfills pre-flag data).
+            if info.get("verified_source") or vcount > 0:
+                chain_analyzed += 1
+            if vcount:
+                chain_findings += vcount
+                chain_flagged += 1
+            if max_sev == "critical":
+                chain_crit += 1
+            elif max_sev == "high":
+                chain_high += 1
+            elif max_sev == "medium":
+                chain_med += 1
+            elif max_sev == "low":
+                chain_low += 1
 
-        # If no scan data yet, report 0 vulns (honest)
-        # Don't estimate — avoid inflating numbers
-        if chain_vulns == 0:
-            pass  # Report 0 vulns, which is the truth
-
-        total_vulns += chain_vulns
+        n_discovered = len(tokens)
+        total_discovered += n_discovered
+        total_analyzed += chain_analyzed
+        total_findings += chain_findings
+        total_flagged += chain_flagged
         total_crit += chain_crit
         total_high += chain_high
         total_med += chain_med
@@ -142,33 +154,44 @@ def from_registry() -> dict:
         chain_summary[chain_key] = {
             "chain_name": meta["name"],
             "chain_emoji": meta["emoji"],
-            "contracts": len(tokens),
-            "vulns": chain_vulns,
+            "discovered": n_discovered,
+            "analyzed": chain_analyzed,
+            "findings": chain_findings,
+            "flagged": chain_flagged,
             "critical": chain_crit,
             "high": chain_high,
             "medium": chain_med,
             "low": chain_low,
+            # Back-compat aliases (older consumers expected these keys):
+            "contracts": n_discovered,
+            "vulns": chain_findings,
         }
 
-    # If no chains in registry, show patterns as fallback
+    # If no chains in registry, emit an honest empty Ethereum row.
     if not chain_summary:
         chain_summary["ethereum"] = {
-            "chain_name": "Ethereum",
-            "chain_emoji": "💎",
-            "contracts": 0,
-            "vulns": 0,
-            "critical": 0,
-            "high": 0,
-            "medium": 0,
-            "low": 0,
+            "chain_name": "Ethereum", "chain_emoji": "💎",
+            "discovered": 0, "analyzed": 0, "findings": 0, "flagged": 0,
+            "critical": 0, "high": 0, "medium": 0, "low": 0,
+            "contracts": 0, "vulns": 0,
         }
         total_chains = 1
 
     data = {
         "scan_date": datetime.now(timezone.utc).isoformat(),
         "total_chains": total_chains,
-        "total_contracts": total_tokens,
-        "total_vulns": total_vulns,
+        # Honest, self-consistent metrics:
+        "total_discovered": total_discovered,   # tokens found across all sources
+        "total_analyzed": total_analyzed,       # contracts with verified source examined
+        "total_findings": total_findings,       # individual pattern matches
+        "flagged_contracts": total_flagged,     # contracts with >=1 finding
+        "contracts_by_severity": {
+            "critical": total_crit, "high": total_high,
+            "medium": total_med, "low": total_low,
+        },
+        # Back-compat aliases (the HTML + older tools read these):
+        "total_contracts": total_discovered,
+        "total_vulns": total_findings,
         "critical_count": total_crit,
         "high_count": total_high,
         "medium_count": total_med,

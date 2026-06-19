@@ -108,7 +108,7 @@ tr:hover { background:#1a2340; }
 <div class="header">
     <h1>👁️⚖️ Maat<span>Eye</span></h1>
     <p>Multi-Chain Vulnerability Scanner — Live Dashboard</p>
-    <div class="subtitle">📡 Last scan: 2026-06-18 21:48:30 UTC</div>
+    <div class="subtitle">📡 Last scan: 2026-06-19 06:54:18 UTC</div>
     <div class="badge">⚖️ 50 Detection Patterns across 10 Categories</div>
 </div>
 
@@ -117,21 +117,22 @@ tr:hover { background:#1a2340; }
     <!-- ═══ STATS CARDS ═══ -->
     <div class="stats-grid">
         <div class="stat-card total"><div class="number">10,216</div><div class="label">Total Findings</div></div>
-        <div class="stat-card critical"><div class="number">216</div><div class="label">🔴 Contracts w/ Critical</div></div>
-        <div class="stat-card high"><div class="number">0</div><div class="label">🟡 Contracts w/ High</div></div>
-        <div class="stat-card medium"><div class="number">0</div><div class="label">🔵 Contracts w/ Medium</div></div>
-        <div class="stat-card low"><div class="number">0</div><div class="label">🟢 Contracts w/ Low</div></div>
+        <div class="stat-card critical"><div class="number">216</div><div class="label">🚩 Flagged Contracts</div></div>
+        <div class="stat-card critical"><div class="number">216</div><div class="label">🔴 Critical Contracts</div></div>
+        <div class="stat-card high"><div class="number">0</div><div class="label">🟡 High Contracts</div></div>
+        <div class="stat-card contracts"><div class="number">216</div><div class="label">Analyzed (verified src)</div></div>
+        <div class="stat-card low"><div class="number">6,526</div><div class="label">Discovered</div></div>
         <div class="stat-card chains"><div class="number">15</div><div class="label">EVM Chains</div></div>
-        <div class="stat-card contracts"><div class="number">6,526</div><div class="label">Contracts Scanned</div></div>
         <div class="stat-card patterns"><div class="number">50</div><div class="label">Detection Patterns</div></div>
     </div>
 
-    <!-- ═══ VULNERABILITY METER ═══ -->
-    <h2 class="section-title">📊 Severity Distribution (Vulnerabilities)</h2>
+    <!-- ═══ SEVERITY METER ═══ -->
+    <h2 class="section-title">📊 Flagged Contracts by Severity</h2>
+    <p class="section-sub">216 flagged contracts · 10,216 total findings across them</p>
     
         <div class="meter-container">
             <div class="meter-bar">
-                <div class="meter-critical" style="width:2.1%">216</div>
+                <div class="meter-critical" style="width:100.0%">216</div>
                 <div class="meter-high" style="width:0.0%">0</div>
                 <div class="meter-medium" style="width:0.0%">0</div>
                 <div class="meter-low" style="width:0.0%">0</div>
@@ -505,6 +506,7 @@ tr:hover { background:#1a2340; }
 
     <!-- ═══ PER-CHAIN CARDS ═══ -->
     <h2 class="section-title">🌐 Per-Chain Breakdown</h2>
+    <p class="section-sub">Discovered = tokens found · Analyzed = verified source examined · Findings = pattern matches</p>
     <div class="chain-grid">
         
         <div class="chain-card chain-none">
@@ -514,11 +516,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">arbitrum</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">866</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">866</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -533,14 +535,14 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">avalanche</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">434</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">10216</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">216</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">434</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">216</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">10,216</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">216</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
-                <div class="bar-critical" style="width:2.1%"></div>
+                <div class="bar-critical" style="width:100.0%"></div>
                 <div class="bar-high" style="width:0.0%"></div>
                 <div class="bar-medium" style="width:0.0%"></div>
             </div>
@@ -552,11 +554,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">base</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">1000</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">1,000</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -571,11 +573,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">blast</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">100</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">100</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -590,11 +592,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">bnb</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">1000</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">1,000</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -609,11 +611,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">celo</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">55</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">55</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -628,11 +630,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">ethereum</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">1600</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">1,600</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -647,11 +649,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">gnosis</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">100</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">100</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -666,11 +668,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">linea</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">87</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">87</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -685,11 +687,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">mantle</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">75</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">75</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -704,11 +706,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">metis</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">29</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">29</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -723,11 +725,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">moonbeam</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">25</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">25</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -742,11 +744,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">optimism</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">250</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">250</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -761,11 +763,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">polygon</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">864</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">864</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -780,11 +782,11 @@ tr:hover { background:#1a2340; }
                 <span class="chain-key">scroll</span>
             </div>
             <div class="chain-stats">
-                <div class="stat"><span class="stat-label">Contracts</span><span class="stat-value">41</span></div>
-                <div class="stat"><span class="stat-label">Vulns</span><span class="stat-value">0</span></div>
-                <div class="stat critical"><span class="stat-label">🔴 Critical</span><span class="stat-value">0</span></div>
-                <div class="stat high"><span class="stat-label">🟡 High</span><span class="stat-value">0</span></div>
-                <div class="stat medium"><span class="stat-label">🔵 Medium</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Discovered</span><span class="stat-value">41</span></div>
+                <div class="stat"><span class="stat-label">Analyzed</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">Findings</span><span class="stat-value">0</span></div>
+                <div class="stat critical"><span class="stat-label">🔴 Crit. contracts</span><span class="stat-value">0</span></div>
+                <div class="stat high"><span class="stat-label">🟡 High contracts</span><span class="stat-value">0</span></div>
             </div>
             <div class="vuln-bar">
                 <div class="bar-critical" style="width:0.0%"></div>
@@ -799,14 +801,15 @@ tr:hover { background:#1a2340; }
     <div class="table-container">
         <table>
             <thead>
-                <tr><th>Chain</th><th>Contracts</th><th>Total Vulns</th><th>🔴 Critical</th><th>🟡 High</th><th>🔵 Medium</th><th>🟢 Low</th></tr>
+                <tr><th>Chain</th><th>Discovered</th><th>Analyzed</th><th>Findings</th><th>🔴 Crit.</th><th>🟡 High</th><th>🔵 Med.</th><th>🟢 Low</th></tr>
             </thead>
             <tbody>
                 
         <tr>
             <td>🔺 Avalanche C-Chain</td>
             <td>434</td>
-            <td>10216</td>
+            <td>216</td>
+            <td>10,216</td>
             <td class="critical">216</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -816,6 +819,7 @@ tr:hover { background:#1a2340; }
             <td>🌀 Arbitrum One</td>
             <td>866</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -823,7 +827,8 @@ tr:hover { background:#1a2340; }
         </tr>
         <tr>
             <td>🔷 Base</td>
-            <td>1000</td>
+            <td>1,000</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -834,6 +839,7 @@ tr:hover { background:#1a2340; }
             <td>💥 Blast</td>
             <td>100</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -841,7 +847,8 @@ tr:hover { background:#1a2340; }
         </tr>
         <tr>
             <td>🟡 BNB Chain</td>
-            <td>1000</td>
+            <td>1,000</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -852,6 +859,7 @@ tr:hover { background:#1a2340; }
             <td>🌿 Celo</td>
             <td>55</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -859,7 +867,8 @@ tr:hover { background:#1a2340; }
         </tr>
         <tr>
             <td>💎 Ethereum</td>
-            <td>1600</td>
+            <td>1,600</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -870,6 +879,7 @@ tr:hover { background:#1a2340; }
             <td>🦉 Gnosis</td>
             <td>100</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -878,6 +888,7 @@ tr:hover { background:#1a2340; }
         <tr>
             <td>⬛ Linea</td>
             <td>87</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -888,6 +899,7 @@ tr:hover { background:#1a2340; }
             <td>⚙️ Mantle</td>
             <td>75</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -896,6 +908,7 @@ tr:hover { background:#1a2340; }
         <tr>
             <td>🏛 Metis</td>
             <td>29</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -906,6 +919,7 @@ tr:hover { background:#1a2340; }
             <td>🌕 Moonbeam</td>
             <td>25</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -914,6 +928,7 @@ tr:hover { background:#1a2340; }
         <tr>
             <td>🔴 Optimism</td>
             <td>250</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -924,6 +939,7 @@ tr:hover { background:#1a2340; }
             <td>🟣 Polygon</td>
             <td>864</td>
             <td>0</td>
+            <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
             <td class="medium">0</td>
@@ -932,6 +948,7 @@ tr:hover { background:#1a2340; }
         <tr>
             <td>📜 Scroll</td>
             <td>41</td>
+            <td>0</td>
             <td>0</td>
             <td class="critical">0</td>
             <td class="high">0</td>
@@ -945,10 +962,10 @@ tr:hover { background:#1a2340; }
 </div>
 
 <div class="footer">
-    <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — 50 Patterns · 15 Chains · Automated with 💙 by Lord1Egypt</p>
-    <p>𝝛 v0.5 Pattern Explosion — From 20 to 50 patterns in one session 🔥</p>
-    <p>Data refreshes daily at 08:00 UTC • Static analysis only — read-only, no exploits</p>
-    <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a> · Dashboard</p>
+    <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — 50 patterns · 15 chains · built with 💙 by Lord1Egypt</p>
+    <p>Numbers reconcile by design: severity counts are <i>contracts</i> (sum to flagged), findings are <i>pattern matches</i>.</p>
+    <p>Registry refreshes hourly • Static analysis only — read-only, no transactions, no exploits</p>
+    <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a> · Live Dashboard</p>
 </div>
 
 </body>

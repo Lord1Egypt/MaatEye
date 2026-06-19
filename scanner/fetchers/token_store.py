@@ -32,6 +32,7 @@ class StoredToken:
     last_scanned: float = 0.0
     scan_count: int = 0
     has_source: bool = False
+    verified_source: bool = False  # True only when real verified Solidity was analyzed
     vuln_count: int = 0
     max_severity: str = ""
     latest_result_hash: str = ""
@@ -162,10 +163,13 @@ class TokenStore:
         stats = {}
         for chain, chain_tokens in self.tokens.items():
             with_source = sum(1 for t in chain_tokens.values() if t.has_source)
+            analyzed = sum(1 for t in chain_tokens.values()
+                           if t.verified_source or t.vuln_count > 0)
             with_vulns = sum(1 for t in chain_tokens.values() if t.vuln_count > 0)
             stats[chain] = {
                 "total": len(chain_tokens),
                 "with_source": with_source,
+                "analyzed": analyzed,
                 "with_vulns": with_vulns,
                 "unscanned": sum(1 for t in chain_tokens.values() if t.scan_count == 0),
                 "critical": sum(1 for t in chain_tokens.values() if t.max_severity == "critical"),
@@ -188,11 +192,19 @@ class TokenStore:
                 token.latest_result_hash = result_hash
             self._dirty = True
     
-    def mark_has_source(self, chain: str, address: str):
-        """Mark a token as having verified source code."""
+    def mark_has_source(self, chain: str, address: str, verified: bool = False):
+        """
+        Mark a token as having fetched source.
+
+        `verified=True` means real verified Solidity was retrieved and analyzed.
+        `verified=False` covers bytecode-only placeholders (contract exists but the
+        source was never verified) — these must NOT count as real coverage.
+        """
         addr = address.lower()
         if chain in self.tokens and addr in self.tokens[chain]:
             self.tokens[chain][addr].has_source = True
+            if verified:
+                self.tokens[chain][addr].verified_source = True
             self._dirty = True
     
     def get_summary(self) -> str:
