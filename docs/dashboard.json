@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-06-19T10:39:31.502264+00:00",
+  "scan_date": "2026-06-19T12:27:18.822091+00:00",
   "total_chains": 15,
-  "total_discovered": 6526,
+  "total_discovered": 6527,
   "total_analyzed": 216,
   "total_findings": 10216,
   "flagged_contracts": 216,
@@ -11,7 +11,7 @@
     "medium": 0,
     "low": 0
   },
-  "total_contracts": 6526,
+  "total_contracts": 6527,
   "total_vulns": 10216,
   "critical_count": 216,
   "high_count": 0,
@@ -568,7 +568,7 @@
     "polygon": {
       "chain_name": "Polygon",
       "chain_emoji": "🟣",
-      "discovered": 864,
+      "discovered": 865,
       "analyzed": 0,
       "findings": 0,
       "flagged": 0,
@@ -576,7 +576,7 @@
       "high": 0,
       "medium": 0,
       "low": 0,
-      "contracts": 864,
+      "contracts": 865,
       "vulns": 0
     },
     "scroll": {
