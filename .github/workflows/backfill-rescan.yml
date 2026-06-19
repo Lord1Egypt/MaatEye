@@ -1,0 +1,68 @@
+name: 🔁 Registry Backfill Re-scan
+
+# Manually re-scan tokens already in data/token_registry.json with the current
+# engine + Etherscan V2 key. Unlike the daily scan (which re-discovers top
+# tokens live), this walks the EXISTING registry — so it populates small chains
+# whose live discovery is thin (Linea/Blast/Gnosis/…) and deepens the big ones.
+on:
+  workflow_dispatch:
+    inputs:
+      chain:
+        description: 'Chain key, or "all"'
+        required: false
+        default: 'all'
+      limit:
+        description: 'Max tokens per chain (0 = all)'
+        required: false
+        default: '0'
+
+jobs:
+  backfill:
+    name: 🔁 Re-scan registry tokens
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🔁 Backfill re-scan
+        env:
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+        run: |
+          python tools/backfill_rescan.py "${{ github.event.inputs.chain }}" "${{ github.event.inputs.limit }}"
+
+      - name: 📊 Regenerate dashboard from registry
+        if: always()
+        run: python tools/update_dashboard.py
+
+      - name: 📝 Commit registry + dashboard
+        if: always()
+        run: |
+          git config user.name  "MaatEye Bot"
+          git config user.email "maateye@bot.github.com"
+          git add data/ docs/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "ℹ️ No changes to commit"
+          else
+            git commit -m "🔁 Backfill re-scan: ${{ github.event.inputs.chain }} ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+            n=0
+            until git push; do
+              n=$((n+1)); [ "$n" -gt 5 ] && echo "❌ push failed after retries" && exit 1
+              echo "🔁 push rejected — rebasing (attempt $n)"
+              git pull --rebase -X ours origin main || git rebase --abort
+            done
+          fi
