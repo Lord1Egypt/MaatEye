@@ -14,8 +14,11 @@ description: >
   and can cause DoS. Recipients that need more gas (e.g., for logging,
   forwarding, or interacting with other contracts) will fail.
 detectors:
+  # ETH .send/.transfer take a SINGLE argument (the amount). ERC20
+  # `token.transfer(to, amount)` takes TWO — matching that flagged every token
+  # contract. Restrict to the single-argument (ETH value) form.
   - type: "regex"
-    description: "Using .send or .transfer for ETH transfers"
-    pattern: "\\.send\\s*\\(|\\.transfer\\s*\\("
+    description: "Single-arg .send()/.transfer() for ETH (2300-gas stipend)"
+    pattern: "\\.(send|transfer)\\s*\\(\\s*[^,)]+\\)"
     confidence: 0.80
-    recommendation: "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer pattern is considered obsolete and can cause DoS."
+    recommendation: "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients."

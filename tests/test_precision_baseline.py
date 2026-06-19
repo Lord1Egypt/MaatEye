@@ -80,6 +80,34 @@ contract Auth {
 }"""
 
 
+ERC20_TRANSFER = """pragma solidity 0.8.20;
+contract T {
+    mapping(address => uint256) bal;
+    function transfer(address to, uint256 amount) external returns (bool) {
+        bal[msg.sender] -= amount; bal[to] += amount; return true;
+    }
+    function payOut(address other, uint256 amt) external {
+        IERC20(other).transfer(msg.sender, amt);  // ERC20 transfer — NOT a gas-stipend issue
+    }
+}
+interface IERC20 { function transfer(address, uint256) external returns (bool); }"""
+
+ETH_TRANSFER = """pragma solidity 0.8.20;
+contract W {
+    function withdraw(uint256 amt) external { payable(msg.sender).transfer(amt); }
+}"""
+
+
+def test_erc20_transfer_not_flagged_as_gas_stipend():
+    # ERC20 `.transfer(to, amount)` (two args) must NOT trigger P42.
+    assert "P42" not in _pattern_ids(_scan(ERC20_TRANSFER))
+
+
+def test_eth_transfer_is_flagged_as_gas_stipend():
+    # ETH `.transfer(amount)` (single arg) SHOULD trigger P42.
+    assert "P42" in _pattern_ids(_scan(ETH_TRANSFER))
+
+
 def test_unprotected_mint_is_caught():
     assert "P01" in _pattern_ids(_scan(VULN_UNPROTECTED_MINT))
 
