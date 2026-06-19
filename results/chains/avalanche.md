@@ -2,8 +2,8 @@
 
 | Metric | Value |
 |--------|-------|
-| Contracts Scanned | 3 |
-| Vulnerabilities Found | 96 |
-| 🔴 Critical | 43 |
-| 🟡 High | 45 |
-| 🔵 Medium | 8 |
+| Contracts Scanned | 9 |
+| Vulnerabilities Found | 307 |
+| 🔴 Critical | 53 |
+| 🟡 High | 224 |
+| 🔵 Medium | 30 |
