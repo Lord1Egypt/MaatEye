@@ -426,6 +426,8 @@ MIT — Free for everyone. Open source. Community-owned.
 
 **MaatEye is for defensive/educational purposes only.** It analyzes publicly available contract source code and identifies potential vulnerabilities. Users are responsible for complying with all applicable laws and regulations. The authors are not liable for misuse.
 
+> 🔎 **Heuristic, not authoritative.** MaatEye is a **regex/heuristic static scanner**. Its "findings" are **review flags** — pattern matches that point a human to code worth inspecting — **not confirmed vulnerabilities**. Expect false positives; a flagged contract is not necessarily exploitable, and an unflagged one is not necessarily safe. Use it for triage, not as a substitute for a manual audit. Severity indicates triage priority, not confirmed impact.
+
 **All scanning is READ-ONLY static analysis.** We:
 - ❌ Never send transactions
 - ❌ Never deploy contracts

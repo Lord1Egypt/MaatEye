@@ -199,6 +199,10 @@ body {{ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-seri
 .header .subtitle {{ color:#4a7fc7; font-size:0.9em; margin-top:5px; }}
 .badge {{ display:inline-block; background:linear-gradient(135deg,#ffd700,#ff8c00); color:#0a0e1a; font-weight:bold; padding:4px 16px; border-radius:20px; font-size:0.85em; margin-top:10px; }}
 
+/* ═══ DISCLAIMER ═══ */
+.disclaimer {{ background:#2a1f10; border:1px solid #6a4a1a; border-left:4px solid #ffaa33; border-radius:10px; padding:14px 18px; margin-bottom:22px; color:#e8c98a; font-size:0.9em; line-height:1.5; }}
+.disclaimer b {{ color:#ffd27a; }}
+
 /* ═══ STATS CARDS ═══ */
 .stats-grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:15px; margin-bottom:30px; }}
 .stat-card {{ background:#131a30; border:1px solid #1e2d50; border-radius:12px; padding:20px; text-align:center; transition:transform .2s; }}
@@ -289,28 +293,36 @@ tr:hover {{ background:#1a2340; }}
 
 <div class="header">
     <h1>👁️⚖️ Maat<span>Eye</span></h1>
-    <p>Multi-Chain Vulnerability Scanner — Live Dashboard</p>
-    <div class="subtitle">📡 Last scan: {dt} UTC</div>
+    <p>Multi-Chain Heuristic Contract Scanner — Live Dashboard</p>
+    <div class="subtitle">📡 Last scan: {dt} UTC · findings are review flags, not confirmed vulnerabilities</div>
     <div class="badge">⚖️ {pattern_count} Detection Patterns across {len(pattern_categories)} Categories</div>
 </div>
 
 <div class="container">
 
+    <!-- ═══ HONESTY DISCLAIMER ═══ -->
+    <div class="disclaimer">
+        ⚠️ <b>MaatEye is a heuristic static scanner.</b> The numbers below are
+        <b>review flags</b> — pattern matches that <b>require manual review</b>,
+        <b>not confirmed vulnerabilities</b>. A flag means "a human should look here,"
+        not "this contract is exploitable." Treat severity as triage priority.
+    </div>
+
     <!-- ═══ STATS CARDS ═══ -->
     <div class="stats-grid">
-        <div class="stat-card total"><div class="number">{total:,}</div><div class="label">Total Findings</div></div>
-        <div class="stat-card critical"><div class="number">{flagged:,}</div><div class="label">🚩 Flagged Contracts</div></div>
-        <div class="stat-card critical"><div class="number">{critical:,}</div><div class="label">🔴 Critical Contracts</div></div>
-        <div class="stat-card high"><div class="number">{high:,}</div><div class="label">🟡 High Contracts</div></div>
-        <div class="stat-card contracts"><div class="number">{total_analyzed:,}</div><div class="label">Analyzed (verified src)</div></div>
-        <div class="stat-card low"><div class="number">{total_discovered:,}</div><div class="label">Discovered</div></div>
+        <div class="stat-card contracts"><div class="number">{total_analyzed:,}</div><div class="label">Contracts Analyzed</div></div>
+        <div class="stat-card critical"><div class="number">{flagged:,}</div><div class="label">🚩 Contracts w/ Flags</div></div>
+        <div class="stat-card critical"><div class="number">{critical:,}</div><div class="label">🔴 Critical-sev (contracts)</div></div>
+        <div class="stat-card high"><div class="number">{high:,}</div><div class="label">🟡 High-sev (contracts)</div></div>
+        <div class="stat-card total"><div class="number">{total:,}</div><div class="label">Review Flags (heuristic)</div></div>
+        <div class="stat-card low"><div class="number">{total_discovered:,}</div><div class="label">Tokens Discovered</div></div>
         <div class="stat-card chains"><div class="number">{total_chains}</div><div class="label">EVM Chains</div></div>
         <div class="stat-card patterns"><div class="number">{pattern_count}</div><div class="label">Detection Patterns</div></div>
     </div>
 
     <!-- ═══ SEVERITY METER ═══ -->
-    <h2 class="section-title">📊 Flagged Contracts by Severity</h2>
-    <p class="section-sub">{flagged:,} flagged contracts · {total:,} total findings across them</p>
+    <h2 class="section-title">📊 Flagged Contracts by Highest Severity</h2>
+    <p class="section-sub">{flagged:,} of {total_analyzed:,} analyzed contracts raised at least one flag · {total:,} review flags across them (each = one pattern match on one line)</p>
     {vuln_meter}
 
     <!-- ═══ PATTERN CATEGORIES ═══ -->
@@ -333,7 +345,7 @@ tr:hover {{ background:#1a2340; }}
 
     <!-- ═══ PER-CHAIN CARDS ═══ -->
     <h2 class="section-title">🌐 Per-Chain Breakdown</h2>
-    <p class="section-sub">Discovered = tokens found · Analyzed = verified source examined · Findings = pattern matches</p>
+    <p class="section-sub">Discovered = tokens found · Analyzed = verified source examined · Findings = heuristic review flags (need manual review)</p>
     <div class="chain-grid">
         {chain_cards}
     </div>
@@ -355,7 +367,8 @@ tr:hover {{ background:#1a2340; }}
 
 <div class="footer">
     <p>👁️⚖️ <a href="https://github.com/Lord1Egypt/MaatEye">MaatEye</a> — {pattern_count} patterns · {total_chains} chains · built with 💙 by Lord1Egypt</p>
-    <p>Numbers reconcile by design: severity counts are <i>contracts</i> (sum to flagged), findings are <i>pattern matches</i>.</p>
+    <p>Numbers reconcile by design: severity counts are <i>contracts</i> (sum to flagged); review flags are <i>pattern matches</i>.</p>
+    <p>⚠️ Heuristic scanner — flags require manual review and are not confirmed vulnerabilities.</p>
     <p>Registry refreshes hourly • Static analysis only — read-only, no transactions, no exploits</p>
     <p>🔗 <a href="https://github.com/Lord1Egypt/MaatEye">GitHub</a> · Live Dashboard</p>
 </div>
