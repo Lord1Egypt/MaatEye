@@ -14,14 +14,16 @@ description: >
   not during proxy initialization. State variables set in the constructor
   will not be set for the proxy, leading to uninitialized storage.
 detectors:
-  - type: "regex"
-    description: "Constructor used without initializer function"
-    pattern: "constructor\\s*\\([^)]*\\)[^}]*\\{[^}]*(?!function\\s+initialize)"
+  # Only flag when the contract is actually upgradeable/proxy-style (uses an
+  # Initializable / initializer framework) AND still declares a constructor.
+  # The previous detectors matched *every* contract with a constructor, which
+  # flagged ~94% of all contracts — pure noise. ast_pattern requires BOTH
+  # markers present and reports once per contract.
+  - type: "ast_pattern"
+    description: "Upgradeable contract declares a constructor (state set in a constructor is not applied to proxy instances)"
+    required_elements:
+      - "constructor"
+      - "nitializ"   # matches Initializable / initializer / initialize
+    forbidden_elements: []
     confidence: 0.60
-    recommendation: "Replace the constructor with an initialize function using the 'initializer' modifier from OpenZeppelin. Keep constructor empty or for immutables only."
-  - type: "function_signature"
-    description: "Contract has constructor but no initialize function"
-    func_pattern: "constructor\\s*\\("
-    modifier_requires: []
-    confidence: 0.55
-    recommendation: "Ensure the contract has an initialize function with the initializer modifier to set initial state for proxy instances."
+    recommendation: "In upgradeable/proxy contracts, move state initialization into an initialize() function guarded by the 'initializer' modifier. Keep the constructor empty (or use it only for immutables and to lock the implementation via _disableInitializers())."

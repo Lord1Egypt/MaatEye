@@ -2,7 +2,7 @@
 # Detects functions with dangerous parameters lacking validation
 id: "P09"
 name: "No Input Validation"
-severity: "high"
+severity: "medium"
 enabled: true
 category: "BUSINESS_LOGIC"
 subcategory: "Missing Input Validation"
@@ -10,28 +10,19 @@ difficulty: "easy"
 requires_ast: false
 exploitability_estimate: 0.30
 description: >
-  Functions accept user-supplied parameters without validation.
-  Unchecked inputs can lead to unbounded loops, array index errors,
-  or out-of-gas conditions.
+  Unbounded iteration over caller-influenced collections can be exploited
+  for gas griefing / denial of service (push-based loops over arrays whose
+  length an attacker can grow).
 detectors:
+  # Kept: a genuine, specific signal. The two removed detectors flagged any
+  # function with an array parameter (very common, not a vuln) and — via
+  # inverted logic — functions that actually DID validate inputs (require/
+  # revert present), which is exactly backwards. Together they produced ~440
+  # findings across 85% of contracts.
   - type: "regex"
-    description: "Unbounded array iteration (potential gas griefing)"
+    description: "Unbounded array iteration (potential gas griefing / DoS)"
     pattern: "for\\s*\\([^)]*\\s*<\\s*\\w+\\.(length|balanceOf)\\b"
-    confidence: 0.50
+    confidence: 0.55
     recommendation: >
       Avoid iterating over unbounded arrays. Use pagination or
       pull-based withdrawal patterns instead of push-based loops.
-
-  - type: "regex"
-    description: "Function taking array parameter without length check"
-    pattern: "function\\s+\\w+\\s*\\([^)]*(uint256\\[\\]|address\\[\\]|bytes\\[\\])[^)]*\\)[^;{]*\\{"
-    confidence: 0.35
-    recommendation: >
-      Add bounds checking on array parameters. Consider maximum
-      array lengths to prevent out-of-gas attacks.
-
-  - type: "regex"
-    description: "Unvalidated address parameter"
-    pattern: "function\\s+\\w+\\s*\\([^)]*\\baddress\\s+[^)]+\\)[^;{]*\\{[^}]{0,200}(?:require\\([^)]*address[^)]*\\)|revert|return)"
-    confidence: 0.20
-    recommendation: "Consider adding address(0) validation for sensitive functions."
