@@ -101,20 +101,32 @@ def fetch_contract_source(
     return result
 
 
-def _try_etherscan_api(address: str, chain: EVMChain, api_key: str = "") -> Optional[dict]:
-    """Try Etherscan-compatible explorer API."""
-    # Detect if the explorer uses Etherscan API pattern
-    if not chain.explorer_api:
-        return None
+# Etherscan V2 unified API: a single API key works across ~60 chains, selected
+# by chainid. The legacy per-chain V1 endpoints (api.basescan.org, …) now
+# require a per-chain key and are being deprecated.
+ETHERSCAN_V2_API = "https://api.etherscan.io/v2/api"
 
+
+def _try_etherscan_api(address: str, chain: EVMChain, api_key: str = "") -> Optional[dict]:
+    """Try an Etherscan-compatible explorer API for verified source.
+
+    With a key, use the Etherscan **V2 unified** endpoint (one key → all chains
+    via chainid) — this is what lets every chain return verified source, not
+    just Avalanche. Without a key, fall back to the chain's native V1 endpoint,
+    which still works keyless for some explorers (e.g. Snowtrace/Avalanche).
+    """
     params = {
         "module": "contract",
         "action": "getsourcecode",
         "address": address,
-        "apikey": api_key or "",
     }
 
-    url = f"{chain.explorer_api}?{urlencode(params)}"
+    if api_key and getattr(chain, "chain_id", 0):
+        url = f"{ETHERSCAN_V2_API}?{urlencode({**params, 'chainid': chain.chain_id, 'apikey': api_key})}"
+    elif chain.explorer_api:
+        url = f"{chain.explorer_api}?{urlencode({**params, 'apikey': api_key or ''})}"
+    else:
+        return None
 
     try:
         req = Request(url, headers={"User-Agent": "MaatEye/1.0"})
