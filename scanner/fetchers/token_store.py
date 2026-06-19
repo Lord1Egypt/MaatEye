@@ -207,6 +207,65 @@ class TokenStore:
                 self.tokens[chain][addr].verified_source = True
             self._dirty = True
     
+    def apply_scan_results(self, scan_results, source: str = "scan") -> int:
+        """Persist a ScanResults object back into the registry (upsert).
+
+        For every successfully-scanned contract this records vuln_count,
+        max_severity, and — only when *real* verified Solidity was analyzed
+        (``has_verified_source``) — credits it as verified coverage. Tokens not
+        yet in the registry are inserted so freshly-scanned top tokens show up
+        on the dashboard. Returns the number of contracts applied.
+
+        Duck-typed against ``scanner.engine`` result objects to avoid a circular
+        import. Caller is responsible for ``save()``.
+        """
+        applied = 0
+        contracts = getattr(scan_results, "contracts", {}) or {}
+        for addr, c in contracts.items():
+            if getattr(c, "error", None):
+                continue
+            chain = getattr(c, "chain", "") or ""
+            if not chain:
+                continue
+            key = addr.lower()
+
+            if c.critical_count > 0:
+                max_sev = "critical"
+            elif c.high_count > 0:
+                max_sev = "high"
+            elif c.medium_count > 0:
+                max_sev = "medium"
+            elif c.vuln_count > 0:
+                max_sev = "low"
+            else:
+                max_sev = ""
+
+            self.tokens.setdefault(chain, {})
+            tok = self.tokens[chain].get(key)
+            if tok is None:
+                tok = StoredToken(
+                    address=key, chain=chain,
+                    symbol=getattr(c, "contract_name", "") or "",
+                    source=source, discovered_at=time.time(),
+                )
+                self.tokens[chain][key] = tok
+
+            tok.last_scanned = time.time()
+            tok.scan_count += 1
+            tok.vuln_count = c.vuln_count
+            tok.max_severity = max_sev
+            # Only real verified source counts as "analyzed"; a bytecode-only
+            # placeholder (source_length 0 / unverified) must not inflate it.
+            if getattr(c, "source_length", 0) > 0:
+                tok.has_source = True
+                if getattr(c, "has_verified_source", False):
+                    tok.verified_source = True
+            applied += 1
+
+        if applied:
+            self._dirty = True
+        return applied
+
     def get_summary(self) -> str:
         """Get a human-readable summary of the registry."""
         stats = self.get_chain_stats()

@@ -200,29 +200,13 @@ def scan_addresses_on_chain(
 
 
 def update_registry_from_results(chain_key: str, scan_results) -> None:
-    """Push scan outcomes back into the token store."""
-    store = get_store()
-    for addr, contract in scan_results.contracts.items():
-        if contract.error:
-            continue
-        max_sev = ""
-        if contract.critical_count > 0:
-            max_sev = "critical"
-        elif contract.high_count > 0:
-            max_sev = "high"
-        elif contract.medium_count > 0:
-            max_sev = "medium"
-        elif contract.vuln_count > 0:
-            max_sev = "low"
-        store.update_scan_result(chain_key, addr, contract.vuln_count, max_sev)
-        if contract.source_length > 0:
-            # Only credit as verified coverage when REAL source was analyzed —
-            # a bytecode-only placeholder must not inflate the "analyzed" count.
-            store.mark_has_source(
-                chain_key, addr,
-                verified=getattr(contract, "has_verified_source", False),
-            )
+    """Push scan outcomes back into the token store.
 
+    Delegates to the shared, upserting ``TokenStore.apply_scan_results`` so the
+    hourly and daily (scan-all) jobs persist results identically.
+    """
+    store = get_store()
+    store.apply_scan_results(scan_results, source="rpc_hourly")
     store.save()
 
 
