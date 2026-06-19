@@ -15,15 +15,12 @@ description: >
   exploited to manipulate oracles, balances, or other contracts that rely
   on the view function's return value for critical logic.
 detectors:
+  # Keep only the precise regex: a `view`/`external view` function whose body
+  # makes a call/delegatecall/staticcall. The removed ast_pattern required just
+  # the words "view" and ".call" to appear ANYWHERE in the contract, so it fired
+  # on almost every contract (any view function + any low-level call) — noise.
   - type: "regex"
     description: "View function making external calls"
     pattern: "function\\s+\\w+\\s*\\([^)]*\\)\\s*(public|external)\\s+view[^}]*(call|delegatecall|staticcall)\\s*\\("
     confidence: 0.75
     recommendation: "Avoid making external calls in view functions. If necessary, document the reentrancy risk and ensure calling contracts are aware."
-  - type: "ast_pattern"
-    description: "View function with external call (AST analysis needed)"
-    required_elements:
-      - "view"
-      - ".call"
-    confidence: 0.80
-    recommendation: "Mark view functions that make external calls clearly, and ensure they are not used in price oracle or balance-checking contexts."

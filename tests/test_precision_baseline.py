@@ -108,6 +108,31 @@ def test_eth_transfer_is_flagged_as_gas_stipend():
     assert "P42" in _pattern_ids(_scan(ETH_TRANSFER))
 
 
+VIEW_AND_CALL_BUT_SEPARATE = """pragma solidity 0.8.20;
+contract S {
+    function balance() external view returns (uint256) { return address(this).balance; }
+    function exec(address t, bytes calldata d) external { (bool ok,) = t.call(d); require(ok); }
+}"""
+
+VIEW_MAKES_CALL = """pragma solidity 0.8.20;
+contract O {
+    function price(address oracle) external view returns (uint256) {
+        (bool ok, bytes memory r) = oracle.staticcall(abi.encodeWithSignature("get()"));
+        require(ok); return abi.decode(r, (uint256));
+    }
+}"""
+
+
+def test_view_and_call_in_separate_functions_not_flagged_p26():
+    # A view function and a low-level call in DIFFERENT functions must not trip
+    # P26 (the removed ast_pattern fired on mere co-occurrence).
+    assert "P26" not in _pattern_ids(_scan(VIEW_AND_CALL_BUT_SEPARATE))
+
+
+def test_view_making_external_call_is_flagged_p26():
+    assert "P26" in _pattern_ids(_scan(VIEW_MAKES_CALL))
+
+
 def test_unprotected_mint_is_caught():
     assert "P01" in _pattern_ids(_scan(VULN_UNPROTECTED_MINT))
 
