@@ -29445,6 +29445,23 @@
       "vuln_count": 13,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0xea11fd3aacf901c95e5e7bf24d245a1d8b661fa7": {
+      "address": "0xea11fd3aacf901c95e5e7bf24d245a1d8b661fa7",
+      "chain": "polygon",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1781946928.9677205,
+      "discovered_at_block": 0,
+      "last_scanned": 1781946929.6735647,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "optimism": {
