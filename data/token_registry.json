@@ -105874,6 +105874,23 @@
       "vuln_count": 23,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x7c16f0185a26db0ae7a9377f23bc18ea7ce5d644": {
+      "address": "0x7c16f0185a26db0ae7a9377f23bc18ea7ce5d644",
+      "chain": "gnosis",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1781952955.0816507,
+      "discovered_at_block": 0,
+      "last_scanned": 1781952955.9694824,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "scroll": {
@@ -108274,6 +108291,23 @@
       "verified_source": false,
       "vuln_count": 0,
       "max_severity": "",
+      "latest_result_hash": ""
+    },
+    "0x4186bfc76e2e237523cbc30fd220fe055156b41f": {
+      "address": "0x4186bfc76e2e237523cbc30fd220fe055156b41f",
+      "chain": "blast",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1781952955.258423,
+      "discovered_at_block": 0,
+      "last_scanned": 1781952956.869754,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 23,
+      "max_severity": "critical",
       "latest_result_hash": ""
     }
   },
