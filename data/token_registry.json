@@ -85638,6 +85638,23 @@
       "vuln_count": 2,
       "max_severity": "high",
       "latest_result_hash": ""
+    },
+    "0x61d91cff0fc9fbbdb89f505cf8a7422bf95fdba3": {
+      "address": "0x61d91cff0fc9fbbdb89f505cf8a7422bf95fdba3",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1782049353.4061499,
+      "discovered_at_block": 0,
+      "last_scanned": 1782049354.2112212,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 2,
+      "max_severity": "high",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
