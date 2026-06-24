@@ -1,9 +1,9 @@
 {
-  "scan_date": "2026-06-24T07:27:02.968367+00:00",
+  "scan_date": "2026-06-24T09:13:33.238485+00:00",
   "total_chains": 15,
   "total_discovered": 6556,
   "total_analyzed": 5264,
-  "total_findings": 65244,
+  "total_findings": 65242,
   "flagged_contracts": 4477,
   "contracts_by_severity": {
     "critical": 3718,
@@ -12,7 +12,7 @@
     "low": 0
   },
   "total_contracts": 6556,
-  "total_vulns": 65244,
+  "total_vulns": 65242,
   "critical_count": 3718,
   "high_count": 619,
   "medium_count": 140,
@@ -472,14 +472,14 @@
       "chain_emoji": "💎",
       "discovered": 1617,
       "analyzed": 1204,
-      "findings": 18364,
+      "findings": 18362,
       "flagged": 1050,
       "critical": 799,
       "high": 197,
       "medium": 54,
       "low": 0,
       "contracts": 1617,
-      "vulns": 18364
+      "vulns": 18362
     },
     "gnosis": {
       "chain_name": "Gnosis",

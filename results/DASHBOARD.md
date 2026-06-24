@@ -1,9 +1,9 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-06-23T09:14:52Z
-**Scan Time:** 15.3s
+**Last Scan:** 2026-06-24T09:13:17Z
+**Scan Time:** 15.0s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 361
+**Total Vulnerabilities:** 359
 
 ## Summary
 
@@ -11,7 +11,7 @@
 |----------|-------|
 | 🔴 Critical | 193 |
 | 🟡 High | 142 |
-| 🔵 Medium | 26 |
+| 🔵 Medium | 24 |
 | 🟢 Low | 0 |
 
 ## Contracts with Critical Issues
@@ -43,11 +43,11 @@
 - `0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6` — LinkTokenOptimism (2 critical)
 - `0x76fb31fb4af56892a25e32cfc43de717950c9278` — L2CustomERC20 (2 critical)
 - `0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e` — FiatTokenProxy (10 critical)
-- `0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7` — TransparentUpgradeableProxy (25 critical)
 - `0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab` — BridgeToken (1 critical)
+- `0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7` — TransparentUpgradeableProxy (25 critical)
+- `0xd586e7f844cea2f87f50152665bcbc2c279d8d70` — BridgeToken (1 critical)
 - `0x50b7545627a5162f82a992c33b87adc75187b218` — BridgeToken (1 critical)
 - `0x63a72806098bd3d9520cc43356dd78afe5d386d9` — BridgeToken (1 critical)
-- `0xd586e7f844cea2f87f50152665bcbc2c279d8d70` — BridgeToken (1 critical)
 - `0x5947bb275c521040051d82396192181b413227a3` — BridgeToken (1 critical)
 
 ## Red Flag Registry
