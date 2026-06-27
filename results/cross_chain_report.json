@@ -1,8 +1,8 @@
 {
   "tool": "MaatEye",
   "version": "1.0.0-alpha",
-  "timestamp": "2026-06-26T09:12:59Z",
-  "scan_time_seconds": 15.35,
+  "timestamp": "2026-06-27T09:00:28Z",
+  "scan_time_seconds": 15.32,
   "total_chains": 7,
   "chains_scanned": [
     "ethereum",
@@ -1390,9 +1390,23 @@
       "chain": "bnb",
       "chain_name": "BNB Chain",
       "chain_emoji": "\ud83d\udfe1",
+      "contract_name": "Unknown (0x7130d2...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
+    "0xe9e7cea3dedca5984780bafc599bd69add087d56": {
+      "chain": "bnb",
+      "chain_name": "BNB Chain",
+      "chain_emoji": "\ud83d\udfe1",
       "contract_name": "BEP20Token",
       "compiler": "v0.5.16+commit.9c3226ce",
-      "source_length": 19316,
+      "source_length": 19320,
       "vuln_count": 3,
       "critical_count": 1,
       "high_count": 1,
@@ -1439,20 +1453,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0xe9e7cea3dedca5984780bafc599bd69add087d56": {
-      "chain": "bnb",
-      "chain_name": "BNB Chain",
-      "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "Unknown (0xe9e7ce...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47": {
       "chain": "bnb",
@@ -2103,6 +2103,20 @@
       "error": "Source code not available (unverified contract or fetch failed)",
       "vulnerabilities": []
     },
+    "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619": {
+      "chain": "polygon",
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contract_name": "Unknown (0x7ceb23...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 184,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0xb33eaad8d922b1083446dc23f610c2567fb5180f": {
       "chain": "polygon",
       "chain_name": "Polygon",
@@ -2286,20 +2300,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619": {
-      "chain": "polygon",
-      "chain_name": "Polygon",
-      "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "Unknown (0x7ceb23...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 184,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39": {
       "chain": "polygon",
@@ -2751,6 +2751,20 @@
       "error": null,
       "vulnerabilities": []
     },
+    "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
+      "chain": "base",
+      "chain_name": "Base",
+      "chain_emoji": "\ud83d\udd37",
+      "contract_name": "Unknown (0x2ae3f1...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 180,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
       "chain": "base",
       "chain_name": "Base",
@@ -2947,20 +2961,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
-      "chain": "base",
-      "chain_name": "Base",
-      "chain_emoji": "\ud83d\udd37",
-      "contract_name": "Unknown (0x2ae3f1...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 180,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x50c5725949a6f0c72e6c4a641f24049a917db0cb": {
       "chain": "base",
@@ -3591,20 +3591,6 @@
         }
       ]
     },
-    "0x912ce59144191c1204e64559fe8253a0e49e6548": {
-      "chain": "arbitrum",
-      "chain_name": "Arbitrum One",
-      "chain_emoji": "\ud83c\udf00",
-      "contract_name": "Unknown (0x912ce5...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 188,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
-    },
     "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f": {
       "chain": "arbitrum",
       "chain_name": "Arbitrum One",
@@ -3658,6 +3644,20 @@
           "explorer_url": ""
         }
       ]
+    },
+    "0x912ce59144191c1204e64559fe8253a0e49e6548": {
+      "chain": "arbitrum",
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "\ud83c\udf00",
+      "contract_name": "Unknown (0x912ce5...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 188,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
     },
     "0x82af49447d8a07e3bd95bd0d56f35241523fbab1": {
       "chain": "arbitrum",
@@ -4745,6 +4745,47 @@
         }
       ]
     },
+    "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "BridgeToken",
+      "compiler": "v0.8.0+commit.c7dfd78e",
+      "source_length": 25489,
+      "vuln_count": 2,
+      "critical_count": 1,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P05",
+          "pattern_name": "tx.origin Authentication",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "tx.origin used in require/modifier condition",
+          "location": "require(tx.origin == msg.sender,                                )",
+          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
+          "confidence": 0.95,
+          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
@@ -5163,47 +5204,6 @@
         }
       ]
     },
-    "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "WAVAX",
-      "compiler": "v0.5.17+commit.d19bba13",
-      "source_length": 38533,
-      "vuln_count": 2,
-      "critical_count": 0,
-      "high_count": 1,
-      "medium_count": 1,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P18",
-          "pattern_name": "Missing Access Control",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Admin/sensitive function without access control",
-          "location": "function withdraw(",
-          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
-          "confidence": 0.8,
-          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P42",
-          "pattern_name": "Gas Stipend Dependency",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
-          "location": ".transfer(wad)",
-          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
-          "confidence": 0.8,
-          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
-          "explorer_url": ""
-        }
-      ]
-    },
     "0xd586e7f844cea2f87f50152665bcbc2c279d8d70": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
@@ -5241,6 +5241,47 @@
           "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
           "confidence": 0.95,
           "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
+          "explorer_url": ""
+        }
+      ]
+    },
+    "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "WAVAX",
+      "compiler": "v0.5.17+commit.d19bba13",
+      "source_length": 38533,
+      "vuln_count": 2,
+      "critical_count": 0,
+      "high_count": 1,
+      "medium_count": 1,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P18",
+          "pattern_name": "Missing Access Control",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Admin/sensitive function without access control",
+          "location": "function withdraw(",
+          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
+          "confidence": 0.8,
+          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P42",
+          "pattern_name": "Gas Stipend Dependency",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
+          "location": ".transfer(wad)",
+          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
+          "confidence": 0.8,
+          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
           "explorer_url": ""
         }
       ]
@@ -5286,54 +5327,13 @@
         }
       ]
     },
-    "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "BridgeToken",
-      "compiler": "v0.8.0+commit.c7dfd78e",
-      "source_length": 25514,
-      "vuln_count": 2,
-      "critical_count": 1,
-      "high_count": 1,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P01",
-          "pattern_name": "Unprotected Mint",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Mint function without onlyOwner or equivalent access control",
-          "location": "function mint(",
-          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
-          "confidence": 0.85,
-          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P05",
-          "pattern_name": "tx.origin Authentication",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "tx.origin used in require/modifier condition",
-          "location": "require(tx.origin == msg.sender,                                )",
-          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
-          "confidence": 0.95,
-          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
-          "explorer_url": ""
-        }
-      ]
-    },
     "0x5947bb275c521040051d82396192181b413227a3": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
       "chain_emoji": "\ud83d\udd3a",
       "contract_name": "BridgeToken",
       "compiler": "v0.8.0+commit.c7dfd78e",
-      "source_length": 26996,
+      "source_length": 27021,
       "vuln_count": 3,
       "critical_count": 1,
       "high_count": 1,
