@@ -1,9 +1,9 @@
 {
-  "scan_date": "2026-06-28T07:35:48.733959+00:00",
+  "scan_date": "2026-06-28T09:08:41.541422+00:00",
   "total_chains": 15,
   "total_discovered": 6608,
   "total_analyzed": 5285,
-  "total_findings": 65481,
+  "total_findings": 65503,
   "flagged_contracts": 4495,
   "contracts_by_severity": {
     "critical": 3729,
@@ -12,7 +12,7 @@
     "low": 0
   },
   "total_contracts": 6608,
-  "total_vulns": 65481,
+  "total_vulns": 65503,
   "critical_count": 3729,
   "high_count": 625,
   "medium_count": 141,
@@ -388,14 +388,14 @@
       "chain_emoji": "🌀",
       "discovered": 866,
       "analyzed": 716,
-      "findings": 8235,
-      "flagged": 639,
-      "critical": 599,
+      "findings": 8262,
+      "flagged": 640,
+      "critical": 600,
       "high": 33,
       "medium": 7,
       "low": 0,
       "contracts": 866,
-      "vulns": 8235
+      "vulns": 8262
     },
     "avalanche": {
       "chain_name": "Avalanche C-Chain",
@@ -416,14 +416,14 @@
       "chain_emoji": "🔷",
       "discovered": 1005,
       "analyzed": 869,
-      "findings": 8181,
-      "flagged": 639,
-      "critical": 493,
+      "findings": 8167,
+      "flagged": 638,
+      "critical": 492,
       "high": 130,
       "medium": 16,
       "low": 0,
       "contracts": 1005,
-      "vulns": 8181
+      "vulns": 8167
     },
     "blast": {
       "chain_name": "Blast",
@@ -472,14 +472,14 @@
       "chain_emoji": "💎",
       "discovered": 1667,
       "analyzed": 1223,
-      "findings": 18611,
+      "findings": 18613,
       "flagged": 1067,
       "critical": 810,
       "high": 202,
       "medium": 55,
       "low": 0,
       "contracts": 1667,
-      "vulns": 18611
+      "vulns": 18613
     },
     "gnosis": {
       "chain_name": "Gnosis",
@@ -570,14 +570,14 @@
       "chain_emoji": "🟣",
       "discovered": 867,
       "analyzed": 703,
-      "findings": 10018,
+      "findings": 10025,
       "flagged": 613,
       "critical": 524,
       "high": 77,
       "medium": 12,
       "low": 0,
       "contracts": 867,
-      "vulns": 10018
+      "vulns": 10025
     },
     "scroll": {
       "chain_name": "Scroll",
