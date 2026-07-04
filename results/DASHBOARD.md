@@ -1,7 +1,7 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-07-03T10:37:15Z
-**Scan Time:** 14.6s
+**Last Scan:** 2026-07-04T10:11:13Z
+**Scan Time:** 17.6s
 **Contracts Scanned:** 61
 **Total Vulnerabilities:** 356
 
@@ -22,9 +22,9 @@
 - `0x1f9840a85d5af5bf1d1762f925bdaddc4201f984` — Uni (1 critical)
 - `0x55d398326f99059ff775485246999027b3197955` — BEP20USDT (1 critical)
 - `0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d` — BEP20UpgradeableProxy (11 critical)
-- `0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3` — BEP20DAI (1 critical)
 - `0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82` — CakeToken (2 critical)
 - `0xe9e7cea3dedca5984780bafc599bd69add087d56` — BEP20Token (1 critical)
+- `0x3ee2200efb3400fabb9aacf31297cbdd1d435d47` — BEP20Cardano (1 critical)
 - `0x2791bca1f2de4661ed88a30c99a7a9449aa84174` — UChildERC20Proxy (10 critical)
 - `0xc2132d05d31c914a87c6611c10748aeb04b58e8f` — UChildERC20Proxy (10 critical)
 - `0x7ceb23fd6bc0add59e62ac25578270cff1b9f619` — MaticWETH (12 critical)
@@ -41,12 +41,12 @@
 - `0x68f180fcce6836688e9084f035309e29bf0a2095` — WBTC (2 critical)
 - `0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6` — LinkTokenOptimism (2 critical)
 - `0x76fb31fb4af56892a25e32cfc43de717950c9278` — L2CustomERC20 (2 critical)
+- `0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7` — TransparentUpgradeableProxy (25 critical)
 - `0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e` — FiatTokenProxy (10 critical)
 - `0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab` — BridgeToken (1 critical)
-- `0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7` — TransparentUpgradeableProxy (25 critical)
 - `0xd586e7f844cea2f87f50152665bcbc2c279d8d70` — BridgeToken (1 critical)
-- `0x63a72806098bd3d9520cc43356dd78afe5d386d9` — BridgeToken (1 critical)
 - `0x50b7545627a5162f82a992c33b87adc75187b218` — BridgeToken (1 critical)
+- `0x63a72806098bd3d9520cc43356dd78afe5d386d9` — BridgeToken (1 critical)
 - `0x5947bb275c521040051d82396192181b413227a3` — BridgeToken (1 critical)
 
 ## Red Flag Registry
