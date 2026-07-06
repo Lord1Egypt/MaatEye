@@ -1,8 +1,8 @@
 {
   "tool": "MaatEye",
   "version": "1.0.0-alpha",
-  "timestamp": "2026-07-05T10:14:32Z",
-  "scan_time_seconds": 17.68,
+  "timestamp": "2026-07-06T12:05:54Z",
+  "scan_time_seconds": 14.95,
   "total_chains": 7,
   "chains_scanned": [
     "ethereum",
@@ -14,20 +14,20 @@
     "avalanche"
   ],
   "total_contracts": 61,
-  "total_vulns": 398,
-  "critical_count": 209,
-  "high_count": 161,
-  "medium_count": 28,
+  "total_vulns": 375,
+  "critical_count": 194,
+  "high_count": 155,
+  "medium_count": 26,
   "low_count": 0,
   "chain_summary": {
     "ethereum": {
       "chain_name": "Ethereum",
       "chain_emoji": "\ud83d\udd35",
       "contracts": 10,
-      "vulns": 50,
+      "vulns": 48,
       "critical": 8,
       "high": 29,
-      "medium": 13
+      "medium": 11
     },
     "bnb": {
       "chain_name": "BNB Chain",
@@ -60,18 +60,18 @@
       "chain_name": "Optimism",
       "chain_emoji": "\ud83d\udd34",
       "contracts": 8,
-      "vulns": 51,
-      "critical": 3,
-      "high": 44,
+      "vulns": 54,
+      "critical": 7,
+      "high": 43,
       "medium": 4
     },
     "arbitrum": {
       "chain_name": "Arbitrum One",
       "chain_emoji": "\ud83c\udf00",
       "contracts": 9,
-      "vulns": 106,
-      "critical": 74,
-      "high": 29,
+      "vulns": 82,
+      "critical": 55,
+      "high": 24,
       "medium": 3
     },
     "avalanche": {
@@ -637,60 +637,6 @@
         }
       ]
     },
-    "0x514910771af9ca656af840dff83e8264ecf986ca": {
-      "chain": "ethereum",
-      "chain_name": "Ethereum",
-      "chain_emoji": "\ud83d\udd35",
-      "contract_name": "LinkToken",
-      "compiler": "v0.4.16+commit.d7661dd9",
-      "source_length": 9102,
-      "vuln_count": 3,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 3,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P19",
-          "pattern_name": "No SafeERC20",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw ERC20 transfer/transferFrom call without SafeERC20",
-          "location": ".transfer(_to, _value)",
-          "snippet": "dCall(address _to, uint _value, bytes _data)\r\n    public\r\n    returns (bool success)\r\n  {\r\n    super.transfer(_to, _value);\r\n    Transfer(msg.sender, _to, _value, _data);\r\n    if (isContract(_to)) {\r\n      contractFallback(_to, _value, _data);\r\n    }\r\n    return true;\r\n  }\r\n\r\n\r\n             \n\r\n  function contractFallback",
-          "confidence": 0.55,
-          "recommendation": "Use OpenZeppelin's SafeERC20 which handles non-standard tokens (USDT etc. don't return a bool). Replace token.transfer(to, amount) with SafeERC20.safeTransfer(token, to, amount).\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P19",
-          "pattern_name": "No SafeERC20",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw ERC20 transfer/transferFrom call without SafeERC20",
-          "location": ".transfer(_to, _value)",
-          "snippet": "uint _value)\r\n    public\r\n    validRecipient(_to)\r\n    returns (bool success)\r\n  {\r\n    return super.transfer(_to, _value);\r\n  }",
-          "confidence": 0.55,
-          "recommendation": "Use OpenZeppelin's SafeERC20 which handles non-standard tokens (USDT etc. don't return a bool). Replace token.transfer(to, amount) with SafeERC20.safeTransfer(token, to, amount).\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P19",
-          "pattern_name": "No SafeERC20",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw ERC20 transfer/transferFrom call without SafeERC20",
-          "location": ".transferFrom(_from, _to, _value)",
-          "snippet": "_to, uint256 _value)\r\n    public\r\n    validRecipient(_to)\r\n    returns (bool)\r\n  {\r\n    return super.transferFrom(_from, _to, _value);\r\n  }\r\n\r\n\r\n               \n\r\n  modifier validRecipient(address _recipient) {\r\n    require(_recipient != address(0) && _recipient != address(this));\r\n    _;\r\n  }\r\n\r\n}",
-          "confidence": 0.55,
-          "recommendation": "Use OpenZeppelin's SafeERC20 which handles non-standard tokens (USDT etc. don't return a bool). Replace token.transfer(to, amount) with SafeERC20.safeTransfer(token, to, amount).\n",
-          "explorer_url": ""
-        }
-      ]
-    },
     "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
       "chain": "ethereum",
       "chain_name": "Ethereum",
@@ -799,6 +745,20 @@
         }
       ]
     },
+    "0x514910771af9ca656af840dff83e8264ecf986ca": {
+      "chain": "ethereum",
+      "chain_name": "Ethereum",
+      "chain_emoji": "\ud83d\udd35",
+      "contract_name": "Unknown (0x514910...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 184,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984": {
       "chain": "ethereum",
       "chain_name": "Ethereum",
@@ -857,15 +817,29 @@
       "chain": "ethereum",
       "chain_name": "Ethereum",
       "chain_emoji": "\ud83d\udd35",
-      "contract_name": "Unknown (0x95ad61...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 184,
-      "vuln_count": 0,
+      "contract_name": "TokenMintERC20Token",
+      "compiler": "v0.5.0+commit.1d4f565a",
+      "source_length": 16783,
+      "vuln_count": 1,
       "critical_count": 0,
       "high_count": 0,
-      "medium_count": 0,
+      "medium_count": 1,
       "error": null,
-      "vulnerabilities": []
+      "vulnerabilities": [
+        {
+          "pattern_id": "P42",
+          "pattern_name": "Gas Stipend Dependency",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
+          "location": ".transfer(msg.value)",
+          "snippet": "nerAddress, totalSupply);\r\n\r\n                                                     \n      feeReceiver.transfer(msg.value);\r\n    }\r\n\r\n        \n                                               \n                                                                   \n       \r\n    function burn(uint256 value) public {\r\n      _burn",
+          "confidence": 0.8,
+          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
+          "explorer_url": ""
+        }
+      ]
     },
     "0x3845badade8e6dff049820680d1f14bd3903a5d0": {
       "chain": "ethereum",
@@ -1212,6 +1186,60 @@
         }
       ]
     },
+    "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3": {
+      "chain": "bnb",
+      "chain_name": "BNB Chain",
+      "chain_emoji": "\ud83d\udfe1",
+      "contract_name": "BEP20DAI",
+      "compiler": "v0.5.16+commit.9c3226ce",
+      "source_length": 19307,
+      "vuln_count": 3,
+      "critical_count": 1,
+      "high_count": 1,
+      "medium_count": 1,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.5.",
+          "snippet": "pragma solidity 0.5.16;\r\n\r\ninterface IBEP20 {\r\n      \n                                                     \n     \r\n  function totalSupply() external view returns (uint256);",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P14",
+          "pattern_name": "Unsafe Ownership Renounce",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "renounceOwnership in code (permanently locks owner functions)",
+          "location": "",
+          "snippet": "function renounceOwnership() public onlyOwner {\r\n    emit OwnershipTransferred(_owner, address(0));\r\n    _owner = address(0);\r\n  }",
+          "confidence": 0.7,
+          "recommendation": "Before renouncing ownership, consider: 1. Adding a timelock so changes can be reviewed 2. Setting up a multisig as the new owner 3. Ensuring no critical functions depend on owner access Once renounced, there is NO recovery.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P23",
+          "pattern_name": "Ownership Transfer Without Two-Step",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Single-step ownership transfer used instead of two-step pattern",
+          "location": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  ",
+          "snippet": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  }\r\n\r\n      \n                                                                             \n     \r\n  function _transferOwnership(address newOwner) internal {\r\n    require(newOwner != address(0),",
+          "confidence": 0.7,
+          "recommendation": "Use OpenZeppelin's Ownable2Step contract instead of plain Ownable. This requires the new owner to accept ownership via acceptOwnership(), preventing accidental loss.",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x2170ed0880ac9a755fd29b2688956bd959f933f8": {
       "chain": "bnb",
       "chain_name": "BNB Chain",
@@ -1231,20 +1259,6 @@
       "chain_name": "BNB Chain",
       "chain_emoji": "\ud83d\udfe1",
       "contract_name": "Unknown (0x7130d2...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
-    },
-    "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3": {
-      "chain": "bnb",
-      "chain_name": "BNB Chain",
-      "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "Unknown (0x1af3f3...)",
       "compiler": "unknown (bytecode only)",
       "source_length": 185,
       "vuln_count": 0,
@@ -1444,55 +1458,15 @@
       "chain": "bnb",
       "chain_name": "BNB Chain",
       "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "BEP20Cardano",
-      "compiler": "v0.5.16+commit.9c3226ce",
-      "source_length": 19316,
-      "vuln_count": 3,
-      "critical_count": 1,
-      "high_count": 1,
-      "medium_count": 1,
+      "contract_name": "Unknown (0x3ee220...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
       "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.5.",
-          "snippet": "pragma solidity 0.5.16;\r\n\r\ninterface IBEP20 {\r\n      \n                                                     \n     \r\n  function totalSupply() external view returns (uint256);",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P14",
-          "pattern_name": "Unsafe Ownership Renounce",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "renounceOwnership in code (permanently locks owner functions)",
-          "location": "",
-          "snippet": "function renounceOwnership() public onlyOwner {\r\n    emit OwnershipTransferred(_owner, address(0));\r\n    _owner = address(0);\r\n  }",
-          "confidence": 0.7,
-          "recommendation": "Before renouncing ownership, consider: 1. Adding a timelock so changes can be reviewed 2. Setting up a multisig as the new owner 3. Ensuring no critical functions depend on owner access Once renounced, there is NO recovery.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P23",
-          "pattern_name": "Ownership Transfer Without Two-Step",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Single-step ownership transfer used instead of two-step pattern",
-          "location": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  ",
-          "snippet": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  }\r\n\r\n      \n                                                                             \n     \r\n  function _transferOwnership(address newOwner) internal {\r\n    require(newOwner != address(0),",
-          "confidence": 0.7,
-          "recommendation": "Use OpenZeppelin's Ownable2Step contract instead of plain Ownable. This requires the new owner to accept ownership via acceptOwnership(), preventing accidental loss.",
-          "explorer_url": ""
-        }
-      ]
+      "vulnerabilities": []
     },
     "0x7083609fce4d1d8dc0c979aab8c869ea2c873402": {
       "chain": "bnb",
@@ -2192,6 +2166,34 @@
         }
       ]
     },
+    "0x1bfd67037b42fc47b8948dbb5fc537d7df4b2b6c": {
+      "chain": "polygon",
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contract_name": "Unknown",
+      "compiler": "N/A",
+      "source_length": 0,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": "Source code not available (unverified contract or fetch failed)",
+      "vulnerabilities": []
+    },
+    "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063": {
+      "chain": "polygon",
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contract_name": "Unknown (0x8f3cf7...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 183,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0x9c2c5fd7b07e95ee044ddeba0e97a665f142394f": {
       "chain": "polygon",
       "chain_name": "Polygon",
@@ -2375,20 +2377,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063": {
-      "chain": "polygon",
-      "chain_name": "Polygon",
-      "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "Unknown (0x8f3cf7...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 183,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0xb33eaad8d922b1083446dc23f610c2567fb5180f": {
       "chain": "polygon",
@@ -2574,20 +2562,6 @@
         }
       ]
     },
-    "0x1bfd67037b42fc47b8948dbb5fc537d7df4b2b6c": {
-      "chain": "polygon",
-      "chain_name": "Polygon",
-      "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "Unknown",
-      "compiler": "N/A",
-      "source_length": 0,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": "Source code not available (unverified contract or fetch failed)",
-      "vulnerabilities": []
-    },
     "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39": {
       "chain": "polygon",
       "chain_name": "Polygon",
@@ -2739,42 +2713,15 @@
       "chain": "optimism",
       "chain_name": "Optimism",
       "chain_emoji": "\ud83d\udd34",
-      "contract_name": "WETH9",
-      "compiler": "v0.5.17+commit.d19bba13",
-      "source_length": 38516,
-      "vuln_count": 2,
+      "contract_name": "Unknown (0x420000...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 184,
+      "vuln_count": 0,
       "critical_count": 0,
-      "high_count": 1,
-      "medium_count": 1,
+      "high_count": 0,
+      "medium_count": 0,
       "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P18",
-          "pattern_name": "Missing Access Control",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Admin/sensitive function without access control",
-          "location": "function withdraw(",
-          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
-          "confidence": 0.8,
-          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P42",
-          "pattern_name": "Gas Stipend Dependency",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
-          "location": ".transfer(wad)",
-          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
-          "confidence": 0.8,
-          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
-          "explorer_url": ""
-        }
-      ]
+      "vulnerabilities": []
     },
     "0x4ed4e862860bed51a9570b96d89af5e1b0efefed": {
       "chain": "base",
@@ -2783,6 +2730,20 @@
       "contract_name": "DegenToken",
       "compiler": "v0.8.20+commit.a1b79de6",
       "source_length": 3911,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
+    "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
+      "chain": "base",
+      "chain_name": "Base",
+      "chain_emoji": "\ud83d\udd37",
+      "contract_name": "Unknown (0x2ae3f1...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 180,
       "vuln_count": 0,
       "critical_count": 0,
       "high_count": 0,
@@ -2986,20 +2947,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
-      "chain": "base",
-      "chain_name": "Base",
-      "chain_emoji": "\ud83d\udd37",
-      "contract_name": "Unknown (0x2ae3f1...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 180,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x50c5725949a6f0c72e6c4a641f24049a917db0cb": {
       "chain": "base",
@@ -3630,372 +3577,6 @@
         }
       ]
     },
-    "0x82af49447d8a07e3bd95bd0d56f35241523fbab1": {
-      "chain": "arbitrum",
-      "chain_name": "Arbitrum One",
-      "chain_emoji": "\ud83c\udf00",
-      "contract_name": "TransparentUpgradeableProxy",
-      "compiler": "v0.6.12+commit.27d51765",
-      "source_length": 19721,
-      "vuln_count": 27,
-      "critical_count": 21,
-      "high_count": 6,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P06",
-          "pattern_name": "Unchecked Call",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "call() without checking return value",
-          "location": "",
-          "snippet": "(bool success, ) = recipient.call{ value: amount }(  );\n        require(success,                                                             );\n    }",
-          "confidence": 0.7,
-          "recommendation": "Always check the return value of call():  (bool success, ) = addr.call{value: amount}(\"\"); require(success, \"Transfer failed\");\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P06",
-          "pattern_name": "Unchecked Call",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "call() without checking return value",
-          "location": "",
-          "snippet": "(bool success, bytes memory returndata) = target.call{ value: value }(data);\n        return _verifyCallResult(success, returndata, errorMessage);\n    }",
-          "confidence": 0.7,
-          "recommendation": "Always check the return value of call():  (bool success, ) = addr.call{value: amount}(\"\"); require(success, \"Transfer failed\");\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall with variable target",
-          "location": "DelegateCall(address target, bytes memory data)",
-          "snippet": "function functionDelegateCall(address target, bytes memory data) internal returns (bytes memory) {\n        return functionDelegateCall(target, data,                                          );\n    }",
-          "confidence": 0.85,
-          "recommendation": "Never use delegatecall with user-supplied addresses. Use a fixed, upgradeable proxy pattern like OpenZeppelin's, or maintain a whitelist of approved implementation addresses.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall with variable target",
-          "location": "DelegateCall(target, data,                                          )",
-          "snippet": "ateCall(address target, bytes memory data) internal returns (bytes memory) {\n        return functionDelegateCall(target, data,                                          );\n    }\n\n       \n                                                                                      \n                                      \n      \n                              \n       \n    functio",
-          "confidence": 0.85,
-          "recommendation": "Never use delegatecall with user-supplied addresses. Use a fixed, upgradeable proxy pattern like OpenZeppelin's, or maintain a whitelist of approved implementation addresses.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall with variable target",
-          "location": "DelegateCall(address target, bytes memory data, string memory errorMessage)",
-          "snippet": "function functionDelegateCall(address target, bytes memory data, string memory errorMessage) internal returns (bytes memory) {\n        require(isContract(target),                                         );\n\n                                                          \n        (bool success, byt",
-          "confidence": 0.85,
-          "recommendation": "Never use delegatecall with user-supplied addresses. Use a fixed, upgradeable proxy pattern like OpenZeppelin's, or maintain a whitelist of approved implementation addresses.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall in assembly",
-          "location": "",
-          "snippet": "(bool success, bytes memory returndata) = target.delegatecall(data);\n        return _verifyCallResult(success, returndata, errorMessage);\n    }\n\n    function _verifyCallResult(bool success, bytes memory returndata, string memory errorMessage) private pure return",
-          "confidence": 0.6,
-          "recommendation": "Review delegatecall usage carefully. Ensure the target is from a trusted source and properly validated.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall in assembly",
-          "location": "",
-          "snippet": "let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)\n\n                                      \n            returndatacopy(0, 0, returndatasize())\n\n            switch result",
-          "confidence": 0.6,
-          "recommendation": "Review delegatecall usage carefully. Ensure the target is from a trusted source and properly validated.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall in assembly",
-          "location": "",
-          "snippet": "1));\n        _setImplementation(_logic);\n        if(_data.length > 0) {\n            Address.functionDelegateCall(_logic, _data);\n        }\n    }\n\n       \n                                                        \n       \n    event Upgraded(address indexed implementation);",
-          "confidence": 0.6,
-          "recommendation": "Review delegatecall usage carefully. Ensure the target is from a trusted source and properly validated.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P07",
-          "pattern_name": "Delegatecall Injection",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "delegatecall in assembly",
-          "location": "",
-          "snippet": ") external payable virtual ifAdmin {\n        _upgradeTo(newImplementation);\n        Address.functionDelegateCall(newImplementation, data);\n    }\n\n       \n                                      \n       \n    function _admin() internal view virtual returns (address adm) {\n        bytes32 slot = _ADMIN_SLOT;",
-          "confidence": 0.6,
-          "recommendation": "Review delegatecall usage carefully. Ensure the target is from a trusted source and properly validated.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P17",
-          "pattern_name": "Arbitrary External Call",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall with variable target (user-controlled)",
-          "location": ".delegatecall(data",
-          "snippet": "(bool success, bytes memory returndata) = target.delegatecall(data);\n        return _verifyCallResult(success, returndata, errorMessage);\n    }\n\n    function _verifyCallResult(bool success, bytes memory returndata, string memory errorMessage) private pure returns(by",
-          "confidence": 0.85,
-          "recommendation": "Arbitrary delegatecall with user data is EXTREMELY dangerous. This gives the caller full control of the contract's state. Remove this pattern immediately.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P17",
-          "pattern_name": "Arbitrary External Call",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Staticcall with variable target",
-          "location": "StaticCall(address target",
-          "snippet": "function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {\n        return functionStaticCall(target, data,                                        );\n    }",
-          "confidence": 0.5,
-          "recommendation": "Even static calls to unknown contracts can reenter or manipulate oracle-like state. Consider a whitelist.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P17",
-          "pattern_name": "Arbitrary External Call",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Staticcall with variable target",
-          "location": "StaticCall(target",
-          "snippet": "ll(address target, bytes memory data) internal view returns (bytes memory) {\n        return functionStaticCall(target, data,                                        );\n    }",
-          "confidence": 0.5,
-          "recommendation": "Even static calls to unknown contracts can reenter or manipulate oracle-like state. Consider a whitelist.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P17",
-          "pattern_name": "Arbitrary External Call",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Staticcall with variable target",
-          "location": "StaticCall(address target",
-          "snippet": "function functionStaticCall(address target, bytes memory data, string memory errorMessage) internal view returns (bytes memory) {\n        require(isContract(target),                                       );",
-          "confidence": 0.5,
-          "recommendation": "Even static calls to unknown contracts can reenter or manipulate oracle-like state. Consider a whitelist.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P18",
-          "pattern_name": "Missing Access Control",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Admin/sensitive function without access control",
-          "location": "function upgradeTo(",
-          "snippet": "function upgradeTo(address newImplementation) external virtual ifAdmin {\n        _upgradeTo(newImplementation);\n    }",
-          "confidence": 0.8,
-          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P25",
-          "pattern_name": "Cross-Function Reentrancy",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Multiple functions modifying shared state with external calls",
-          "location": "",
-          "snippet": "pragma solidity >=0.6.2 <0.8.0;\n\n   \n                                                           \n   \nlibrary Address {",
-          "confidence": 0.7,
-          "recommendation": "Use OpenZeppelin's ReentrancyGuard on ALL functions that modify state and make external calls. Alternatively, follow the checks-effects-interactions pattern strictly.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P27",
-          "pattern_name": "Cross-Contract Reentrancy",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Cross-contract call chain with shared state",
-          "location": "",
-          "snippet": "pragma solidity >=0.6.2 <0.8.0;\n\n   \n                                                           \n   \nlibrary Address {",
-          "confidence": 0.6,
-          "recommendation": "Use reentrancy guards across all public/external functions in interconnected contracts. Consider using OpenZeppelin's ReentrancyGuard in all contracts in the system.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P39",
-          "pattern_name": "Function Clashing (malicious implementation)",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Potential function selector collision (requires AST analysis)",
-          "location": "",
-          "snippet": "pragma solidity >=0.6.2 <0.8.0;\n\n   \n                                                           \n   \nlibrary Address {",
-          "confidence": 0.5,
-          "recommendation": "Use a proxy with an explicit function registry or use transparent proxy pattern that prevents function selector clashes.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P41",
-          "pattern_name": "Contract Existence Check Missing",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Low-level call without extcodesize check",
-          "location": ".call{ value: amount }(  )",
-          "snippet": "(bool success, ) = recipient.call{ value: amount }(  );\n        require(success,                                                             );\n    }",
-          "confidence": 0.55,
-          "recommendation": "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P41",
-          "pattern_name": "Contract Existence Check Missing",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Low-level call without extcodesize check",
-          "location": ".call{ value: value }(data)",
-          "snippet": "(bool success, bytes memory returndata) = target.call{ value: value }(data);\n        return _verifyCallResult(success, returndata, errorMessage);\n    }",
-          "confidence": 0.55,
-          "recommendation": "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": "function functionDelegateCall(address target, bytes memory data) internal returns (bytes memory) {\n        return functionDelegateCall(target, data,                                          );\n    }",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": "ateCall(address target, bytes memory data) internal returns (bytes memory) {\n        return functionDelegateCall(target, data,                                          );\n    }\n\n       \n                                                                                      \n                                      \n      \n                              \n       \n    functio",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": "function functionDelegateCall(address target, bytes memory data, string memory errorMessage) internal returns (bytes memory) {\n        require(isContract(target),                                         );\n\n                                                          \n        (bool success, byt",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": "(bool success, bytes memory returndata) = target.delegatecall(data);\n        return _verifyCallResult(success, returndata, errorMessage);\n    }\n\n    function _verifyCallResult(bool success, bytes memory returndata, string memory errorMessage) private pure returns(byt",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": "let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)\n\n                                      \n            returndatacopy(0, 0, returndatasize())\n\n            switch result",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": "1));\n        _setImplementation(_logic);\n        if(_data.length > 0) {\n            Address.functionDelegateCall(_logic, _data);\n        }\n    }\n\n       \n                                                        \n       \n    event Upgraded(address indexed implementation);",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Delegatecall to user-controlled address",
-          "location": "",
-          "snippet": ") external payable virtual ifAdmin {\n        _upgradeTo(newImplementation);\n        Address.functionDelegateCall(newImplementation, data);\n    }\n\n       \n                                      \n       \n    function _admin() internal view virtual returns (address adm) {\n        bytes32 slot = _ADMIN_SLOT;",
-          "confidence": 0.5,
-          "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P43",
-          "pattern_name": "Delegatecall to Untrusted Library",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Function with delegatecall and user-controlled target",
-          "location": "function _delegate(address implementation) internal virtual {\n                                                       \n        assembly {\n                                                                                    \n                                                                                  \n                                                         \n            calldatacopy(0, 0, calldatasize())\n\n                                       \n                                                                        \n            let result := delegatecall",
-          "snippet": "function _delegate(address implementation) internal virtual {\n                                                       \n        assembly {\n                                                               \n  ...\n                                                             \n            let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)\n\n                                      \n            returndatacopy(0, 0, returndatasize())\n\n            switch result",
-          "confidence": 0.7,
-          "recommendation": "If delegatecall is necessary, restrict target to a whitelist of approved contracts.",
-          "explorer_url": ""
-        }
-      ]
-    },
     "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f": {
       "chain": "arbitrum",
       "chain_name": "Arbitrum One",
@@ -4118,11 +3699,11 @@
         }
       ]
     },
-    "0xf97f4df75117a78c1a5a0dbb814af92458539fb4": {
+    "0x82af49447d8a07e3bd95bd0d56f35241523fbab1": {
       "chain": "arbitrum",
       "chain_name": "Arbitrum One",
       "chain_emoji": "\ud83c\udf00",
-      "contract_name": "Unknown (0xf97f4d...)",
+      "contract_name": "Unknown (0x82af49...)",
       "compiler": "unknown (bytecode only)",
       "source_length": 188,
       "vuln_count": 0,
@@ -4132,13 +3713,13 @@
       "error": null,
       "vulnerabilities": []
     },
-    "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1": {
-      "chain": "optimism",
-      "chain_name": "Optimism",
-      "chain_emoji": "\ud83d\udd34",
-      "contract_name": "Dai",
-      "compiler": "v0.7.6-allow_kall",
-      "source_length": 7247,
+    "0xf97f4df75117a78c1a5a0dbb814af92458539fb4": {
+      "chain": "arbitrum",
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "\ud83c\udf00",
+      "contract_name": "ClonableBeaconProxy",
+      "compiler": "v0.6.11+commit.5ef660b1",
+      "source_length": 2085,
       "vuln_count": 3,
       "critical_count": 2,
       "high_count": 1,
@@ -4146,42 +3727,42 @@
       "error": null,
       "vulnerabilities": [
         {
-          "pattern_id": "P01",
-          "pattern_name": "Unprotected Mint",
+          "pattern_id": "P16",
+          "pattern_name": "Uninitialized Proxy",
           "severity": "critical",
           "chain": "ethereum",
           "chain_name": "Ethereum",
-          "description": "Mint function without onlyOwner or equivalent access control",
-          "location": "function mint(",
-          "snippet": "emit Approval(msg.sender, spender, allowed);\r\n\r\n    return true;\r\n  }\r\n\r\n                       \n  function mint(address to, uint256 value) external auth {\r\n    require(to != address(0) && to != address(this),                      );\r\n    balanceOf[to] = balanceOf[to] + value;",
+          "description": "Missing initializer modifier on init function",
+          "location": "function initialize(address _beacon)",
+          "snippet": "address public override beacon;\n\n    function initialize(address _beacon) external {\n        require(_beacon != address(0),                 );\n        require(beacon == address(0),               );\n        beacon = _beacon;\n    }\n\n    function getSalt(address user, bytes32",
+          "confidence": 0.5,
+          "recommendation": "Add the initializer modifier (from OpenZeppelin) to prevent re-initialization. Consider using Initializable.sol or UUPSUpgradeable pattern with constructor-based initialization.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P21",
+          "pattern_name": "Unprotected Initializer",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Initialize function without access control modifiers",
+          "location": "function initialize(",
+          "snippet": "address public override beacon;\n\n    function initialize(address _beacon) external {\n        require(_beacon != address(0),                 );\n        require(beacon == address(0),               );\n        beacon = _beacon;\n    }\n\n    function getSalt(addre",
           "confidence": 0.85,
-          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "recommendation": "Add the 'initializer' modifier (from OpenZeppelin) or 'onlyOwner' to the initialize function. Also add a check that initialization can only happen once.",
           "explorer_url": ""
         },
         {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.7.",
-          "snippet": "pragma solidity 0.7.6;\r\n\r\n                      \n\r\ncontract Dai {\r\n\r\n                  \n  mapping (address => uint256) public wards;\r\n  function rely(address usr) external auth {\r\n    wards[usr] = 1;\r\n    emit Rely(usr);",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P12",
-          "pattern_name": "Signature Replay",
+          "pattern_id": "P38",
+          "pattern_name": "Constructor in Implementation",
           "severity": "high",
           "chain": "ethereum",
           "chain_name": "Ethereum",
-          "description": "EIP-712 signatures without nonce check",
-          "location": "ecrecover(digest, v, r, s),                     )",
-          "snippet": "r]++,\r\n            deadline\r\n          ))\r\n      ));\r\n\r\n    require(owner != address(0) && owner == ecrecover(digest, v, r, s),                     );\r\n\r\n    allowance[owner][spender] = value;\r\n    emit Approval(owner, spender, value);\r\n  }\r\n}",
-          "confidence": 0.5,
-          "recommendation": "Always include a nonce (incremented per user) and chainId in your EIP-712 typed data to prevent replay attacks across chains and repeated use.\n",
+          "description": "Upgradeable contract declares a constructor (state set in a constructor is not applied to proxy instances)",
+          "location": "",
+          "snippet": "pragma solidity >=0.6.0 <0.8.0;\n\nimport                                                ;\nimport",
+          "confidence": 0.6,
+          "recommendation": "In upgradeable/proxy contracts, move state initialization into an initialize() function guarded by the 'initializer' modifier. Keep the constructor empty (or use it only for immutables and to lock the implementation via _disableInitializers()).",
           "explorer_url": ""
         }
       ]
@@ -4575,6 +4156,60 @@
           "snippet": "(bool success, bytes memory returndata) = target.delegatecall(data);\r\n        return _verifyCallResult(success, returndata, errorMessage);\r\n    }\r\n\r\n    function _verifyCallResult(bool success, bytes memory returndata, string memory errorMessage) private pure returns",
           "confidence": 0.5,
           "recommendation": "Never use delegatecall with user-controlled addresses. Whitelist trusted library addresses. Consider using static libraries instead.",
+          "explorer_url": ""
+        }
+      ]
+    },
+    "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1": {
+      "chain": "optimism",
+      "chain_name": "Optimism",
+      "chain_emoji": "\ud83d\udd34",
+      "contract_name": "Dai",
+      "compiler": "v0.7.6-allow_kall",
+      "source_length": 7247,
+      "vuln_count": 3,
+      "critical_count": 2,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "emit Approval(msg.sender, spender, allowed);\r\n\r\n    return true;\r\n  }\r\n\r\n                       \n  function mint(address to, uint256 value) external auth {\r\n    require(to != address(0) && to != address(this),                      );\r\n    balanceOf[to] = balanceOf[to] + value;",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.7.",
+          "snippet": "pragma solidity 0.7.6;\r\n\r\n                      \n\r\ncontract Dai {\r\n\r\n                  \n  mapping (address => uint256) public wards;\r\n  function rely(address usr) external auth {\r\n    wards[usr] = 1;\r\n    emit Rely(usr);",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P12",
+          "pattern_name": "Signature Replay",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "EIP-712 signatures without nonce check",
+          "location": "ecrecover(digest, v, r, s),                     )",
+          "snippet": "r]++,\r\n            deadline\r\n          ))\r\n      ));\r\n\r\n    require(owner != address(0) && owner == ecrecover(digest, v, r, s),                     );\r\n\r\n    allowance[owner][spender] = value;\r\n    emit Approval(owner, spender, value);\r\n  }\r\n}",
+          "confidence": 0.5,
+          "recommendation": "Always include a nonce (incremented per user) and chainId in your EIP-712 typed data to prevent replay attacks across chains and repeated use.\n",
           "explorer_url": ""
         }
       ]
@@ -5131,15 +4766,55 @@
       "chain": "optimism",
       "chain_name": "Optimism",
       "chain_emoji": "\ud83d\udd34",
-      "contract_name": "Unknown (0x94b008...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
+      "contract_name": "USDT",
+      "compiler": "v0.7.6",
+      "source_length": 26705,
+      "vuln_count": 3,
+      "critical_count": 2,
       "high_count": 0,
-      "medium_count": 0,
+      "medium_count": 1,
       "error": null,
-      "vulnerabilities": []
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "ce IL2StandardERC20 is IERC20, IERC165 {\r\n    function l1Token() external returns (address);\r\n\r\n    function mint(address _to, uint256 _amount) external;\r\n\r\n    function burn(address _from, uint256 _amount) external;\r\n\r\n    event Mint(address indexed _account, uint256 _amount);\r\n    event Burn(address indexed _ac",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "_interfaceId == firstSupportedInterface || _interfaceId == secondSupportedInterface;\r\n    }\r\n\r\n    function mint(address _to, uint256 _amount) public override onlyL2Bridge {\r\n        _mint(_to, _amount);\r\n\r\n        emit Mint(_to, _amount);\r\n    }\r\n\r\n    function burn(address _from, uint256 _amount) public overri",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P19",
+          "pattern_name": "No SafeERC20",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw ERC20 transfer/transferFrom call without SafeERC20",
+          "location": ".transfer(recipient, amount)",
+          "snippet": "amount) public\r\n    onlyPayloadSize(2 * 32)\r\n    override returns (bool)\r\n    {\r\n      return super.transfer(recipient, amount);\r\n    }\r\n\r\n    function transferFrom(address sender, address recipient, uint256 amount) public\r\n    onlyPayloadSize(2 * 32)\r\n    override returns (bool)\r\n    {\r\n      _transfer(sender, recipient, amo",
+          "confidence": 0.55,
+          "recommendation": "Use OpenZeppelin's SafeERC20 which handles non-standard tokens (USDT etc. don't return a bool). Replace token.transfer(to, amount) with SafeERC20.safeTransfer(token, to, amount).\n",
+          "explorer_url": ""
+        }
+      ]
     },
     "0x4200000000000000000000000000000000000042": {
       "chain": "optimism",
@@ -5225,15 +4900,42 @@
       "chain": "optimism",
       "chain_name": "Optimism",
       "chain_emoji": "\ud83d\udd34",
-      "contract_name": "Unknown (0x68f180...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
+      "contract_name": "WBTC",
+      "compiler": "v0.7.6",
+      "source_length": 25635,
+      "vuln_count": 2,
+      "critical_count": 2,
       "high_count": 0,
       "medium_count": 0,
       "error": null,
-      "vulnerabilities": []
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "ce IL2StandardERC20 is IERC20, IERC165 {\r\n    function l1Token() external returns (address);\r\n\r\n    function mint(address _to, uint256 _amount) external;\r\n\r\n    function burn(address _from, uint256 _amount) external;\r\n\r\n    event Mint(address indexed _account, uint256 _amount);\r\n    event Burn(address indexed _ac",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "_interfaceId == firstSupportedInterface || _interfaceId == secondSupportedInterface;\r\n    }\r\n\r\n    function mint(address _to, uint256 _amount) public override onlyL2Bridge {\r\n        _mint(_to, _amount);\r\n\r\n        emit Mint(_to, _amount);\r\n    }\r\n\r\n    function burn(address _from, uint256 _amount) public overri",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        }
+      ]
     },
     "0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6": {
       "chain": "optimism",
@@ -5960,6 +5662,47 @@
         }
       ]
     },
+    "0x50b7545627a5162f82a992c33b87adc75187b218": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "BridgeToken",
+      "compiler": "v0.8.0+commit.c7dfd78e",
+      "source_length": 25485,
+      "vuln_count": 2,
+      "critical_count": 1,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P05",
+          "pattern_name": "tx.origin Authentication",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "tx.origin used in require/modifier condition",
+          "location": "require(tx.origin == msg.sender,                                )",
+          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
+          "confidence": 0.95,
+          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x5947bb275c521040051d82396192181b413227a3": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
@@ -6014,88 +5757,6 @@
         }
       ]
     },
-    "0xd586e7f844cea2f87f50152665bcbc2c279d8d70": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "BridgeToken",
-      "compiler": "v0.8.0+commit.c7dfd78e",
-      "source_length": 25513,
-      "vuln_count": 2,
-      "critical_count": 1,
-      "high_count": 1,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P01",
-          "pattern_name": "Unprotected Mint",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Mint function without onlyOwner or equivalent access control",
-          "location": "function mint(",
-          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
-          "confidence": 0.85,
-          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P05",
-          "pattern_name": "tx.origin Authentication",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "tx.origin used in require/modifier condition",
-          "location": "require(tx.origin == msg.sender,                                )",
-          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
-          "confidence": 0.95,
-          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
-          "explorer_url": ""
-        }
-      ]
-    },
-    "0x50b7545627a5162f82a992c33b87adc75187b218": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "BridgeToken",
-      "compiler": "v0.8.0+commit.c7dfd78e",
-      "source_length": 25510,
-      "vuln_count": 2,
-      "critical_count": 1,
-      "high_count": 1,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P01",
-          "pattern_name": "Unprotected Mint",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Mint function without onlyOwner or equivalent access control",
-          "location": "function mint(",
-          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
-          "confidence": 0.85,
-          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P05",
-          "pattern_name": "tx.origin Authentication",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "tx.origin used in require/modifier condition",
-          "location": "require(tx.origin == msg.sender,                                )",
-          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
-          "confidence": 0.95,
-          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
-          "explorer_url": ""
-        }
-      ]
-    },
     "0x63a72806098bd3d9520cc43356dd78afe5d386d9": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
@@ -6103,6 +5764,47 @@
       "contract_name": "BridgeToken",
       "compiler": "v0.8.0+commit.c7dfd78e",
       "source_length": 25486,
+      "vuln_count": 2,
+      "critical_count": 1,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P05",
+          "pattern_name": "tx.origin Authentication",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "tx.origin used in require/modifier condition",
+          "location": "require(tx.origin == msg.sender,                                )",
+          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
+          "confidence": 0.95,
+          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
+          "explorer_url": ""
+        }
+      ]
+    },
+    "0xd586e7f844cea2f87f50152665bcbc2c279d8d70": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "BridgeToken",
+      "compiler": "v0.8.0+commit.c7dfd78e",
+      "source_length": 25513,
       "vuln_count": 2,
       "critical_count": 1,
       "high_count": 1,
