@@ -1,8 +1,8 @@
 {
   "tool": "MaatEye",
   "version": "1.0.0-alpha",
-  "timestamp": "2026-07-19T09:52:46Z",
-  "scan_time_seconds": 17.95,
+  "timestamp": "2026-07-20T10:53:05Z",
+  "scan_time_seconds": 15.53,
   "total_chains": 7,
   "chains_scanned": [
     "ethereum",
@@ -14,9 +14,9 @@
     "avalanche"
   ],
   "total_contracts": 61,
-  "total_vulns": 355,
-  "critical_count": 188,
-  "high_count": 141,
+  "total_vulns": 359,
+  "critical_count": 191,
+  "high_count": 142,
   "medium_count": 26,
   "low_count": 0,
   "chain_summary": {
@@ -42,8 +42,8 @@
       "chain_name": "Polygon",
       "chain_emoji": "\ud83d\udfe3",
       "contracts": 10,
-      "vulns": 73,
-      "critical": 51,
+      "vulns": 74,
+      "critical": 52,
       "high": 21,
       "medium": 1
     },
@@ -69,9 +69,9 @@
       "chain_name": "Arbitrum One",
       "chain_emoji": "\ud83c\udf00",
       "contracts": 9,
-      "vulns": 78,
-      "critical": 60,
-      "high": 18,
+      "vulns": 81,
+      "critical": 62,
+      "high": 19,
       "medium": 0
     },
     "avalanche": {
@@ -637,6 +637,34 @@
         }
       ]
     },
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
+      "chain": "ethereum",
+      "chain_name": "Ethereum",
+      "chain_emoji": "\ud83d\udd35",
+      "contract_name": "Unknown (0xc02aaa...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 184,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
+    "0x6b175474e89094c44da98b954eedeac495271d0f": {
+      "chain": "ethereum",
+      "chain_name": "Ethereum",
+      "chain_emoji": "\ud83d\udd35",
+      "contract_name": "Unknown (0x6b1754...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0x514910771af9ca656af840dff83e8264ecf986ca": {
       "chain": "ethereum",
       "chain_name": "Ethereum",
@@ -690,20 +718,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
-      "chain": "ethereum",
-      "chain_name": "Ethereum",
-      "chain_emoji": "\ud83d\udd35",
-      "contract_name": "Unknown (0xc02aaa...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 184,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0": {
       "chain": "ethereum",
@@ -838,20 +852,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x6b175474e89094c44da98b954eedeac495271d0f": {
-      "chain": "ethereum",
-      "chain_name": "Ethereum",
-      "chain_emoji": "\ud83d\udd35",
-      "contract_name": "Unknown (0x6b1754...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce": {
       "chain": "ethereum",
@@ -1212,33 +1212,59 @@
         }
       ]
     },
-    "0x2170ed0880ac9a755fd29b2688956bd959f933f8": {
+    "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3": {
       "chain": "bnb",
       "chain_name": "BNB Chain",
       "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "Unknown (0x2170ed...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
+      "contract_name": "BEP20DAI",
+      "compiler": "v0.5.16+commit.9c3226ce",
+      "source_length": 19307,
+      "vuln_count": 3,
+      "critical_count": 1,
+      "high_count": 1,
+      "medium_count": 1,
       "error": null,
-      "vulnerabilities": []
-    },
-    "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c": {
-      "chain": "bnb",
-      "chain_name": "BNB Chain",
-      "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "Unknown (0x7130d2...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
+      "vulnerabilities": [
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.5.",
+          "snippet": "pragma solidity 0.5.16;\r\n\r\ninterface IBEP20 {\r\n      \n                                                     \n     \r\n  function totalSupply() external view returns (uint256);",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P14",
+          "pattern_name": "Unsafe Ownership Renounce",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "renounceOwnership in code (permanently locks owner functions)",
+          "location": "",
+          "snippet": "function renounceOwnership() public onlyOwner {\r\n    emit OwnershipTransferred(_owner, address(0));\r\n    _owner = address(0);\r\n  }",
+          "confidence": 0.7,
+          "recommendation": "Before renouncing ownership, consider: 1. Adding a timelock so changes can be reviewed 2. Setting up a multisig as the new owner 3. Ensuring no critical functions depend on owner access Once renounced, there is NO recovery.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P23",
+          "pattern_name": "Ownership Transfer Without Two-Step",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Single-step ownership transfer used instead of two-step pattern",
+          "location": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  ",
+          "snippet": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  }\r\n\r\n      \n                                                                             \n     \r\n  function _transferOwnership(address newOwner) internal {\r\n    require(newOwner != address(0),",
+          "confidence": 0.7,
+          "recommendation": "Use OpenZeppelin's Ownable2Step contract instead of plain Ownable. This requires the new owner to accept ownership via acceptOwnership(), preventing accidental loss.",
+          "explorer_url": ""
+        }
+      ]
     },
     "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82": {
       "chain": "bnb",
@@ -1372,6 +1398,34 @@
         }
       ]
     },
+    "0x2170ed0880ac9a755fd29b2688956bd959f933f8": {
+      "chain": "bnb",
+      "chain_name": "BNB Chain",
+      "chain_emoji": "\ud83d\udfe1",
+      "contract_name": "Unknown (0x2170ed...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
+    "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c": {
+      "chain": "bnb",
+      "chain_name": "BNB Chain",
+      "chain_emoji": "\ud83d\udfe1",
+      "contract_name": "Unknown (0x7130d2...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0xe9e7cea3dedca5984780bafc599bd69add087d56": {
       "chain": "bnb",
       "chain_name": "BNB Chain",
@@ -1426,11 +1480,11 @@
         }
       ]
     },
-    "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3": {
+    "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47": {
       "chain": "bnb",
       "chain_name": "BNB Chain",
       "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "Unknown (0x1af3f3...)",
+      "contract_name": "Unknown (0x3ee220...)",
       "compiler": "unknown (bytecode only)",
       "source_length": 185,
       "vuln_count": 0,
@@ -1439,60 +1493,6 @@
       "medium_count": 0,
       "error": null,
       "vulnerabilities": []
-    },
-    "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47": {
-      "chain": "bnb",
-      "chain_name": "BNB Chain",
-      "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "BEP20Cardano",
-      "compiler": "v0.5.16+commit.9c3226ce",
-      "source_length": 19316,
-      "vuln_count": 3,
-      "critical_count": 1,
-      "high_count": 1,
-      "medium_count": 1,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.5.",
-          "snippet": "pragma solidity 0.5.16;\r\n\r\ninterface IBEP20 {\r\n      \n                                                     \n     \r\n  function totalSupply() external view returns (uint256);",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P14",
-          "pattern_name": "Unsafe Ownership Renounce",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "renounceOwnership in code (permanently locks owner functions)",
-          "location": "",
-          "snippet": "function renounceOwnership() public onlyOwner {\r\n    emit OwnershipTransferred(_owner, address(0));\r\n    _owner = address(0);\r\n  }",
-          "confidence": 0.7,
-          "recommendation": "Before renouncing ownership, consider: 1. Adding a timelock so changes can be reviewed 2. Setting up a multisig as the new owner 3. Ensuring no critical functions depend on owner access Once renounced, there is NO recovery.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P23",
-          "pattern_name": "Ownership Transfer Without Two-Step",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Single-step ownership transfer used instead of two-step pattern",
-          "location": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  ",
-          "snippet": "function transferOwnership(address newOwner) public onlyOwner {\r\n    _transferOwnership(newOwner);\r\n  }\r\n\r\n      \n                                                                             \n     \r\n  function _transferOwnership(address newOwner) internal {\r\n    require(newOwner != address(0),",
-          "confidence": 0.7,
-          "recommendation": "Use OpenZeppelin's Ownable2Step contract instead of plain Ownable. This requires the new owner to accept ownership via acceptOwnership(), preventing accidental loss.",
-          "explorer_url": ""
-        }
-      ]
     },
     "0x7083609fce4d1d8dc0c979aab8c869ea2c873402": {
       "chain": "bnb",
@@ -1931,6 +1931,281 @@
       "error": null,
       "vulnerabilities": []
     },
+    "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619": {
+      "chain": "polygon",
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contract_name": "MaticWETH",
+      "compiler": "v0.6.6+commit.6c089d02",
+      "source_length": 51809,
+      "vuln_count": 20,
+      "critical_count": 12,
+      "high_count": 8,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "account, _msgSender());\r\n        }\r\n    }\r\n}\r\n\r\n                                                 \n\r\npragma solidity 0.6.6;\r\n\r\n\r\ncontract AccessControlMixin is AccessControl {\r\n    string private _revertMsg;\r\n    function _setupContractId(string memory contractId) internal {\r\n        _revertMsg = string(abi.encodePacked",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "vertMsg\r\n        );\r\n        _;\r\n    }\r\n}\r\n\r\n                                                    \n\r\npragma solidity 0.6.6;\r\n\r\ninterface IChildToken {\r\n    function deposit(address user, bytes calldata depositData) external;\r\n}\r\n\r\n                                            \n\r\npragma solidity 0.6.6;\r\n\r\ncontract Initiali",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "ss user, bytes calldata depositData) external;\r\n}\r\n\r\n                                            \n\r\npragma solidity 0.6.6;\r\n\r\ncontract Initializable {\r\n    bool inited = false;\r\n\r\n    modifier initializer() {\r\n        require(!inited,                 );\r\n        _;\r\n        inited = true;\r\n    }\r\n}",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": ");\r\n        _;\r\n        inited = true;\r\n    }\r\n}\r\n\r\n                                         \n\r\npragma solidity 0.6.6;\r\n\r\n\r\ncontract EIP712Base is Initializable {\r\n    struct EIP712Domain {\r\n        string name;\r\n        string version;\r\n        address verifyingContract;\r\n        bytes32 salt;\r\n    }\r\n\r\n    bytes3",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "), messageHash)\r\n            );\r\n    }\r\n}\r\n\r\n                                                    \n\r\npragma solidity 0.6.6;\r\n\r\n\r\n\r\ncontract NativeMetaTransaction is EIP712Base {\r\n    using SafeMath for uint256;\r\n    bytes32 private constant META_TRANSACTION_TYPEHASH = keccak256(\r\n        bytes(",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "sigR,\r\n                sigS\r\n            );\r\n    }\r\n}\r\n\r\n                                      \n\r\npragma solidity 0.6.6;\r\n\r\ncontract ChainConstants {\r\n    string constant public ERC712_VERSION =    ;\r\n\r\n    uint256 constant public ROOT_CHAIN_ID = 1;\r\n    bytes constant public ROOT_CHAIN_ID_BYTES = hex    ;\r\n\r\n    uin",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "constant public CHILD_CHAIN_ID_BYTES = hex    ;\r\n}\r\n\r\n                                           \n\r\npragma solidity 0.6.6;\r\n\r\nabstract contract ContextMixin {\r\n    function msgSender()\r\n        internal\r\n        view\r\n        returns (address payable sender)\r\n    {\r\n        if (msg.sender == address(this)) {",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "}\r\n        return sender;\r\n    }\r\n}\r\n\r\n                                                   \n\r\npragma solidity 0.6.6;\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\ncontract ChildERC20 is\r\n    ERC20,\r\n    IChildToken,\r\n    AccessControlMixin,\r\n    NativeMetaTransaction,\r\n    ChainConstants,\r\n    ContextMixin\r\n{\r\n    bytes32 public constant DEP",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P04",
+          "pattern_name": "Integer Overflow/Underflow",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
+          "location": "pragma solidity 0.6.",
+          "snippet": "_burn(_msgSender(), amount);\r\n    }\r\n}\r\n\r\n                                                  \n\r\npragma solidity 0.6.6;\r\n\r\n\r\ncontract MaticWETH is ChildERC20 {\r\n    constructor(address childChainManager) public ChildERC20(               ,       , 18, childChainManager) {}\r\n}",
+          "confidence": 0.9,
+          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P06",
+          "pattern_name": "Unchecked Call",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "call() without checking return value",
+          "location": "",
+          "snippet": "(bool success, ) = recipient.call{ value: amount }(  );\r\n        require(success,                                                             );\r\n    }",
+          "confidence": 0.7,
+          "recommendation": "Always check the return value of call():  (bool success, ) = addr.call{value: amount}(\"\"); require(success, \"Transfer failed\");\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P06",
+          "pattern_name": "Unchecked Call",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "call() without checking return value",
+          "location": "",
+          "snippet": "(bool success, bytes memory returndata) = target.call{ value: weiValue }(data);\r\n        if (success) {\r\n            return returndata;\r\n        } else {\r\n                                                                  \n            if (returndata.length > 0) {",
+          "confidence": 0.7,
+          "recommendation": "Always check the return value of call():  (bool success, ) = addr.call{value: amount}(\"\"); require(success, \"Transfer failed\");\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P06",
+          "pattern_name": "Unchecked Call",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Low-level call without success check in same function",
+          "location": "",
+          "snippet": "(bool success, bytes memory returnData) = address(this).call(\r\n            abi.encodePacked(functionSignature, userAddress)\r\n        );\r\n        require(success,                               );\r\n\r\n        return returnData;\r\n    }\r\n\r\n    function hashMetaTransaction(MetaTransaction memory metaTx)\r\n        internal\r\n        pure",
+          "confidence": 0.5,
+          "recommendation": "Verify that the return value of this call is properly checked.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P12",
+          "pattern_name": "Signature Replay",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "EIP-712 signatures without nonce check",
+          "location": "ecrecover(\r\n                toTypedMessageHash(hashMetaTransaction(metaTx)),\r\n                sigV,\r\n                sigR,\r\n                sigS\r\n            )",
+          "snippet": "s(0),                                        );\r\n        return\r\n            signer ==\r\n            ecrecover(\r\n                toTypedMessageHash(hashMetaTransaction(metaTx)),\r\n                sigV,\r\n                sigR,\r\n                sigS\r\n            );\r\n    }\r\n}\r\n\r\n                                      \n\r\npragma solidity 0.6.6;\r\n\r\ncontract ChainConstants {\r\n    string constant public ERC712_VERSION =    ;\r\n\r\n    uint256 constant public ROOT_CHAIN_",
+          "confidence": 0.5,
+          "recommendation": "Always include a nonce (incremented per user) and chainId in your EIP-712 typed data to prevent replay attacks across chains and repeated use.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P18",
+          "pattern_name": "Missing Access Control",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Admin/sensitive function without access control",
+          "location": "function withdraw(",
+          "snippet": "function withdraw(uint256 amount) external {\r\n        _burn(_msgSender(), amount);\r\n    }\r\n}\r\n\r\n                                                  \n\r\npragma solidity 0.6.6;\r\n\r\n\r\ncontract MaticWETH is ChildERC20 {\r\n    c",
+          "confidence": 0.8,
+          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P22",
+          "pattern_name": "Role Admin Hijack",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "grantRole or revokeRole without proper access control",
+          "location": "function grantRole(",
+          "snippet": "function grantRole(bytes32 role, address account) public virtual {\r\n        require(hasRole(_roles[role].adminRole, _msgSender()),                                                  );\r\n\r\n        _grantRole(role, account)",
+          "confidence": 0.8,
+          "recommendation": "Ensure grantRole and revokeRole are protected by the DEFAULT_ADMIN_ROLE role or equivalent access control. Use OpenZeppelin's AccessControlDefaultAdminRules for production.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P22",
+          "pattern_name": "Role Admin Hijack",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "grantRole or revokeRole without proper access control",
+          "location": "function revokeRole(",
+          "snippet": "function revokeRole(bytes32 role, address account) public virtual {\r\n        require(hasRole(_roles[role].adminRole, _msgSender()),                                                   );\r\n\r\n        _revokeRole(role, accoun",
+          "confidence": 0.8,
+          "recommendation": "Ensure grantRole and revokeRole are protected by the DEFAULT_ADMIN_ROLE role or equivalent access control. Use OpenZeppelin's AccessControlDefaultAdminRules for production.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P25",
+          "pattern_name": "Cross-Function Reentrancy",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Multiple functions modifying shared state with external calls",
+          "location": "",
+          "snippet": "",
+          "confidence": 0.7,
+          "recommendation": "Use OpenZeppelin's ReentrancyGuard on ALL functions that modify state and make external calls. Alternatively, follow the checks-effects-interactions pattern strictly.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P38",
+          "pattern_name": "Constructor in Implementation",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Upgradeable contract declares a constructor (state set in a constructor is not applied to proxy instances)",
+          "location": "",
+          "snippet": "",
+          "confidence": 0.6,
+          "recommendation": "In upgradeable/proxy contracts, move state initialization into an initialize() function guarded by the 'initializer' modifier. Keep the constructor empty (or use it only for immutables and to lock the implementation via _disableInitializers()).",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P41",
+          "pattern_name": "Contract Existence Check Missing",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Low-level call without extcodesize check",
+          "location": ".call{ value: amount }(  )",
+          "snippet": "(bool success, ) = recipient.call{ value: amount }(  );\r\n        require(success,                                                             );\r\n    }",
+          "confidence": 0.55,
+          "recommendation": "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P41",
+          "pattern_name": "Contract Existence Check Missing",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Low-level call without extcodesize check",
+          "location": ".call{ value: weiValue }(data)",
+          "snippet": "(bool success, bytes memory returndata) = target.call{ value: weiValue }(data);\r\n        if (success) {\r\n            return returndata;\r\n        } else {\r\n                                                                  \n            if (returndata.length > 0) {",
+          "confidence": 0.55,
+          "recommendation": "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code.",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x1bfd67037b42fc47b8948dbb5fc537d7df4b2b6c": {
       "chain": "polygon",
       "chain_name": "Polygon",
@@ -2313,11 +2588,11 @@
         }
       ]
     },
-    "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619": {
+    "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39": {
       "chain": "polygon",
       "chain_name": "Polygon",
       "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "Unknown (0x7ceb23...)",
+      "contract_name": "Unknown (0x53e0bc...)",
       "compiler": "unknown (bytecode only)",
       "source_length": 184,
       "vuln_count": 0,
@@ -2326,268 +2601,6 @@
       "medium_count": 0,
       "error": null,
       "vulnerabilities": []
-    },
-    "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39": {
-      "chain": "polygon",
-      "chain_name": "Polygon",
-      "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "ChildERC20",
-      "compiler": "v0.6.6+commit.6c089d02",
-      "source_length": 51432,
-      "vuln_count": 19,
-      "critical_count": 11,
-      "high_count": 8,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "account, _msgSender());\r\n        }\r\n    }\r\n}\r\n\r\n                                                 \n\r\npragma solidity 0.6.6;\r\n\r\n\r\ncontract AccessControlMixin is AccessControl {\r\n    string private _revertMsg;\r\n    function _setupContractId(string memory contractId) internal {\r\n        _revertMsg = string(abi.encodePacked",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "vertMsg\r\n        );\r\n        _;\r\n    }\r\n}\r\n\r\n                                                    \n\r\npragma solidity 0.6.6;\r\n\r\ninterface IChildToken {\r\n    function deposit(address user, bytes calldata depositData) external;\r\n}\r\n\r\n                                            \n\r\npragma solidity 0.6.6;\r\n\r\ncontract Initiali",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "ss user, bytes calldata depositData) external;\r\n}\r\n\r\n                                            \n\r\npragma solidity 0.6.6;\r\n\r\ncontract Initializable {\r\n    bool inited = false;\r\n\r\n    modifier initializer() {\r\n        require(!inited,                 );\r\n        _;\r\n        inited = true;\r\n    }\r\n}",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": ");\r\n        _;\r\n        inited = true;\r\n    }\r\n}\r\n\r\n                                         \n\r\npragma solidity 0.6.6;\r\n\r\n\r\ncontract EIP712Base is Initializable {\r\n    struct EIP712Domain {\r\n        string name;\r\n        string version;\r\n        address verifyingContract;\r\n        bytes32 salt;\r\n    }\r\n\r\n    bytes3",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "), messageHash)\r\n            );\r\n    }\r\n}\r\n\r\n                                                    \n\r\npragma solidity 0.6.6;\r\n\r\n\r\n\r\ncontract NativeMetaTransaction is EIP712Base {\r\n    using SafeMath for uint256;\r\n    bytes32 private constant META_TRANSACTION_TYPEHASH = keccak256(\r\n        bytes(",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "sigR,\r\n                sigS\r\n            );\r\n    }\r\n}\r\n\r\n                                      \n\r\npragma solidity 0.6.6;\r\n\r\ncontract ChainConstants {\r\n    string constant public ERC712_VERSION =    ;\r\n\r\n    uint256 constant public ROOT_CHAIN_ID = 1;\r\n    bytes constant public ROOT_CHAIN_ID_BYTES = hex    ;\r\n\r\n    uin",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "constant public CHILD_CHAIN_ID_BYTES = hex    ;\r\n}\r\n\r\n                                           \n\r\npragma solidity 0.6.6;\r\n\r\nabstract contract ContextMixin {\r\n    function msgSender()\r\n        internal\r\n        view\r\n        returns (address payable sender)\r\n    {\r\n        if (msg.sender == address(this)) {",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P04",
-          "pattern_name": "Integer Overflow/Underflow",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Raw arithmetic in Solidity <0.8 (no built-in overflow check)",
-          "location": "pragma solidity 0.6.",
-          "snippet": "}\r\n        return sender;\r\n    }\r\n}\r\n\r\n                                                   \n\r\npragma solidity 0.6.6;\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\ncontract ChildERC20 is\r\n    ERC20,\r\n    IChildToken,\r\n    AccessControlMixin,\r\n    NativeMetaTransaction,\r\n    ChainConstants,\r\n    ContextMixin\r\n{\r\n    bytes32 public constant DEP",
-          "confidence": 0.9,
-          "recommendation": "Upgrade to Solidity 0.8.0+ for built-in overflow checking, or use OpenZeppelin's SafeMath library for older versions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P06",
-          "pattern_name": "Unchecked Call",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "call() without checking return value",
-          "location": "",
-          "snippet": "(bool success, ) = recipient.call{ value: amount }(  );\r\n        require(success,                                                             );\r\n    }",
-          "confidence": 0.7,
-          "recommendation": "Always check the return value of call():  (bool success, ) = addr.call{value: amount}(\"\"); require(success, \"Transfer failed\");\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P06",
-          "pattern_name": "Unchecked Call",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "call() without checking return value",
-          "location": "",
-          "snippet": "(bool success, bytes memory returndata) = target.call{ value: weiValue }(data);\r\n        if (success) {\r\n            return returndata;\r\n        } else {\r\n                                                                  \n            if (returndata.length > 0) {",
-          "confidence": 0.7,
-          "recommendation": "Always check the return value of call():  (bool success, ) = addr.call{value: amount}(\"\"); require(success, \"Transfer failed\");\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P06",
-          "pattern_name": "Unchecked Call",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Low-level call without success check in same function",
-          "location": "",
-          "snippet": "(bool success, bytes memory returnData) = address(this).call(\r\n            abi.encodePacked(functionSignature, userAddress)\r\n        );\r\n        require(success,                               );\r\n\r\n        return returnData;\r\n    }\r\n\r\n    function hashMetaTransaction(MetaTransaction memory metaTx)\r\n        internal\r\n        pure",
-          "confidence": 0.5,
-          "recommendation": "Verify that the return value of this call is properly checked.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P12",
-          "pattern_name": "Signature Replay",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "EIP-712 signatures without nonce check",
-          "location": "ecrecover(\r\n                toTypedMessageHash(hashMetaTransaction(metaTx)),\r\n                sigV,\r\n                sigR,\r\n                sigS\r\n            )",
-          "snippet": "s(0),                                        );\r\n        return\r\n            signer ==\r\n            ecrecover(\r\n                toTypedMessageHash(hashMetaTransaction(metaTx)),\r\n                sigV,\r\n                sigR,\r\n                sigS\r\n            );\r\n    }\r\n}\r\n\r\n                                      \n\r\npragma solidity 0.6.6;\r\n\r\ncontract ChainConstants {\r\n    string constant public ERC712_VERSION =    ;\r\n\r\n    uint256 constant public ROOT_CHAIN_",
-          "confidence": 0.5,
-          "recommendation": "Always include a nonce (incremented per user) and chainId in your EIP-712 typed data to prevent replay attacks across chains and repeated use.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P18",
-          "pattern_name": "Missing Access Control",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Admin/sensitive function without access control",
-          "location": "function withdraw(",
-          "snippet": "function withdraw(uint256 amount) external {\r\n        _burn(_msgSender(), amount);\r\n    }\r\n}",
-          "confidence": 0.8,
-          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P22",
-          "pattern_name": "Role Admin Hijack",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "grantRole or revokeRole without proper access control",
-          "location": "function grantRole(",
-          "snippet": "function grantRole(bytes32 role, address account) public virtual {\r\n        require(hasRole(_roles[role].adminRole, _msgSender()),                                                  );\r\n\r\n        _grantRole(role, account)",
-          "confidence": 0.8,
-          "recommendation": "Ensure grantRole and revokeRole are protected by the DEFAULT_ADMIN_ROLE role or equivalent access control. Use OpenZeppelin's AccessControlDefaultAdminRules for production.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P22",
-          "pattern_name": "Role Admin Hijack",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "grantRole or revokeRole without proper access control",
-          "location": "function revokeRole(",
-          "snippet": "function revokeRole(bytes32 role, address account) public virtual {\r\n        require(hasRole(_roles[role].adminRole, _msgSender()),                                                   );\r\n\r\n        _revokeRole(role, accoun",
-          "confidence": 0.8,
-          "recommendation": "Ensure grantRole and revokeRole are protected by the DEFAULT_ADMIN_ROLE role or equivalent access control. Use OpenZeppelin's AccessControlDefaultAdminRules for production.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P25",
-          "pattern_name": "Cross-Function Reentrancy",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Multiple functions modifying shared state with external calls",
-          "location": "",
-          "snippet": "pragma solidity ^0.6.0;",
-          "confidence": 0.7,
-          "recommendation": "Use OpenZeppelin's ReentrancyGuard on ALL functions that modify state and make external calls. Alternatively, follow the checks-effects-interactions pattern strictly.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P38",
-          "pattern_name": "Constructor in Implementation",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Upgradeable contract declares a constructor (state set in a constructor is not applied to proxy instances)",
-          "location": "",
-          "snippet": "pragma solidity ^0.6.0;",
-          "confidence": 0.6,
-          "recommendation": "In upgradeable/proxy contracts, move state initialization into an initialize() function guarded by the 'initializer' modifier. Keep the constructor empty (or use it only for immutables and to lock the implementation via _disableInitializers()).",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P41",
-          "pattern_name": "Contract Existence Check Missing",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Low-level call without extcodesize check",
-          "location": ".call{ value: amount }(  )",
-          "snippet": "(bool success, ) = recipient.call{ value: amount }(  );\r\n        require(success,                                                             );\r\n    }",
-          "confidence": 0.55,
-          "recommendation": "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code.",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P41",
-          "pattern_name": "Contract Existence Check Missing",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Low-level call without extcodesize check",
-          "location": ".call{ value: weiValue }(data)",
-          "snippet": "(bool success, bytes memory returndata) = target.call{ value: weiValue }(data);\r\n        if (success) {\r\n            return returndata;\r\n        } else {\r\n                                                                  \n            if (returndata.length > 0) {",
-          "confidence": 0.55,
-          "recommendation": "Check extcodesize(target) before low-level calls, or rely on high-level Solidity function calls that revert when target has no code.",
-          "explorer_url": ""
-        }
-      ]
     },
     "0xd6df932a45c0f255f85145f286ea0b292b21c90b": {
       "chain": "polygon",
@@ -3814,6 +3827,60 @@
       "error": null,
       "vulnerabilities": []
     },
+    "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0": {
+      "chain": "arbitrum",
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "\ud83c\udf00",
+      "contract_name": "ClonableBeaconProxy",
+      "compiler": "v0.6.11+commit.5ef660b1",
+      "source_length": 2085,
+      "vuln_count": 3,
+      "critical_count": 2,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P16",
+          "pattern_name": "Uninitialized Proxy",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Missing initializer modifier on init function",
+          "location": "function initialize(address _beacon)",
+          "snippet": "address public override beacon;\n\n    function initialize(address _beacon) external {\n        require(_beacon != address(0),                 );\n        require(beacon == address(0),               );\n        beacon = _beacon;\n    }\n\n    function getSalt(address user, bytes32",
+          "confidence": 0.5,
+          "recommendation": "Add the initializer modifier (from OpenZeppelin) to prevent re-initialization. Consider using Initializable.sol or UUPSUpgradeable pattern with constructor-based initialization.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P21",
+          "pattern_name": "Unprotected Initializer",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Initialize function without access control modifiers",
+          "location": "function initialize(",
+          "snippet": "address public override beacon;\n\n    function initialize(address _beacon) external {\n        require(_beacon != address(0),                 );\n        require(beacon == address(0),               );\n        beacon = _beacon;\n    }\n\n    function getSalt(addre",
+          "confidence": 0.85,
+          "recommendation": "Add the 'initializer' modifier (from OpenZeppelin) or 'onlyOwner' to the initialize function. Also add a check that initialization can only happen once.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P38",
+          "pattern_name": "Constructor in Implementation",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Upgradeable contract declares a constructor (state set in a constructor is not applied to proxy instances)",
+          "location": "",
+          "snippet": "pragma solidity >=0.6.0 <0.8.0;\n\nimport                                                ;\nimport",
+          "confidence": 0.6,
+          "recommendation": "In upgradeable/proxy contracts, move state initialization into an initialize() function guarded by the 'initializer' modifier. Keep the constructor empty (or use it only for immutables and to lock the implementation via _disableInitializers()).",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f": {
       "chain": "arbitrum",
       "chain_name": "Arbitrum One",
@@ -3881,20 +3948,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0": {
-      "chain": "arbitrum",
-      "chain_name": "Arbitrum One",
-      "chain_emoji": "\ud83c\udf00",
-      "contract_name": "Unknown (0xfa7f89...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 188,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0xba5ddd1f9d7f570dc94a51479a000e3bce967196": {
       "chain": "arbitrum",
@@ -4594,20 +4647,6 @@
       "error": null,
       "vulnerabilities": []
     },
-    "0x68f180fcce6836688e9084f035309e29bf0a2095": {
-      "chain": "optimism",
-      "chain_name": "Optimism",
-      "chain_emoji": "\ud83d\udd34",
-      "contract_name": "Unknown (0x68f180...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
-    },
     "0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6": {
       "chain": "optimism",
       "chain_name": "Optimism",
@@ -4661,6 +4700,20 @@
           "explorer_url": ""
         }
       ]
+    },
+    "0x68f180fcce6836688e9084f035309e29bf0a2095": {
+      "chain": "optimism",
+      "chain_name": "Optimism",
+      "chain_emoji": "\ud83d\udd34",
+      "contract_name": "Unknown (0x68f180...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
     },
     "0x76fb31fb4af56892a25e32cfc43de717950c9278": {
       "chain": "optimism",
@@ -4937,47 +4990,6 @@
           "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
           "confidence": 0.95,
           "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
-          "explorer_url": ""
-        }
-      ]
-    },
-    "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "WAVAX",
-      "compiler": "v0.5.17+commit.d19bba13",
-      "source_length": 38514,
-      "vuln_count": 2,
-      "critical_count": 0,
-      "high_count": 1,
-      "medium_count": 1,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P18",
-          "pattern_name": "Missing Access Control",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Admin/sensitive function without access control",
-          "location": "function withdraw(",
-          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
-          "confidence": 0.8,
-          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P42",
-          "pattern_name": "Gas Stipend Dependency",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
-          "location": ".transfer(wad)",
-          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
-          "confidence": 0.8,
-          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
           "explorer_url": ""
         }
       ]
@@ -5441,13 +5453,109 @@
         }
       ]
     },
+    "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "WAVAX",
+      "compiler": "v0.5.17+commit.d19bba13",
+      "source_length": 38533,
+      "vuln_count": 2,
+      "critical_count": 0,
+      "high_count": 1,
+      "medium_count": 1,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P18",
+          "pattern_name": "Missing Access Control",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Admin/sensitive function without access control",
+          "location": "function withdraw(",
+          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
+          "confidence": 0.8,
+          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P42",
+          "pattern_name": "Gas Stipend Dependency",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
+          "location": ".transfer(wad)",
+          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
+          "confidence": 0.8,
+          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x50b7545627a5162f82a992c33b87adc75187b218": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
       "chain_emoji": "\ud83d\udd3a",
       "contract_name": "BridgeToken",
       "compiler": "v0.8.0+commit.c7dfd78e",
-      "source_length": 25510,
+      "source_length": 25485,
+      "vuln_count": 2,
+      "critical_count": 1,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P01",
+          "pattern_name": "Unprotected Mint",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Mint function without onlyOwner or equivalent access control",
+          "location": "function mint(",
+          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
+          "confidence": 0.85,
+          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P05",
+          "pattern_name": "tx.origin Authentication",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "tx.origin used in require/modifier condition",
+          "location": "require(tx.origin == msg.sender,                                )",
+          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
+          "confidence": 0.95,
+          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
+          "explorer_url": ""
+        }
+      ]
+    },
+    "0x152b9d0fdc40c096757f570a51e5bd6da2b0b1a3": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "Unknown",
+      "compiler": "N/A",
+      "source_length": 0,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": "Source code not available (unverified contract or fetch failed)",
+      "vulnerabilities": []
+    },
+    "0x63a72806098bd3d9520cc43356dd78afe5d386d9": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "BridgeToken",
+      "compiler": "v0.8.0+commit.c7dfd78e",
+      "source_length": 25511,
       "vuln_count": 2,
       "critical_count": 1,
       "high_count": 1,
@@ -5535,61 +5643,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x63a72806098bd3d9520cc43356dd78afe5d386d9": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "BridgeToken",
-      "compiler": "v0.8.0+commit.c7dfd78e",
-      "source_length": 25511,
-      "vuln_count": 2,
-      "critical_count": 1,
-      "high_count": 1,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P01",
-          "pattern_name": "Unprotected Mint",
-          "severity": "critical",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Mint function without onlyOwner or equivalent access control",
-          "location": "function mint(",
-          "snippet": "function mint(\r\n        address to,\r\n        uint256 amount,\r\n        address feeAddress,\r\n        uint256 feeAmount,\r\n        bytes32 originTxId\r\n    ) public {\r\n        require(bridgeRoles.has(msg.sender),",
-          "confidence": 0.85,
-          "recommendation": "Add access control modifier (onlyOwner, onlyRole, etc.) to the mint function. Consider adding a maximum supply cap and rate limiting.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P05",
-          "pattern_name": "tx.origin Authentication",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "tx.origin used in require/modifier condition",
-          "location": "require(tx.origin == msg.sender,                                )",
-          "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
-          "confidence": 0.95,
-          "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
-          "explorer_url": ""
-        }
-      ]
-    },
-    "0x152b9d0fdc40c096757f570a51e5bd6da2b0b1a3": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "Unknown",
-      "compiler": "N/A",
-      "source_length": 0,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": "Source code not available (unverified contract or fetch failed)",
-      "vulnerabilities": []
     }
   }
 }

@@ -1,16 +1,16 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-07-19T09:52:46Z
-**Scan Time:** 17.9s
+**Last Scan:** 2026-07-20T10:53:05Z
+**Scan Time:** 15.5s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 355
+**Total Vulnerabilities:** 359
 
 ## Summary
 
 | Severity | Count |
 |----------|-------|
-| 🔴 Critical | 188 |
-| 🟡 High | 141 |
+| 🔴 Critical | 191 |
+| 🟡 High | 142 |
 | 🔵 Medium | 26 |
 | 🟢 Low | 0 |
 
@@ -22,18 +22,19 @@
 - `0x1f9840a85d5af5bf1d1762f925bdaddc4201f984` — Uni (1 critical)
 - `0x55d398326f99059ff775485246999027b3197955` — BEP20USDT (1 critical)
 - `0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d` — BEP20UpgradeableProxy (11 critical)
+- `0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3` — BEP20DAI (1 critical)
 - `0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82` — CakeToken (2 critical)
 - `0xe9e7cea3dedca5984780bafc599bd69add087d56` — BEP20Token (1 critical)
-- `0x3ee2200efb3400fabb9aacf31297cbdd1d435d47` — BEP20Cardano (1 critical)
 - `0x2791bca1f2de4661ed88a30c99a7a9449aa84174` — UChildERC20Proxy (10 critical)
 - `0xc2132d05d31c914a87c6611c10748aeb04b58e8f` — UChildERC20Proxy (10 critical)
+- `0x7ceb23fd6bc0add59e62ac25578270cff1b9f619` — MaticWETH (12 critical)
 - `0x9c2c5fd7b07e95ee044ddeba0e97a665f142394f` — UChildERC20Proxy (10 critical)
 - `0xb33eaad8d922b1083446dc23f610c2567fb5180f` — UChildERC20Proxy (10 critical)
-- `0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39` — ChildERC20 (11 critical)
 - `0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca` — Proxy (6 critical)
 - `0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9` — TransparentUpgradeableProxy (25 critical)
 - `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
 - `0x912ce59144191c1204e64559fe8253a0e49e6548` — TransparentUpgradeableProxy (21 critical)
+- `0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0` — ClonableBeaconProxy (2 critical)
 - `0xf97f4df75117a78c1a5a0dbb814af92458539fb4` — ClonableBeaconProxy (2 critical)
 - `0xba5ddd1f9d7f570dc94a51479a000e3bce967196` — ClonableBeaconProxy (2 critical)
 - `0x7f5c764cbc14f9669b88837ca1490cca17c31607` — OVMFiatToken (1 critical)
@@ -45,8 +46,8 @@
 - `0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7` — TransparentUpgradeableProxy (25 critical)
 - `0xd586e7f844cea2f87f50152665bcbc2c279d8d70` — BridgeToken (1 critical)
 - `0x50b7545627a5162f82a992c33b87adc75187b218` — BridgeToken (1 critical)
-- `0x5947bb275c521040051d82396192181b413227a3` — BridgeToken (1 critical)
 - `0x63a72806098bd3d9520cc43356dd78afe5d386d9` — BridgeToken (1 critical)
+- `0x5947bb275c521040051d82396192181b413227a3` — BridgeToken (1 critical)
 
 ## Red Flag Registry
 
