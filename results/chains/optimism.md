@@ -4,6 +4,6 @@
 |--------|-------|
 | Contracts Scanned | 8 |
 | Vulnerabilities Found | 53 |
-| 🔴 Critical | 5 |
-| 🟡 High | 44 |
-| 🔵 Medium | 4 |
+| 🔴 Critical | 9 |
+| 🟡 High | 39 |
+| 🔵 Medium | 5 |
