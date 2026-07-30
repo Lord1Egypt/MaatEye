@@ -14721,6 +14721,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0x6314c31a7a1652ce482cffe247e9cb7c3f4bb9af": {
+      "address": "0x6314c31a7a1652ce482cffe247e9cb7c3f4bb9af",
+      "chain": "arbitrum",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1785400437.9720647,
+      "discovered_at_block": 0,
+      "last_scanned": 1785400439.7269208,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 3,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "polygon": {
@@ -33712,6 +33729,23 @@
       "has_source": true,
       "verified_source": true,
       "vuln_count": 2,
+      "max_severity": "critical",
+      "latest_result_hash": ""
+    },
+    "0xad42d013ac31486b73b6b059e748172994736426": {
+      "address": "0xad42d013ac31486b73b6b059e748172994736426",
+      "chain": "optimism",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1785400437.7806616,
+      "discovered_at_block": 0,
+      "last_scanned": 1785400439.300478,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 52,
       "max_severity": "critical",
       "latest_result_hash": ""
     }
@@ -70285,6 +70319,23 @@
       "vuln_count": 6,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0xd501281565bf7789224523144fe5d98e8b28f267": {
+      "address": "0xd501281565bf7789224523144fe5d98e8b28f267",
+      "chain": "avalanche",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1785400438.1660988,
+      "discovered_at_block": 0,
+      "last_scanned": 1785400440.187639,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 2,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "base": {
@@ -106041,6 +106092,23 @@
       "verified_source": true,
       "vuln_count": 7,
       "max_severity": "critical",
+      "latest_result_hash": ""
+    },
+    "0x10f04e61bd6019d6c9b0bf4907e805a64b92ee3e": {
+      "address": "0x10f04e61bd6019d6c9b0bf4907e805a64b92ee3e",
+      "chain": "linea",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1785400438.3508904,
+      "discovered_at_block": 0,
+      "last_scanned": 1785400440.902208,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
       "latest_result_hash": ""
     }
   },
