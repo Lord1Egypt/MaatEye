@@ -15027,6 +15027,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0xaba5e0c80e9f58e391214689fb342049c0d31892": {
+      "address": "0xaba5e0c80e9f58e391214689fb342049c0d31892",
+      "chain": "arbitrum",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1785554623.8169193,
+      "discovered_at_block": 0,
+      "last_scanned": 1785554624.4660687,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 18,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "polygon": {
