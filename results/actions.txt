@@ -1,3 +1,3 @@
 has_vulns=true
-critical=165
-total=328
+critical=240
+total=435
