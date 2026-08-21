@@ -109121,6 +109121,23 @@
       "vuln_count": 2,
       "max_severity": "high",
       "latest_result_hash": ""
+    },
+    "0x8e34bfec4f6eb781f9743d9b4af99cd23f9b7053": {
+      "address": "0x8e34bfec4f6eb781f9743d9b4af99cd23f9b7053",
+      "chain": "gnosis",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1787298416.6712716,
+      "discovered_at_block": 0,
+      "last_scanned": 1787298417.6275904,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 20,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "scroll": {
