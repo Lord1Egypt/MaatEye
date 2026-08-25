@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-08-25T05:35:23.432922+00:00",
+  "scan_date": "2026-08-25T06:55:14.418054+00:00",
   "total_chains": 16,
-  "total_discovered": 6783,
+  "total_discovered": 6784,
   "total_analyzed": 5358,
   "total_findings": 66580,
   "flagged_contracts": 4560,
@@ -11,7 +11,7 @@
     "medium": 141,
     "low": 0
   },
-  "total_contracts": 6783,
+  "total_contracts": 6784,
   "total_vulns": 66580,
   "critical_count": 3783,
   "high_count": 636,
@@ -386,7 +386,7 @@
     "arbitrum": {
       "chain_name": "Arbitrum One",
       "chain_emoji": "🌀",
-      "discovered": 885,
+      "discovered": 886,
       "analyzed": 718,
       "findings": 8284,
       "flagged": 642,
@@ -394,7 +394,7 @@
       "high": 33,
       "medium": 7,
       "low": 0,
-      "contracts": 885,
+      "contracts": 886,
       "vulns": 8284
     },
     "avalanche": {
