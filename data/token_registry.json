@@ -118381,6 +118381,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0x22e1991e5f82736a2a990322a46aac0e95826c5b": {
+      "address": "0x22e1991e5f82736a2a990322a46aac0e95826c5b",
+      "chain": "mantle",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1787926242.897509,
+      "discovered_at_block": 0,
+      "last_scanned": 1787926243.9502573,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 8,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "pulsechain": {
