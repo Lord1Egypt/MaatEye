@@ -1,19 +1,19 @@
 {
-  "scan_date": "2026-08-30T08:05:49.982555+00:00",
+  "scan_date": "2026-08-30T13:37:28.761078+00:00",
   "total_chains": 16,
   "total_discovered": 6967,
   "total_analyzed": 5457,
-  "total_findings": 67372,
-  "flagged_contracts": 4662,
+  "total_findings": 67367,
+  "flagged_contracts": 4660,
   "contracts_by_severity": {
-    "critical": 3884,
+    "critical": 3882,
     "high": 637,
     "medium": 141,
     "low": 0
   },
   "total_contracts": 6967,
-  "total_vulns": 67372,
-  "critical_count": 3884,
+  "total_vulns": 67367,
+  "critical_count": 3882,
   "high_count": 637,
   "medium_count": 141,
   "low_count": 0,
@@ -416,14 +416,14 @@
       "chain_emoji": "🔷",
       "discovered": 1018,
       "analyzed": 872,
-      "findings": 8194,
-      "flagged": 642,
-      "critical": 495,
+      "findings": 8191,
+      "flagged": 641,
+      "critical": 494,
       "high": 131,
       "medium": 16,
       "low": 0,
       "contracts": 1018,
-      "vulns": 8194
+      "vulns": 8191
     },
     "blast": {
       "chain_name": "Blast",
@@ -556,14 +556,14 @@
       "chain_emoji": "🔴",
       "discovered": 306,
       "analyzed": 248,
-      "findings": 3586,
-      "flagged": 224,
-      "critical": 202,
+      "findings": 3584,
+      "flagged": 223,
+      "critical": 201,
       "high": 9,
       "medium": 13,
       "low": 0,
       "contracts": 306,
-      "vulns": 3586
+      "vulns": 3584
     },
     "polygon": {
       "chain_name": "Polygon",
