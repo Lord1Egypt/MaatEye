@@ -64758,6 +64758,23 @@
       "vuln_count": 8,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x056b269eb1f75477a8666ae8c7fe01b64dd55ecc": {
+      "address": "0x056b269eb1f75477a8666ae8c7fe01b64dd55ecc",
+      "chain": "ethereum",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1788114645.5559075,
+      "discovered_at_block": 0,
+      "last_scanned": 1788114646.2035084,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 22,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "avalanche": {
