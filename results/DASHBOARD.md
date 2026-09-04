@@ -1,16 +1,16 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-09-03T12:39:09Z
-**Scan Time:** 17.3s
+**Last Scan:** 2026-09-04T12:33:15Z
+**Scan Time:** 19.1s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 329
+**Total Vulnerabilities:** 332
 
 ## Summary
 
 | Severity | Count |
 |----------|-------|
-| 🔴 Critical | 166 |
-| 🟡 High | 137 |
+| 🔴 Critical | 167 |
+| 🟡 High | 139 |
 | 🔵 Medium | 26 |
 | 🟢 Low | 0 |
 
@@ -25,11 +25,13 @@
 - `0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3` — BEP20DAI (1 critical)
 - `0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82` — CakeToken (2 critical)
 - `0xe9e7cea3dedca5984780bafc599bd69add087d56` — BEP20Token (1 critical)
+- `0x3ee2200efb3400fabb9aacf31297cbdd1d435d47` — BEP20Cardano (1 critical)
+- `0x7083609fce4d1d8dc0c979aab8c869ea2c873402` — BEP20Polkadot (1 critical)
 - `0x2791bca1f2de4661ed88a30c99a7a9449aa84174` — UChildERC20Proxy (10 critical)
-- `0xc2132d05d31c914a87c6611c10748aeb04b58e8f` — UChildERC20Proxy (10 critical)
-- `0x7ceb23fd6bc0add59e62ac25578270cff1b9f619` — MaticWETH (12 critical)
+- `0x8f3cf7ad23cd3cadbd9735aff958023239c6a063` — UChildERC20Proxy (10 critical)
 - `0x9c2c5fd7b07e95ee044ddeba0e97a665f142394f` — UChildERC20Proxy (10 critical)
 - `0xb33eaad8d922b1083446dc23f610c2567fb5180f` — UChildERC20Proxy (10 critical)
+- `0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39` — ChildERC20 (11 critical)
 - `0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca` — Proxy (6 critical)
 - `0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9` — TransparentUpgradeableProxy (25 critical)
 - `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
@@ -44,9 +46,9 @@
 - `0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e` — FiatTokenProxy (10 critical)
 - `0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab` — BridgeToken (1 critical)
 - `0xd586e7f844cea2f87f50152665bcbc2c279d8d70` — BridgeToken (1 critical)
+- `0x63a72806098bd3d9520cc43356dd78afe5d386d9` — BridgeToken (1 critical)
 - `0x50b7545627a5162f82a992c33b87adc75187b218` — BridgeToken (1 critical)
 - `0x5947bb275c521040051d82396192181b413227a3` — BridgeToken (1 critical)
-- `0x63a72806098bd3d9520cc43356dd78afe5d386d9` — BridgeToken (1 critical)
 
 ## Red Flag Registry
 
