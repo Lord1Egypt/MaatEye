@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-09-10T05:43:54.048909+00:00",
+  "scan_date": "2026-09-10T10:57:31.852400+00:00",
   "total_chains": 16,
-  "total_discovered": 6971,
+  "total_discovered": 6972,
   "total_analyzed": 5461,
   "total_findings": 67393,
   "flagged_contracts": 4663,
@@ -11,7 +11,7 @@
     "medium": 141,
     "low": 0
   },
-  "total_contracts": 6971,
+  "total_contracts": 6972,
   "total_vulns": 67393,
   "critical_count": 3884,
   "high_count": 638,
@@ -442,7 +442,7 @@
     "bnb": {
       "chain_name": "BNB Chain",
       "chain_emoji": "🟡",
-      "discovered": 1019,
+      "discovered": 1020,
       "analyzed": 836,
       "findings": 8966,
       "flagged": 713,
@@ -450,7 +450,7 @@
       "high": 114,
       "medium": 24,
       "low": 0,
-      "contracts": 1019,
+      "contracts": 1020,
       "vulns": 8966
     },
     "celo": {
