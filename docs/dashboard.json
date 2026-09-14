@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-09-14T05:56:52.333098+00:00",
+  "scan_date": "2026-09-14T12:18:01.673012+00:00",
   "total_chains": 16,
-  "total_discovered": 7014,
+  "total_discovered": 7018,
   "total_analyzed": 5484,
   "total_findings": 67794,
   "flagged_contracts": 4684,
@@ -11,7 +11,7 @@
     "medium": 141,
     "low": 0
   },
-  "total_contracts": 7014,
+  "total_contracts": 7018,
   "total_vulns": 67794,
   "critical_count": 3905,
   "high_count": 638,
@@ -386,7 +386,7 @@
     "arbitrum": {
       "chain_name": "Arbitrum One",
       "chain_emoji": "🌀",
-      "discovered": 954,
+      "discovered": 955,
       "analyzed": 753,
       "findings": 8770,
       "flagged": 676,
@@ -394,7 +394,7 @@
       "high": 33,
       "medium": 7,
       "low": 0,
-      "contracts": 954,
+      "contracts": 955,
       "vulns": 8770
     },
     "avalanche": {
@@ -414,7 +414,7 @@
     "base": {
       "chain_name": "Base",
       "chain_emoji": "🔷",
-      "discovered": 1018,
+      "discovered": 1019,
       "analyzed": 872,
       "findings": 8191,
       "flagged": 641,
@@ -422,7 +422,7 @@
       "high": 131,
       "medium": 16,
       "low": 0,
-      "contracts": 1018,
+      "contracts": 1019,
       "vulns": 8191
     },
     "blast": {
@@ -442,7 +442,7 @@
     "bnb": {
       "chain_name": "BNB Chain",
       "chain_emoji": "🟡",
-      "discovered": 1021,
+      "discovered": 1022,
       "analyzed": 837,
       "findings": 8966,
       "flagged": 713,
@@ -450,7 +450,7 @@
       "high": 114,
       "medium": 24,
       "low": 0,
-      "contracts": 1021,
+      "contracts": 1022,
       "vulns": 8966
     },
     "celo": {
@@ -470,7 +470,7 @@
     "ethereum": {
       "chain_name": "Ethereum",
       "chain_emoji": "💎",
-      "discovered": 1722,
+      "discovered": 1723,
       "analyzed": 1250,
       "findings": 19055,
       "flagged": 1092,
@@ -478,7 +478,7 @@
       "high": 208,
       "medium": 55,
       "low": 0,
-      "contracts": 1722,
+      "contracts": 1723,
       "vulns": 19055
     },
     "gnosis": {

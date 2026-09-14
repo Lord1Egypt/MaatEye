@@ -16217,6 +16217,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25": {
+      "address": "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25",
+      "chain": "arbitrum",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1789388277.1208272,
+      "discovered_at_block": 0,
+      "last_scanned": 1789388281.443413,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "polygon": {
@@ -65455,6 +65472,23 @@
       "vuln_count": 22,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25": {
+      "address": "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25",
+      "chain": "ethereum",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1789388276.6595562,
+      "discovered_at_block": 0,
+      "last_scanned": 1789388278.354735,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "avalanche": {
@@ -90738,6 +90772,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25": {
+      "address": "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1789388276.9716346,
+      "discovered_at_block": 0,
+      "last_scanned": 1789388280.498619,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
@@ -108094,6 +108145,23 @@
       "scan_count": 1,
       "has_source": true,
       "verified_source": true,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
+    },
+    "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25": {
+      "address": "0x3a013978cbd3ed7b270c92009e6a6d1be8e6ac25",
+      "chain": "bnb",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1789388276.821315,
+      "discovered_at_block": 0,
+      "last_scanned": 1789388279.4958148,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
