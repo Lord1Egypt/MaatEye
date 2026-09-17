@@ -1,8 +1,8 @@
 {
   "tool": "MaatEye",
   "version": "1.0.0-alpha",
-  "timestamp": "2026-09-16T13:12:32Z",
-  "scan_time_seconds": 31.32,
+  "timestamp": "2026-09-17T13:06:17Z",
+  "scan_time_seconds": 15.75,
   "total_chains": 7,
   "chains_scanned": [
     "ethereum",
@@ -14,9 +14,9 @@
     "avalanche"
   ],
   "total_contracts": 61,
-  "total_vulns": 326,
-  "critical_count": 164,
-  "high_count": 136,
+  "total_vulns": 329,
+  "critical_count": 166,
+  "high_count": 137,
   "medium_count": 26,
   "low_count": 0,
   "chain_summary": {
@@ -69,9 +69,9 @@
       "chain_name": "Arbitrum One",
       "chain_emoji": "\ud83c\udf00",
       "contracts": 9,
-      "vulns": 78,
-      "critical": 60,
-      "high": 18,
+      "vulns": 81,
+      "critical": 62,
+      "high": 19,
       "medium": 0
     },
     "avalanche": {
@@ -637,6 +637,20 @@
         }
       ]
     },
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
+      "chain": "ethereum",
+      "chain_name": "Ethereum",
+      "chain_emoji": "\ud83d\udd35",
+      "contract_name": "Unknown (0xc02aaa...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 184,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0x514910771af9ca656af840dff83e8264ecf986ca": {
       "chain": "ethereum",
       "chain_name": "Ethereum",
@@ -690,20 +704,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
-      "chain": "ethereum",
-      "chain_name": "Ethereum",
-      "chain_emoji": "\ud83d\udd35",
-      "contract_name": "Unknown (0xc02aaa...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 184,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0x6b175474e89094c44da98b954eedeac495271d0f": {
       "chain": "ethereum",
@@ -1280,6 +1280,20 @@
       "error": null,
       "vulnerabilities": []
     },
+    "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c": {
+      "chain": "bnb",
+      "chain_name": "BNB Chain",
+      "chain_emoji": "\ud83d\udfe1",
+      "contract_name": "Unknown (0x7130d2...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 185,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
     "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82": {
       "chain": "bnb",
       "chain_name": "BNB Chain",
@@ -1411,20 +1425,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c": {
-      "chain": "bnb",
-      "chain_name": "BNB Chain",
-      "chain_emoji": "\ud83d\udfe1",
-      "contract_name": "Unknown (0x7130d2...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 185,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
     },
     "0xe9e7cea3dedca5984780bafc599bd69add087d56": {
       "chain": "bnb",
@@ -2376,6 +2376,34 @@
         }
       ]
     },
+    "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063": {
+      "chain": "polygon",
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contract_name": "Unknown (0x8f3cf7...)",
+      "compiler": "unknown (bytecode only)",
+      "source_length": 183,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": []
+    },
+    "0x1bfd67037b42fc47b8948dbb5fc537d7df4b2b6c": {
+      "chain": "polygon",
+      "chain_name": "Polygon",
+      "chain_emoji": "\ud83d\udfe3",
+      "contract_name": "Unknown",
+      "compiler": "N/A",
+      "source_length": 0,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": "Source code not available (unverified contract or fetch failed)",
+      "vulnerabilities": []
+    },
     "0xb33eaad8d922b1083446dc23f610c2567fb5180f": {
       "chain": "polygon",
       "chain_name": "Polygon",
@@ -2559,34 +2587,6 @@
           "explorer_url": ""
         }
       ]
-    },
-    "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063": {
-      "chain": "polygon",
-      "chain_name": "Polygon",
-      "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "Unknown (0x8f3cf7...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 183,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
-    },
-    "0x1bfd67037b42fc47b8948dbb5fc537d7df4b2b6c": {
-      "chain": "polygon",
-      "chain_name": "Polygon",
-      "chain_emoji": "\ud83d\udfe3",
-      "contract_name": "Unknown",
-      "compiler": "N/A",
-      "source_length": 0,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": "Source code not available (unverified contract or fetch failed)",
-      "vulnerabilities": []
     },
     "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39": {
       "chain": "polygon",
@@ -3827,25 +3827,65 @@
       "error": null,
       "vulnerabilities": []
     },
+    "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0": {
+      "chain": "arbitrum",
+      "chain_name": "Arbitrum One",
+      "chain_emoji": "\ud83c\udf00",
+      "contract_name": "ClonableBeaconProxy",
+      "compiler": "v0.6.11+commit.5ef660b1",
+      "source_length": 2085,
+      "vuln_count": 3,
+      "critical_count": 2,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P16",
+          "pattern_name": "Uninitialized Proxy",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Missing initializer modifier on init function",
+          "location": "function initialize(address _beacon)",
+          "snippet": "address public override beacon;\n\n    function initialize(address _beacon) external {\n        require(_beacon != address(0),                 );\n        require(beacon == address(0),               );\n        beacon = _beacon;\n    }\n\n    function getSalt(address user, bytes32",
+          "confidence": 0.5,
+          "recommendation": "Add the initializer modifier (from OpenZeppelin) to prevent re-initialization. Consider using Initializable.sol or UUPSUpgradeable pattern with constructor-based initialization.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P21",
+          "pattern_name": "Unprotected Initializer",
+          "severity": "critical",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Initialize function without access control modifiers",
+          "location": "function initialize(",
+          "snippet": "address public override beacon;\n\n    function initialize(address _beacon) external {\n        require(_beacon != address(0),                 );\n        require(beacon == address(0),               );\n        beacon = _beacon;\n    }\n\n    function getSalt(addre",
+          "confidence": 0.85,
+          "recommendation": "Add the 'initializer' modifier (from OpenZeppelin) or 'onlyOwner' to the initialize function. Also add a check that initialization can only happen once.",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P38",
+          "pattern_name": "Constructor in Implementation",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Upgradeable contract declares a constructor (state set in a constructor is not applied to proxy instances)",
+          "location": "",
+          "snippet": "pragma solidity >=0.6.0 <0.8.0;\n\nimport                                                ;\nimport",
+          "confidence": 0.6,
+          "recommendation": "In upgradeable/proxy contracts, move state initialization into an initialize() function guarded by the 'initializer' modifier. Keep the constructor empty (or use it only for immutables and to lock the implementation via _disableInitializers()).",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f": {
       "chain": "arbitrum",
       "chain_name": "Arbitrum One",
       "chain_emoji": "\ud83c\udf00",
       "contract_name": "Unknown (0x2f2a25...)",
-      "compiler": "unknown (bytecode only)",
-      "source_length": 188,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": []
-    },
-    "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0": {
-      "chain": "arbitrum",
-      "chain_name": "Arbitrum One",
-      "chain_emoji": "\ud83c\udf00",
-      "contract_name": "Unknown (0xfa7f89...)",
       "compiler": "unknown (bytecode only)",
       "source_length": 188,
       "vuln_count": 0,
@@ -4913,34 +4953,6 @@
         }
       ]
     },
-    "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "TransparentUpgradeableProxy",
-      "compiler": "v0.8.2+commit.661d1103",
-      "source_length": 1129,
-      "vuln_count": 1,
-      "critical_count": 0,
-      "high_count": 1,
-      "medium_count": 0,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P40",
-          "pattern_name": "UUPS Without Upgrade Guard",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "_authorizeUpgrade missing access control",
-          "location": "",
-          "snippet": ";\n\nabstract contract Proxiable is UUPSUpgradeable {\n    function _authorizeUpgrade(address newImplementation) internal override {\n        _beforeUpgrade(newImplementation);\n    }\n\n    function _beforeUpgrade(address newImplementation) internal virtual;\n}\n\ncontract ChildOfProxiable i",
-          "confidence": 0.8,
-          "recommendation": "Add onlyOwner or onlyRole modifier to _authorizeUpgrade. Only authorized accounts should be able to upgrade the implementation.",
-          "explorer_url": ""
-        }
-      ]
-    },
     "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
@@ -4978,6 +4990,34 @@
           "snippet": "function unwrap(uint256 amount, uint256 chainId) public {\r\n        require(tx.origin == msg.sender,                                );\r\n        require(chainIds[chainId] == true,                          );\r\n        _burn(msg.sender, amount);\r\n        emit Unwrap(amount, chainId);\r\n    }",
           "confidence": 0.95,
           "recommendation": "Replace tx.origin with msg.sender for access control. tx.origin should never be used for authorization \u2014 use msg.sender which is the direct caller.\n",
+          "explorer_url": ""
+        }
+      ]
+    },
+    "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "TransparentUpgradeableProxy",
+      "compiler": "v0.8.2+commit.661d1103",
+      "source_length": 1129,
+      "vuln_count": 1,
+      "critical_count": 0,
+      "high_count": 1,
+      "medium_count": 0,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P40",
+          "pattern_name": "UUPS Without Upgrade Guard",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "_authorizeUpgrade missing access control",
+          "location": "",
+          "snippet": ";\n\nabstract contract Proxiable is UUPSUpgradeable {\n    function _authorizeUpgrade(address newImplementation) internal override {\n        _beforeUpgrade(newImplementation);\n    }\n\n    function _beforeUpgrade(address newImplementation) internal virtual;\n}\n\ncontract ChildOfProxiable i",
+          "confidence": 0.8,
+          "recommendation": "Add onlyOwner or onlyRole modifier to _authorizeUpgrade. Only authorized accounts should be able to upgrade the implementation.",
           "explorer_url": ""
         }
       ]
@@ -5023,6 +5063,47 @@
         }
       ]
     },
+    "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "WAVAX",
+      "compiler": "v0.5.17+commit.d19bba13",
+      "source_length": 38533,
+      "vuln_count": 2,
+      "critical_count": 0,
+      "high_count": 1,
+      "medium_count": 1,
+      "error": null,
+      "vulnerabilities": [
+        {
+          "pattern_id": "P18",
+          "pattern_name": "Missing Access Control",
+          "severity": "high",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Admin/sensitive function without access control",
+          "location": "function withdraw(",
+          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
+          "confidence": 0.8,
+          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
+          "explorer_url": ""
+        },
+        {
+          "pattern_id": "P42",
+          "pattern_name": "Gas Stipend Dependency",
+          "severity": "medium",
+          "chain": "ethereum",
+          "chain_name": "Ethereum",
+          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
+          "location": ".transfer(wad)",
+          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
+          "confidence": 0.8,
+          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
+          "explorer_url": ""
+        }
+      ]
+    },
     "0x50b7545627a5162f82a992c33b87adc75187b218": {
       "chain": "avalanche",
       "chain_name": "Avalanche C-Chain",
@@ -5063,6 +5144,20 @@
           "explorer_url": ""
         }
       ]
+    },
+    "0x152b9d0fdc40c096757f570a51e5bd6da2b0b1a3": {
+      "chain": "avalanche",
+      "chain_name": "Avalanche C-Chain",
+      "chain_emoji": "\ud83d\udd3a",
+      "contract_name": "Unknown",
+      "compiler": "N/A",
+      "source_length": 0,
+      "vuln_count": 0,
+      "critical_count": 0,
+      "high_count": 0,
+      "medium_count": 0,
+      "error": "Source code not available (unverified contract or fetch failed)",
+      "vulnerabilities": []
     },
     "0x63a72806098bd3d9520cc43356dd78afe5d386d9": {
       "chain": "avalanche",
@@ -5155,61 +5250,6 @@
           "snippet": "e,\r\n        bytes memory data\r\n    ) public virtual override returns (bool success) {\r\n        super.transfer(to, value);\r\n        emit Transfer(msg.sender, to, value, data);\r\n        if (isContract(to)) {\r\n            contractFallback(to, value, data);\r\n        }\r\n        return true;\r\n    }\r\n\r\n               \n    fun",
           "confidence": 0.55,
           "recommendation": "Use OpenZeppelin's SafeERC20 which handles non-standard tokens (USDT etc. don't return a bool). Replace token.transfer(to, amount) with SafeERC20.safeTransfer(token, to, amount).\n",
-          "explorer_url": ""
-        }
-      ]
-    },
-    "0x152b9d0fdc40c096757f570a51e5bd6da2b0b1a3": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "Unknown",
-      "compiler": "N/A",
-      "source_length": 0,
-      "vuln_count": 0,
-      "critical_count": 0,
-      "high_count": 0,
-      "medium_count": 0,
-      "error": "Source code not available (unverified contract or fetch failed)",
-      "vulnerabilities": []
-    },
-    "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7": {
-      "chain": "avalanche",
-      "chain_name": "Avalanche C-Chain",
-      "chain_emoji": "\ud83d\udd3a",
-      "contract_name": "WAVAX",
-      "compiler": "v0.5.17+commit.d19bba13",
-      "source_length": 38533,
-      "vuln_count": 2,
-      "critical_count": 0,
-      "high_count": 1,
-      "medium_count": 1,
-      "error": null,
-      "vulnerabilities": [
-        {
-          "pattern_id": "P18",
-          "pattern_name": "Missing Access Control",
-          "severity": "high",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Admin/sensitive function without access control",
-          "location": "function withdraw(",
-          "snippet": "balanceOf[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n    function withdraw(uint wad) public {\r\n        require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    fu",
-          "confidence": 0.8,
-          "recommendation": "Add appropriate access control to all administrative functions. Use OpenZeppelin's AccessControl or Ownable for role-based permissions.\n",
-          "explorer_url": ""
-        },
-        {
-          "pattern_id": "P42",
-          "pattern_name": "Gas Stipend Dependency",
-          "severity": "medium",
-          "chain": "ethereum",
-          "chain_name": "Ethereum",
-          "description": "Single-arg .send()/.transfer() for ETH (2300-gas stipend)",
-          "location": ".transfer(wad)",
-          "snippet": "require(balanceOf[msg.sender] >= wad);\r\n        balanceOf[msg.sender] -= wad;\r\n        msg.sender.transfer(wad);\r\n        emit Withdrawal(msg.sender, wad);\r\n    }\r\n\r\n    function totalSupply() public view returns (uint) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    function approve(address guy, uint w",
-          "confidence": 0.8,
-          "recommendation": "Use .call{value: amount}('') instead of .send() or .transfer(). The send/transfer 2300-gas pattern can cause DoS for contract recipients.",
           "explorer_url": ""
         }
       ]

@@ -1,16 +1,16 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-09-16T13:12:32Z
-**Scan Time:** 31.3s
+**Last Scan:** 2026-09-17T13:06:17Z
+**Scan Time:** 15.8s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 326
+**Total Vulnerabilities:** 329
 
 ## Summary
 
 | Severity | Count |
 |----------|-------|
-| 🔴 Critical | 164 |
-| 🟡 High | 136 |
+| 🔴 Critical | 166 |
+| 🟡 High | 137 |
 | 🔵 Medium | 26 |
 | 🟢 Low | 0 |
 
@@ -34,6 +34,7 @@
 - `0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9` — TransparentUpgradeableProxy (25 critical)
 - `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
 - `0x912ce59144191c1204e64559fe8253a0e49e6548` — TransparentUpgradeableProxy (21 critical)
+- `0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0` — ClonableBeaconProxy (2 critical)
 - `0xf97f4df75117a78c1a5a0dbb814af92458539fb4` — ClonableBeaconProxy (2 critical)
 - `0xba5ddd1f9d7f570dc94a51479a000e3bce967196` — ClonableBeaconProxy (2 critical)
 - `0x7f5c764cbc14f9669b88837ca1490cca17c31607` — OVMFiatToken (1 critical)
