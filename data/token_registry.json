@@ -120202,6 +120202,23 @@
       "vuln_count": 16,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0xc01a27a35eac542375d0e272155c8c905f696888": {
+      "address": "0xc01a27a35eac542375d0e272155c8c905f696888",
+      "chain": "pulsechain",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1790212506.2340496,
+      "discovered_at_block": 0,
+      "last_scanned": 1790212507.819193,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 16,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   }
 }
