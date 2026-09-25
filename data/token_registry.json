@@ -115910,6 +115910,23 @@
       "vuln_count": 20,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x45df533836ce9da9cdbff7b2fbd987141326a921": {
+      "address": "0x45df533836ce9da9cdbff7b2fbd987141326a921",
+      "chain": "celo",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1790321031.903201,
+      "discovered_at_block": 0,
+      "last_scanned": 1790321032.7237804,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 30,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "moonbeam": {
