@@ -91180,6 +91180,23 @@
       "vuln_count": 1,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x9470ef4e54520f0369ac850e239205bacf27008a": {
+      "address": "0x9470ef4e54520f0369ac850e239205bacf27008a",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1790794659.9126768,
+      "discovered_at_block": 0,
+      "last_scanned": 1790794660.5429654,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 1,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
@@ -115943,6 +115960,23 @@
       "verified_source": true,
       "vuln_count": 30,
       "max_severity": "critical",
+      "latest_result_hash": ""
+    },
+    "0x2b9018ceb303d540bbf08de8e7de64fddd63396c": {
+      "address": "0x2b9018ceb303d540bbf08de8e7de64fddd63396c",
+      "chain": "celo",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1790794660.068386,
+      "discovered_at_block": 0,
+      "last_scanned": 1790794661.1024923,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 2,
+      "max_severity": "high",
       "latest_result_hash": ""
     }
   },
