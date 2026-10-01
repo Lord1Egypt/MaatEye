@@ -73838,6 +73838,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0xfe4f3960b69bf865ac8dcef0159995c8ca4d2946": {
+      "address": "0xfe4f3960b69bf865ac8dcef0159995c8ca4d2946",
+      "chain": "avalanche",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1790843759.8932395,
+      "discovered_at_block": 0,
+      "last_scanned": 1790843760.4215045,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 2,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "base": {
