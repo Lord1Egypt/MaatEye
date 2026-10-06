@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-10-06T14:48:19.805801+00:00",
+  "scan_date": "2026-10-06T14:54:54.900622+00:00",
   "total_chains": 16,
-  "total_discovered": 7076,
+  "total_discovered": 7077,
   "total_analyzed": 5524,
   "total_findings": 68155,
   "flagged_contracts": 4723,
@@ -11,7 +11,7 @@
     "medium": 141,
     "low": 0
   },
-  "total_contracts": 7076,
+  "total_contracts": 7077,
   "total_vulns": 68155,
   "critical_count": 3943,
   "high_count": 639,
@@ -414,7 +414,7 @@
     "base": {
       "chain_name": "Base",
       "chain_emoji": "🔷",
-      "discovered": 1021,
+      "discovered": 1022,
       "analyzed": 874,
       "findings": 8193,
       "flagged": 643,
@@ -422,7 +422,7 @@
       "high": 131,
       "medium": 16,
       "low": 0,
-      "contracts": 1021,
+      "contracts": 1022,
       "vulns": 8193
     },
     "blast": {
