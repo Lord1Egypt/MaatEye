@@ -1,19 +1,19 @@
 {
-  "scan_date": "2026-10-08T07:09:07.968561+00:00",
+  "scan_date": "2026-10-08T15:17:05.546598+00:00",
   "total_chains": 16,
   "total_discovered": 7077,
   "total_analyzed": 5524,
-  "total_findings": 68155,
-  "flagged_contracts": 4723,
+  "total_findings": 68160,
+  "flagged_contracts": 4724,
   "contracts_by_severity": {
-    "critical": 3943,
+    "critical": 3944,
     "high": 639,
     "medium": 141,
     "low": 0
   },
   "total_contracts": 7077,
-  "total_vulns": 68155,
-  "critical_count": 3943,
+  "total_vulns": 68160,
+  "critical_count": 3944,
   "high_count": 639,
   "medium_count": 141,
   "low_count": 0,
@@ -388,14 +388,14 @@
       "chain_emoji": "🌀",
       "discovered": 961,
       "analyzed": 756,
-      "findings": 8794,
-      "flagged": 679,
-      "critical": 639,
+      "findings": 8797,
+      "flagged": 680,
+      "critical": 640,
       "high": 33,
       "medium": 7,
       "low": 0,
       "contracts": 961,
-      "vulns": 8794
+      "vulns": 8797
     },
     "avalanche": {
       "chain_name": "Avalanche C-Chain",
@@ -472,14 +472,14 @@
       "chain_emoji": "💎",
       "discovered": 1725,
       "analyzed": 1252,
-      "findings": 19078,
+      "findings": 19080,
       "flagged": 1094,
       "critical": 831,
       "high": 208,
       "medium": 55,
       "low": 0,
       "contracts": 1725,
-      "vulns": 19078
+      "vulns": 19080
     },
     "gnosis": {
       "chain_name": "Gnosis",
