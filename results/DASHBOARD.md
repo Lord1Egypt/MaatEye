@@ -1,16 +1,16 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-10-08T15:16:47Z
-**Scan Time:** 16.3s
+**Last Scan:** 2026-10-09T15:01:32Z
+**Scan Time:** 16.6s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 330
+**Total Vulnerabilities:** 325
 
 ## Summary
 
 | Severity | Count |
 |----------|-------|
-| 🔴 Critical | 167 |
-| 🟡 High | 137 |
+| 🔴 Critical | 163 |
+| 🟡 High | 136 |
 | 🔵 Medium | 26 |
 | 🟢 Low | 0 |
 
@@ -22,9 +22,9 @@
 - `0x1f9840a85d5af5bf1d1762f925bdaddc4201f984` — Uni (1 critical)
 - `0x55d398326f99059ff775485246999027b3197955` — BEP20USDT (1 critical)
 - `0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d` — BEP20UpgradeableProxy (11 critical)
+- `0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3` — BEP20DAI (1 critical)
 - `0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82` — CakeToken (2 critical)
 - `0xe9e7cea3dedca5984780bafc599bd69add087d56` — BEP20Token (1 critical)
-- `0x3ee2200efb3400fabb9aacf31297cbdd1d435d47` — BEP20Cardano (1 critical)
 - `0x2791bca1f2de4661ed88a30c99a7a9449aa84174` — UChildERC20Proxy (10 critical)
 - `0xc2132d05d31c914a87c6611c10748aeb04b58e8f` — UChildERC20Proxy (10 critical)
 - `0x9c2c5fd7b07e95ee044ddeba0e97a665f142394f` — UChildERC20Proxy (10 critical)
@@ -34,12 +34,10 @@
 - `0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9` — TransparentUpgradeableProxy (25 critical)
 - `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
 - `0x912ce59144191c1204e64559fe8253a0e49e6548` — TransparentUpgradeableProxy (21 critical)
-- `0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0` — ClonableBeaconProxy (2 critical)
 - `0xf97f4df75117a78c1a5a0dbb814af92458539fb4` — ClonableBeaconProxy (2 critical)
 - `0xba5ddd1f9d7f570dc94a51479a000e3bce967196` — ClonableBeaconProxy (2 critical)
 - `0x7f5c764cbc14f9669b88837ca1490cca17c31607` — OVMFiatToken (1 critical)
 - `0x94b008aa00579c1307b0ef2c499ad98a8ce58e58` — USDT (2 critical)
-- `0x68f180fcce6836688e9084f035309e29bf0a2095` — WBTC (2 critical)
 - `0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6` — LinkTokenOptimism (2 critical)
 - `0x76fb31fb4af56892a25e32cfc43de717950c9278` — L2CustomERC20 (2 critical)
 - `0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e` — FiatTokenProxy (10 critical)
