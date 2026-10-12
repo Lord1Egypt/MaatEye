@@ -1,19 +1,19 @@
 {
-  "scan_date": "2026-10-12T14:54:33.144425+00:00",
+  "scan_date": "2026-10-12T17:28:48.618783+00:00",
   "total_chains": 16,
   "total_discovered": 7077,
   "total_analyzed": 5524,
-  "total_findings": 68244,
-  "flagged_contracts": 4726,
+  "total_findings": 68206,
+  "flagged_contracts": 4724,
   "contracts_by_severity": {
-    "critical": 3947,
+    "critical": 3945,
     "high": 638,
     "medium": 141,
     "low": 0
   },
   "total_contracts": 7077,
-  "total_vulns": 68244,
-  "critical_count": 3947,
+  "total_vulns": 68206,
+  "critical_count": 3945,
   "high_count": 638,
   "medium_count": 141,
   "low_count": 0,
@@ -388,14 +388,14 @@
       "chain_emoji": "🌀",
       "discovered": 961,
       "analyzed": 756,
-      "findings": 8822,
+      "findings": 8798,
       "flagged": 680,
       "critical": 640,
       "high": 33,
       "medium": 7,
       "low": 0,
       "contracts": 961,
-      "vulns": 8822
+      "vulns": 8798
     },
     "avalanche": {
       "chain_name": "Avalanche C-Chain",
@@ -444,14 +444,14 @@
       "chain_emoji": "🟡",
       "discovered": 1030,
       "analyzed": 844,
-      "findings": 9043,
-      "flagged": 720,
-      "critical": 582,
+      "findings": 9040,
+      "flagged": 719,
+      "critical": 581,
       "high": 114,
       "medium": 24,
       "low": 0,
       "contracts": 1030,
-      "vulns": 9043
+      "vulns": 9040
     },
     "celo": {
       "chain_name": "Celo",
@@ -472,14 +472,14 @@
       "chain_emoji": "💎",
       "discovered": 1725,
       "analyzed": 1252,
-      "findings": 19078,
+      "findings": 19080,
       "flagged": 1094,
       "critical": 831,
       "high": 208,
       "medium": 55,
       "low": 0,
       "contracts": 1725,
-      "vulns": 19078
+      "vulns": 19080
     },
     "gnosis": {
       "chain_name": "Gnosis",
@@ -570,14 +570,14 @@
       "chain_emoji": "🟣",
       "discovered": 868,
       "analyzed": 704,
-      "findings": 10051,
-      "flagged": 615,
-      "critical": 526,
+      "findings": 10038,
+      "flagged": 614,
+      "critical": 525,
       "high": 77,
       "medium": 12,
       "low": 0,
       "contracts": 868,
-      "vulns": 10051
+      "vulns": 10038
     },
     "pulsechain": {
       "chain_name": "PulseChain",
