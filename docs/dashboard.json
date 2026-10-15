@@ -1,7 +1,7 @@
 {
   "scan_date": "2026-10-15T13:08:36.108854+00:00",
   "total_chains": 16,
-  "total_discovered": 7077,
+  "total_discovered": 7078,
   "total_analyzed": 5524,
   "total_findings": 68172,
   "flagged_contracts": 4725,
@@ -386,7 +386,7 @@
     "arbitrum": {
       "chain_name": "Arbitrum One",
       "chain_emoji": "🌀",
-      "discovered": 961,
+      "discovered": 962,
       "analyzed": 756,
       "findings": 8797,
       "flagged": 680,
