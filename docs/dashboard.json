@@ -1,19 +1,19 @@
 {
-  "scan_date": "2026-10-16T11:02:28.571822+00:00",
+  "scan_date": "2026-10-16T13:03:37.176638+00:00",
   "total_chains": 16,
   "total_discovered": 7078,
   "total_analyzed": 5524,
-  "total_findings": 68172,
-  "flagged_contracts": 4725,
+  "total_findings": 68157,
+  "flagged_contracts": 4723,
   "contracts_by_severity": {
-    "critical": 3945,
+    "critical": 3943,
     "high": 639,
     "medium": 141,
     "low": 0
   },
   "total_contracts": 7078,
-  "total_vulns": 68172,
-  "critical_count": 3945,
+  "total_vulns": 68157,
+  "critical_count": 3943,
   "high_count": 639,
   "medium_count": 141,
   "low_count": 0,
@@ -444,14 +444,14 @@
       "chain_emoji": "🟡",
       "discovered": 1030,
       "analyzed": 844,
-      "findings": 9043,
-      "flagged": 720,
-      "critical": 582,
+      "findings": 9040,
+      "flagged": 719,
+      "critical": 581,
       "high": 114,
       "medium": 24,
       "low": 0,
       "contracts": 1030,
-      "vulns": 9043
+      "vulns": 9040
     },
     "celo": {
       "chain_name": "Celo",
@@ -570,14 +570,14 @@
       "chain_emoji": "🟣",
       "discovered": 868,
       "analyzed": 704,
-      "findings": 10051,
-      "flagged": 615,
-      "critical": 526,
+      "findings": 10039,
+      "flagged": 614,
+      "critical": 525,
       "high": 77,
       "medium": 12,
       "low": 0,
       "contracts": 868,
-      "vulns": 10051
+      "vulns": 10039
     },
     "pulsechain": {
       "chain_name": "PulseChain",
