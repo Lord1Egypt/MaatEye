@@ -442,16 +442,16 @@
     "bnb": {
       "chain_name": "BNB Chain",
       "chain_emoji": "🟡",
-      "discovered": 1030,
-      "analyzed": 844,
-      "findings": 9043,
-      "flagged": 720,
-      "critical": 582,
+      "discovered": 1031,
+      "analyzed": 845,
+      "findings": 9052,
+      "flagged": 721,
+      "critical": 583,
       "high": 114,
       "medium": 24,
       "low": 0,
-      "contracts": 1030,
-      "vulns": 9043
+      "contracts": 1031,
+      "vulns": 9052
     },
     "celo": {
       "chain_name": "Celo",
