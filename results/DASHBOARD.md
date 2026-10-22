@@ -1,17 +1,17 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-10-21T13:31:13Z
-**Scan Time:** 18.2s
+**Last Scan:** 2026-10-22T13:32:33Z
+**Scan Time:** 17.5s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 403
+**Total Vulnerabilities:** 374
 
 ## Summary
 
 | Severity | Count |
 |----------|-------|
-| 🔴 Critical | 213 |
-| 🟡 High | 161 |
-| 🔵 Medium | 29 |
+| 🔴 Critical | 193 |
+| 🟡 High | 155 |
+| 🔵 Medium | 26 |
 | 🟢 Low | 0 |
 
 ## Contracts with Critical Issues
@@ -22,10 +22,9 @@
 - `0x1f9840a85d5af5bf1d1762f925bdaddc4201f984` — Uni (1 critical)
 - `0x55d398326f99059ff775485246999027b3197955` — BEP20USDT (1 critical)
 - `0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d` — BEP20UpgradeableProxy (11 critical)
-- `0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3` — BEP20DAI (1 critical)
 - `0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82` — CakeToken (2 critical)
 - `0xe9e7cea3dedca5984780bafc599bd69add087d56` — BEP20Token (1 critical)
-- `0x7083609fce4d1d8dc0c979aab8c869ea2c873402` — BEP20Polkadot (1 critical)
+- `0x3ee2200efb3400fabb9aacf31297cbdd1d435d47` — BEP20Cardano (1 critical)
 - `0x2791bca1f2de4661ed88a30c99a7a9449aa84174` — UChildERC20Proxy (10 critical)
 - `0xc2132d05d31c914a87c6611c10748aeb04b58e8f` — UChildERC20Proxy (10 critical)
 - `0x9c2c5fd7b07e95ee044ddeba0e97a665f142394f` — UChildERC20Proxy (10 critical)
@@ -35,9 +34,9 @@
 - `0x833589fcd6edb6e08f4c7c32d4f71b54bda02913` — FiatTokenProxy (10 critical)
 - `0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9` — TransparentUpgradeableProxy (25 critical)
 - `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
-- `0x82af49447d8a07e3bd95bd0d56f35241523fbab1` — TransparentUpgradeableProxy (21 critical)
 - `0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f` — ClonableBeaconProxy (2 critical)
 - `0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0` — ClonableBeaconProxy (2 critical)
+- `0xf97f4df75117a78c1a5a0dbb814af92458539fb4` — ClonableBeaconProxy (2 critical)
 - `0x17fc002b466eec40dae837fc4be5c67993ddbd6f` — CrossChainCanonicalFRAX (14 critical)
 - `0xda10009cbd5d07dd0cecc66161fc93d7c9000da1` — Dai (2 critical)
 - `0x7f5c764cbc14f9669b88837ca1490cca17c31607` — OVMFiatToken (1 critical)
