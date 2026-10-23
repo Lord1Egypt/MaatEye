@@ -108794,6 +108794,23 @@
       "vuln_count": 9,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x8449740659e5b644b0e4430aa34c46c6a8887777": {
+      "address": "0x8449740659e5b644b0e4430aa34c46c6a8887777",
+      "chain": "bnb",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1792739604.2205205,
+      "discovered_at_block": 0,
+      "last_scanned": 1792739605.255602,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 9,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "linea": {
