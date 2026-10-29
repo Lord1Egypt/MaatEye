@@ -91299,6 +91299,23 @@
       "vuln_count": 3,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0xb2000000000000000000001775bd17f2289de527": {
+      "address": "0xb2000000000000000000001775bd17f2289de527",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1793266773.8978224,
+      "discovered_at_block": 0,
+      "last_scanned": 1793266775.0381465,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
