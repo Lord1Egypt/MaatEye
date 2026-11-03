@@ -16387,6 +16387,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0x56246bad18ad4ca39c56e26c9f3942fca7be04df": {
+      "address": "0x56246bad18ad4ca39c56e26c9f3942fca7be04df",
+      "chain": "arbitrum",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1793691824.854822,
+      "discovered_at_block": 0,
+      "last_scanned": 1793691827.877893,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "polygon": {
@@ -91333,6 +91350,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0xb20000000000000000000034533ed3961f222cd4": {
+      "address": "0xb20000000000000000000034533ed3961f222cd4",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1793691824.6559892,
+      "discovered_at_block": 0,
+      "last_scanned": 1793691827.0372276,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
@@ -108890,6 +108924,23 @@
       "discovered_at": 1793348451.926381,
       "discovered_at_block": 0,
       "last_scanned": 1793348453.6868565,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
+    },
+    "0xd82d25f8d47af1ab13ef707b10210132bf3c2240": {
+      "address": "0xd82d25f8d47af1ab13ef707b10210132bf3c2240",
+      "chain": "bnb",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1793691824.451934,
+      "discovered_at_block": 0,
+      "last_scanned": 1793691826.3298032,
       "scan_count": 1,
       "has_source": true,
       "verified_source": false,

@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-11-03T00:51:12.482384+00:00",
+  "scan_date": "2026-11-03T07:43:48.180568+00:00",
   "total_chains": 16,
-  "total_discovered": 7088,
+  "total_discovered": 7091,
   "total_analyzed": 5529,
   "total_findings": 68232,
   "flagged_contracts": 4727,
@@ -11,7 +11,7 @@
     "medium": 141,
     "low": 0
   },
-  "total_contracts": 7088,
+  "total_contracts": 7091,
   "total_vulns": 68232,
   "critical_count": 3947,
   "high_count": 639,
@@ -386,7 +386,7 @@
     "arbitrum": {
       "chain_name": "Arbitrum One",
       "chain_emoji": "🌀",
-      "discovered": 964,
+      "discovered": 965,
       "analyzed": 756,
       "findings": 8794,
       "flagged": 679,
@@ -394,7 +394,7 @@
       "high": 33,
       "medium": 7,
       "low": 0,
-      "contracts": 964,
+      "contracts": 965,
       "vulns": 8794
     },
     "avalanche": {
@@ -414,7 +414,7 @@
     "base": {
       "chain_name": "Base",
       "chain_emoji": "🔷",
-      "discovered": 1025,
+      "discovered": 1026,
       "analyzed": 875,
       "findings": 8196,
       "flagged": 644,
@@ -422,7 +422,7 @@
       "high": 131,
       "medium": 16,
       "low": 0,
-      "contracts": 1025,
+      "contracts": 1026,
       "vulns": 8196
     },
     "blast": {
@@ -442,7 +442,7 @@
     "bnb": {
       "chain_name": "BNB Chain",
       "chain_emoji": "🟡",
-      "discovered": 1033,
+      "discovered": 1034,
       "analyzed": 846,
       "findings": 9058,
       "flagged": 721,
@@ -450,7 +450,7 @@
       "high": 114,
       "medium": 24,
       "low": 0,
-      "contracts": 1033,
+      "contracts": 1034,
       "vulns": 9058
     },
     "celo": {
