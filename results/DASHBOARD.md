@@ -1,9 +1,9 @@
 # 👁️⚖️ MaatEye — Vulnerability Dashboard
 
-**Last Scan:** 2026-11-03T15:54:24Z
-**Scan Time:** 18.8s
+**Last Scan:** 2026-11-04T15:59:33Z
+**Scan Time:** 23.2s
 **Contracts Scanned:** 61
-**Total Vulnerabilities:** 325
+**Total Vulnerabilities:** 323
 
 ## Summary
 
@@ -11,7 +11,7 @@
 |----------|-------|
 | 🔴 Critical | 163 |
 | 🟡 High | 136 |
-| 🔵 Medium | 26 |
+| 🔵 Medium | 24 |
 | 🟢 Low | 0 |
 
 ## Contracts with Critical Issues
@@ -31,8 +31,8 @@
 - `0xb33eaad8d922b1083446dc23f610c2567fb5180f` — UChildERC20Proxy (10 critical)
 - `0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39` — ChildERC20 (11 critical)
 - `0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca` — Proxy (6 critical)
-- `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
 - `0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9` — TransparentUpgradeableProxy (25 critical)
+- `0xaf88d065e77c8cc2239327c5edb3a432268e5831` — FiatTokenProxy (10 critical)
 - `0x912ce59144191c1204e64559fe8253a0e49e6548` — TransparentUpgradeableProxy (21 critical)
 - `0xf97f4df75117a78c1a5a0dbb814af92458539fb4` — ClonableBeaconProxy (2 critical)
 - `0xba5ddd1f9d7f570dc94a51479a000e3bce967196` — ClonableBeaconProxy (2 critical)
