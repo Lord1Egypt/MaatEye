@@ -36604,6 +36604,23 @@
       "vuln_count": 8,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0x909369940f22dc1c143ac78753a33f41597138b1": {
+      "address": "0x909369940f22dc1c143ac78753a33f41597138b1",
+      "chain": "optimism",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1793879998.3762152,
+      "discovered_at_block": 0,
+      "last_scanned": 1793879998.9531047,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 8,
+      "max_severity": "critical",
+      "latest_result_hash": ""
     }
   },
   "ethereum": {
@@ -120466,6 +120483,23 @@
       "discovered_at": 1790161697.1147463,
       "discovered_at_block": 0,
       "last_scanned": 1790161707.5684078,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": true,
+      "vuln_count": 8,
+      "max_severity": "critical",
+      "latest_result_hash": ""
+    },
+    "0x909369940f22dc1c143ac78753a33f41597138b1": {
+      "address": "0x909369940f22dc1c143ac78753a33f41597138b1",
+      "chain": "mantle",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1793879998.5138724,
+      "discovered_at_block": 0,
+      "last_scanned": 1793879999.390554,
       "scan_count": 1,
       "has_source": true,
       "verified_source": true,
