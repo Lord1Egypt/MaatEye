@@ -1,5 +1,5 @@
 {
-  "scan_date": "2026-11-12T15:51:47.089627+00:00",
+  "scan_date": "2026-11-12T16:38:22.083730+00:00",
   "total_chains": 16,
   "total_discovered": 7097,
   "total_analyzed": 5534,
@@ -444,14 +444,14 @@
       "chain_emoji": "🟡",
       "discovered": 1035,
       "analyzed": 847,
-      "findings": 9073,
-      "flagged": 722,
-      "critical": 584,
+      "findings": 9076,
+      "flagged": 723,
+      "critical": 585,
       "high": 114,
       "medium": 24,
       "low": 0,
       "contracts": 1035,
-      "vulns": 9073
+      "vulns": 9076
     },
     "celo": {
       "chain_name": "Celo",
@@ -556,28 +556,28 @@
       "chain_emoji": "🔴",
       "discovered": 321,
       "analyzed": 257,
-      "findings": 3658,
-      "flagged": 233,
-      "critical": 211,
+      "findings": 3656,
+      "flagged": 232,
+      "critical": 210,
       "high": 9,
       "medium": 13,
       "low": 0,
       "contracts": 321,
-      "vulns": 3658
+      "vulns": 3656
     },
     "polygon": {
       "chain_name": "Polygon",
       "chain_emoji": "🟣",
       "discovered": 868,
       "analyzed": 704,
-      "findings": 10039,
+      "findings": 10038,
       "flagged": 614,
       "critical": 525,
       "high": 77,
       "medium": 12,
       "low": 0,
       "contracts": 868,
-      "vulns": 10039
+      "vulns": 10038
     },
     "pulsechain": {
       "chain_name": "PulseChain",
