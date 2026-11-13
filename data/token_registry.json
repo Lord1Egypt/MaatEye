@@ -91401,6 +91401,23 @@
       "vuln_count": 20,
       "max_severity": "critical",
       "latest_result_hash": ""
+    },
+    "0xb20000000000000000000010718397aca876a20a": {
+      "address": "0xb20000000000000000000010718397aca876a20a",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1794539864.4877965,
+      "discovered_at_block": 0,
+      "last_scanned": 1794539865.0820444,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
