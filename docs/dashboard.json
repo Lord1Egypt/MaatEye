@@ -1,10 +1,10 @@
 {
-  "scan_date": "2026-11-14T14:53:28.345061+00:00",
+  "scan_date": "2026-11-14T19:48:54.504140+00:00",
   "total_chains": 16,
   "total_discovered": 7099,
   "total_analyzed": 5535,
-  "total_findings": 68336,
-  "flagged_contracts": 4734,
+  "total_findings": 68317,
+  "flagged_contracts": 4732,
   "contracts_by_severity": {
     "critical": 3953,
     "high": 638,
@@ -12,9 +12,9 @@
     "low": 0
   },
   "total_contracts": 7099,
-  "total_vulns": 68336,
-  "critical_count": 3956,
-  "high_count": 637,
+  "total_vulns": 68317,
+  "critical_count": 3953,
+  "high_count": 638,
   "medium_count": 141,
   "low_count": 0,
   "pattern_count": 50,
