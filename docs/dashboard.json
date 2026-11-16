@@ -1,7 +1,7 @@
 {
-  "scan_date": "2026-11-15T23:51:33.216277+00:00",
+  "scan_date": "2026-11-16T05:41:43.012256+00:00",
   "total_chains": 16,
-  "total_discovered": 7099,
+  "total_discovered": 7100,
   "total_analyzed": 5535,
   "total_findings": 68290,
   "flagged_contracts": 4733,
@@ -11,7 +11,7 @@
     "medium": 141,
     "low": 0
   },
-  "total_contracts": 7099,
+  "total_contracts": 7100,
   "total_vulns": 68290,
   "critical_count": 3953,
   "high_count": 639,
@@ -400,7 +400,7 @@
     "avalanche": {
       "chain_name": "Avalanche C-Chain",
       "chain_emoji": "🔺",
-      "discovered": 471,
+      "discovered": 472,
       "analyzed": 423,
       "findings": 4380,
       "flagged": 363,
@@ -408,7 +408,7 @@
       "high": 45,
       "medium": 12,
       "low": 0,
-      "contracts": 471,
+      "contracts": 472,
       "vulns": 4380
     },
     "base": {
