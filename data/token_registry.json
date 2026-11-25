@@ -91469,6 +91469,23 @@
       "vuln_count": 0,
       "max_severity": "",
       "latest_result_hash": ""
+    },
+    "0xb200000000000000000000896d4cf2f1866d9bce": {
+      "address": "0xb200000000000000000000896d4cf2f1866d9bce",
+      "chain": "base",
+      "symbol": "",
+      "name": "",
+      "decimals": 18,
+      "source": "rpc_hourly",
+      "discovered_at": 1795636206.75854,
+      "discovered_at_block": 0,
+      "last_scanned": 1795636210.8564055,
+      "scan_count": 1,
+      "has_source": true,
+      "verified_source": false,
+      "vuln_count": 0,
+      "max_severity": "",
+      "latest_result_hash": ""
     }
   },
   "bnb": {
